@@ -54,29 +54,6 @@ const sidebarLayout = ({header, subheader}) => {
     async function func() {
       const token = await AsyncStorage.getItem('@jwt');
       const id = await AsyncStorage.getItem('@id');
-      const companyData = await axios({
-        method: 'GET',
-        url: `${REACT_APP_BASE_URL}/company?owner=${id}`,
-      }).catch(err => console.log(err));
-      console.log(companyData.data.company[0]);
-      setCompany(companyData.data.company[0]);
-      setExpiry(
-        new Date() > new Date(companyData.data.company[0].expiryDate)
-          ? `Expired since: ${formatDistanceStrict(
-              new Date(),
-              new Date(companyData.data.company[0].expiryDate),
-              {
-                unit: 'day',
-              },
-            )}`
-          : `Expires in: ${formatDistanceStrict(
-              new Date(companyData.data.company[0].expiryDate),
-              new Date(),
-              {
-                unit: 'day',
-              },
-            )}`,
-      );
     }
     func();
     return () => {

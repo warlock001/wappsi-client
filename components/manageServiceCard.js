@@ -5,34 +5,47 @@ import {Switch} from 'react-native-paper';
 import {Touchable} from 'react-native';
 import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {faPenToSquare, faTrash} from '@fortawesome/free-solid-svg-icons';
+import axios from 'axios';
+import {REACT_APP_BASE_URL} from '@env';
+import {
+  faPenToSquare,
+  faStarOfDavid,
+  faTrash,
+} from '@fortawesome/free-solid-svg-icons';
 
 export default function ManageServiceCard(props) {
-  const [isSwitchOn, setIsSwitchOn] = useState(null);
-  const [counter, setCounter] = useState(0);
-
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
-
-  const handleDecrement = () => {
-    if (counter > 0) {
-      setCounter(counter - 1);
-    }
+  const deleteService = async id => {
+    await axios({
+      method: 'DELETE',
+      url: `${REACT_APP_BASE_URL}/deleteservice?id=${id}`,
+    })
+      .then(async res => {
+        props.setShouldUpdate(!props.shouldUpdate);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
-
-  async function handleIncrement() {
-    setCounter(counter + 1);
-  }
 
   return (
     <View style={styles.cardContainer}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          deleteService(props.id);
+        }}>
         <FontAwesomeIcon icon={faTrash} color={'#CF3339'} size={30} />
       </TouchableOpacity>
       <Text style={styles.serviceName}>{props.serviceName}</Text>
 
       <Text>PKR {props.servicePrice} </Text>
 
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => {
+          props.setEditServiceName(props.serviceName);
+          props.setEditServicePrice(props.servicePrice);
+          props.setEditServiceId(props.id);
+          props.setModalVisible(true);
+        }}>
         <FontAwesomeIcon icon={faPenToSquare} color={'#CF3339'} size={30} />
       </TouchableOpacity>
     </View>

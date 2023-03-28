@@ -18,10 +18,56 @@ import LinearGradient from 'react-native-linear-gradient';
 import SidebarLayout from '../layouts/sidebarLayout';
 import {TextInput} from 'react-native-paper';
 import ServiceCard from '../components/serviceCard';
-
+import {REACT_APP_BASE_URL} from '@env';
+import {
+  CommonActions,
+  NavigationContainer,
+  useFocusEffect,
+} from '@react-navigation/native';
+import axios from 'axios';
 const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
 
 export default function NewOrder({route, navigation}) {
+  const [services, setServices] = useState([]);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+  const [total, setTotal] = useState(0);
+  const [netTotal, setNetTotal] = useState(0);
+  const [discount, setDiscount] = useState(0);
+  const [discountedAmount, setDiscountedAmount] = useState(0);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      axios({
+        method: 'GET',
+        url: `${REACT_APP_BASE_URL}/getservice`,
+      })
+        .then(res => {
+          setServices(res.data.services);
+        })
+        .catch(err => console.log(err));
+    }, [shouldUpdate]),
+  );
+
+  const calculateDiscount = discount => {
+    setDiscount(discount);
+    setDiscountedAmount((total * parseInt(discount)) / 100);
+    setNetTotal(parseInt(total) - parseInt(discountedAmount));
+  };
+
+  const renderItem = ({item}) => (
+    <ServiceCard
+      id={item._id}
+      serviceName={item.name}
+      servicePrice={item.price}
+      setTotal={setTotal}
+      total={total}
+      discount={discount}
+      setDiscountedAmount={setDiscountedAmount}
+      setNetTotal={setNetTotal}
+      discountedAmount={discountedAmount}
+    />
+  );
+
   return (
     <LinearGradient
       colors={['#eedfe0', '#dbdcdc']}
@@ -61,28 +107,20 @@ export default function NewOrder({route, navigation}) {
               </Text>
             </View>
 
-            <ScrollView
+            <View
               style={{
-                marginTop: 24,
+                marginTop: 12,
                 paddingHorizontal: 24,
                 zIndex: 10,
+                height: 500,
               }}>
-              <ServiceCard serviceName="Haircut" servicePrice="200" />
-              <ServiceCard serviceName="Beard Trim" servicePrice="150" />
-              <ServiceCard serviceName="Massage" servicePrice="200" />
-              <ServiceCard serviceName="Kids Haircut" servicePrice="250" />
-              <ServiceCard serviceName="Hair Dying" servicePrice="400" />
-              <ServiceCard serviceName="Hair Treatment" servicePrice="1200" />
-              <ServiceCard serviceName="Steam Wash" servicePrice="500" />
-              <ServiceCard serviceName="Facial" servicePrice="300" />
-              <ServiceCard serviceName="Beard Trim" servicePrice="150" />
-              <ServiceCard serviceName="Massage" servicePrice="200" />
-              <ServiceCard serviceName="Kids Haircut" servicePrice="250" />
-              <ServiceCard serviceName="Hair Dying" servicePrice="400" />
-              <ServiceCard serviceName="Hair Treatment" servicePrice="1200" />
-              <ServiceCard serviceName="Steam Wash" servicePrice="500" />
-              <ServiceCard serviceName="Facial" servicePrice="300" />
-            </ScrollView>
+              <FlatList
+                data={services}
+                renderItem={renderItem}
+                keyExtractor={item => item._id}
+                // extraData={selectedId}
+              />
+            </View>
           </SafeAreaView>
           <View style={styles.bottomContainer}>
             <View style={styles.feildContainer}>
@@ -97,7 +135,7 @@ export default function NewOrder({route, navigation}) {
                   },
                 ]}>
                 <Text style={{color: '#CF3339', fontSize: 12}}>Sub Total</Text>{' '}
-                : 500 PKR
+                : {total} PKR
               </Text>
 
               <View
@@ -114,6 +152,9 @@ export default function NewOrder({route, navigation}) {
                   Discount :{' '}
                 </Text>
                 <TextInput
+                  onChangeText={text => {
+                    calculateDiscount(text);
+                  }}
                   keyboardType="numeric"
                   style={[{height: 18}]}
                   maxLength={2}
@@ -132,7 +173,7 @@ export default function NewOrder({route, navigation}) {
                 <Text style={{color: '#CF3339', fontSize: 12}}>
                   Discounted Amount
                 </Text>
-                : 500 PKR
+                : {discountedAmount} PKR
               </Text>
               <Text
                 style={[
@@ -144,7 +185,8 @@ export default function NewOrder({route, navigation}) {
                     fontSize: 12,
                   },
                 ]}>
-                <Text style={{color: '#CF3339', fontSize: 12}}>Total</Text>: 500
+                <Text style={{color: '#CF3339', fontSize: 12}}>Total</Text>:{' '}
+                {netTotal}
                 PKR
               </Text>
             </View>
