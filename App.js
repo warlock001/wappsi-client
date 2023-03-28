@@ -85,6 +85,10 @@ import TouristVisa from './pages/businessSupportPages/touristVisa';
 import GoldenVisa from './pages/businessSupportPages/goldenVisa';
 import SecondCitizenship from './pages/businessSupportPages/secondCitizenship';
 import CustomerWappsi from './pages/customerWappsi';
+import CreateOffer from './pages/createOffer';
+import ManageServices from './pages/manageServices';
+import ExpenseTracker from './pages/expenseTracker';
+import Analytics from './pages/analytics';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -274,7 +278,7 @@ const App = () => {
             // tabBarShowLabel: false,
           }}
           name="Contact"
-          component={Contact}
+          component={Home}
         />
         <Tab.Screen
           options={{
@@ -294,7 +298,8 @@ const App = () => {
             // tabBarShowLabel: false,
           }}
           name="Profile"
-          component={MyAccount}
+          component={Home}
+          disab
         />
       </Tab.Navigator>
     );
@@ -319,6 +324,11 @@ const App = () => {
             <Stack.Screen name="NewOrder" component={NewOrder} />
             <Stack.Screen name="CustomerWappsi" component={CustomerWappsi} />
             <Stack.Screen name="ServiceRequest" component={ServiceRequest} />
+            <Stack.Screen name="Notifications" component={NotificationScreen} />
+            <Stack.Screen name="CreateOffer" component={CreateOffer} />
+            <Stack.Screen name="ManageServices" component={ManageServices} />
+            <Stack.Screen name="ExpenseTracker" component={ExpenseTracker} />
+            <Stack.Screen name="Analytics" component={Analytics} />
             {/* <Stack.Screen name="AddCompany" component={AddCompany} />
             <Stack.Screen name="UpdatePhone" component={UpdatePhone} />
             <Stack.Screen name="Register" component={Register} />
@@ -330,7 +340,7 @@ const App = () => {
             <Stack.Screen name="SpecialOffers" component={SpecialOffers} />
             <Stack.Screen name="BankingPartners" component={BankingPartners} />
           
-            <Stack.Screen name="Notifications" component={NotificationScreen} />
+            
             <Stack.Screen name="ReachPartners" component={ReachPartner} />
             <Stack.Screen name="Refer" component={Refer} />
             <Stack.Screen name="ForgotEmail" component={ForgotEmail} />

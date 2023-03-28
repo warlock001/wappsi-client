@@ -2,45 +2,67 @@ import {StyleSheet, View, Image, Text} from 'react-native';
 import React, {useEffect, useState, useRef} from 'react';
 import {Button, TextInput} from 'react-native-paper';
 import {Switch} from 'react-native-paper';
+import {Touchable} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function ServiceCard(props) {
   const [isSwitchOn, setIsSwitchOn] = useState(null);
-  const [counter, setCounter] = useState(1);
+  const [counter, setCounter] = useState(0);
 
   const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
 
-  const handleDecrement = () => setCounter(counter - 1);
+  const handleDecrement = () => {
+    if (counter > 0) {
+      setCounter(counter - 1);
+    }
+  };
 
   async function handleIncrement() {
-    console.log('hello');
     setCounter(counter + 1);
   }
 
-  // async function handleDecrement() {
-  //   setCounter(counter - 1);
-  // }
-
   return (
     <View style={styles.cardContainer}>
-      <Switch
-        color="#CF3339"
-        value={isSwitchOn}
-        onValueChange={onToggleSwitch}
-      />
       <Text style={styles.serviceName}>{props.serviceName}</Text>
 
       <View
         style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
-        <Button elevated onPress={handleIncrement}>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#CF3339',
+            color: '#FFFFFF',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 5,
+            height: 25,
+            width: 25,
+          }}
+          elevated
+          onPress={handleIncrement}>
           <Text style={styles.counterBtn}>+</Text>
-        </Button>
-        <Text>{counter}</Text>
-        <Button elevated onPress={handleDecrement}>
+        </TouchableOpacity>
+        <Text style={{padding: 10}}>{counter}</Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#CF3339',
+            color: '#FFFFFF',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 5,
+            height: 25,
+            width: 25,
+          }}
+          elevated
+          onPress={handleDecrement}>
           <Text style={styles.counterBtn}>-</Text>
-        </Button>
+        </TouchableOpacity>
       </View>
 
-      <Text>{props.servicePrice} PKR</Text>
+      <Text style={{paddingHorizontal: 3, width: '20%'}}>
+        {props.servicePrice} PKR
+      </Text>
     </View>
   );
 }
@@ -52,7 +74,7 @@ const styles = StyleSheet.create({
   cardContainer: {
     display: 'flex',
     flexDirection: 'row',
-    // justifyContent: 'space-between',
+    justifyContent: 'space-between',
     backgroundColor: '#FFFFFF',
     alignItems: 'center',
     borderRadius: 25,
@@ -61,10 +83,9 @@ const styles = StyleSheet.create({
   },
   counterBtn: {
     fontSize: 18,
-    color: '#CF3339',
+    color: '#FFFFFF',
   },
   serviceName: {
     width: 100,
-    textAlign: 'center',
   },
 });

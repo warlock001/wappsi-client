@@ -87,8 +87,17 @@ export default function NewOrder({route, navigation}) {
           <View style={styles.bottomContainer}>
             <View style={styles.feildContainer}>
               <Text
-                style={[styles.feildText, {width: '50%', textAlign: 'center'}]}>
-                <Text style={{color: '#CF3339'}}>Sub Total</Text> : 500 PKR
+                style={[
+                  styles.feildText,
+                  {
+                    width: '50%',
+                    textAlign: 'center',
+                    paddingHorizontal: 10,
+                    fontSize: 12,
+                  },
+                ]}>
+                <Text style={{color: '#CF3339', fontSize: 12}}>Sub Total</Text>{' '}
+                : 500 PKR
               </Text>
 
               <View
@@ -98,8 +107,10 @@ export default function NewOrder({route, navigation}) {
                   alignItems: 'center',
                   justifyContent: 'center',
                   width: '50%',
+                  paddingHorizontal: 10,
                 }}>
-                <Text style={[styles.feildText, {color: '#CF3339'}]}>
+                <Text
+                  style={[styles.feildText, {color: '#CF3339', fontSize: 12}]}>
                   Discount :{' '}
                 </Text>
                 <TextInput
@@ -108,19 +119,33 @@ export default function NewOrder({route, navigation}) {
                   maxLength={2}
                   value={0}
                 />
-                <Text style={styles.feildText}>%</Text>
+                <Text style={[styles.feildText, {fontSize: 12}]}>%</Text>
               </View>
             </View>
 
             <View style={styles.feildContainer}>
               <Text
-                style={[styles.feildText, {width: '50%', textAlign: 'center'}]}>
-                <Text style={{color: '#CF3339'}}>Discounted Amount</Text>: 500
-                PKR
+                style={[
+                  styles.feildText,
+                  {width: '50%', textAlign: 'center', paddingHorizontal: 10},
+                ]}>
+                <Text style={{color: '#CF3339', fontSize: 12}}>
+                  Discounted Amount
+                </Text>
+                : 500 PKR
               </Text>
               <Text
-                style={[styles.feildText, {width: '50%', textAlign: 'center'}]}>
-                <Text style={{color: '#CF3339'}}>Total</Text>: 500 PKR
+                style={[
+                  styles.feildText,
+                  {
+                    width: '50%',
+                    textAlign: 'center',
+                    paddingHorizontal: 10,
+                    fontSize: 12,
+                  },
+                ]}>
+                <Text style={{color: '#CF3339', fontSize: 12}}>Total</Text>: 500
+                PKR
               </Text>
             </View>
 
@@ -156,7 +181,7 @@ const styles = StyleSheet.create({
   bottomContainer: {
     backgroundColor: '#ffffff',
     display: 'flex',
-    height: 200,
+    height: 170,
     paddingHorizontal: 24,
     paddingVertical: 25,
   },
@@ -169,7 +194,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   feildText: {
-    fontSize: 18,
+    fontSize: 12,
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

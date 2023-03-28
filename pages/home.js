@@ -54,36 +54,7 @@ export default function Home({navigation}) {
   const progressValue = useSharedValue(0);
 
   useEffect(() => {
-    async function func() {
-      const token = await AsyncStorage.getItem('@jwt');
-      const id = await AsyncStorage.getItem('@id');
-      console.log(id);
-      const companyData = await axios({
-        method: 'GET',
-        url: `${REACT_APP_BASE_URL}/company?owner=${id}`,
-      }).catch(err => console.log(err));
-      console.log('company = ' + !companyData.data.company[0].name);
-      setCompany(companyData.data.company[0]);
-      setDemo(!companyData.data.company[0].name);
-
-      setExpiry(
-        new Date() > new Date(companyData.data.company[0].expiryDate)
-          ? `Expired since: ${formatDistanceStrict(
-              new Date(),
-              new Date(companyData.data.company[0].expiryDate),
-              {
-                unit: 'day',
-              },
-            )}`
-          : `Expires in: ${formatDistanceStrict(
-              new Date(companyData.data.company[0].expiryDate),
-              new Date(),
-              {
-                unit: 'day',
-              },
-            )}`,
-      );
-    }
+    async function func() {}
     func();
     return () => {
       // dispatch(setSidebar(false));
@@ -379,12 +350,7 @@ export default function Home({navigation}) {
                 flexDirection: 'row',
                 justifyContent: 'space-around',
               }}>
-              <TouchableOpacity
-                onPress={() =>
-                  demo === false
-                    ? navigation.navigate('NewOrder')
-                    : setModalVisible(true)
-                }>
+              <TouchableOpacity onPress={() => navigation.navigate('NewOrder')}>
                 <MenuBox
                   image={require('../images/dollarIcon.png')}
                   PAGE_WIDTH={PAGE_WIDTH}
@@ -402,7 +368,7 @@ export default function Home({navigation}) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('BookAnAppointment');
+                  navigation.navigate('Analytics');
                 }}>
                 <MenuBox
                   image={require('../images/graphIcon.png')}
@@ -418,7 +384,7 @@ export default function Home({navigation}) {
                 paddingBottom: 60,
               }}>
               <TouchableOpacity
-                onPress={() => navigation.navigate('BankingPartners')}>
+                onPress={() => navigation.navigate('ManageServices')}>
                 <MenuBox
                   image={require('../images/settingsIcon.png')}
                   PAGE_WIDTH={PAGE_WIDTH}
@@ -427,7 +393,7 @@ export default function Home({navigation}) {
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('SpecialOffers');
+                  navigation.navigate('ExpenseTracker');
                 }}>
                 <MenuBox
                   image={require('../images/walletIcon.png')}

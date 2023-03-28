@@ -18,6 +18,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import SidebarLayout from '../layouts/sidebarLayout';
 import {TextInput} from 'react-native-paper';
 import ServiceCard from '../components/serviceCard';
+import LeadCard from '../components/leadCard';
 
 const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
 
@@ -63,82 +64,148 @@ export default function CustomerWappsi({route, navigation}) {
             <Text style={{textAlign: 'center'}}>
               Customer from less than 3 weeks are not shown to reduce spamming
             </Text>
+            <View
+              style={{
+                paddingHorizontal: 22,
+                marginTop: 5,
+              }}>
+              <Text
+                style={{
+                  textAlign: 'center',
+                  fontWeight: 'bold',
+                  marginBottom: 3,
+                }}>
+                Show Customers who haven't visited from the past
+              </Text>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  flexWrap: 'wrap',
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}>
+                <TextInput
+                  keyboardType="numeric"
+                  style={[{height: 18, borderColor: 'red'}]}
+                  maxLength={3}
+                  value={0}
+                  activeUnderlineColor={'red'}
+                />
+                <Text style={{fontWeight: 'bold'}}>Days</Text>
+              </View>
+            </View>
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                paddingHorizontal: 22,
+                paddingTop: 22,
+                marginTop: 5,
+              }}>
+              <Text style={{width: '32%', textAlign: 'center'}}>
+                Phone Number
+              </Text>
+              <Text style={{width: '22%', textAlign: 'center'}}>
+                Last Visit
+              </Text>
+              <Text style={{width: '22%', textAlign: 'center'}}>
+                Total Spend
+              </Text>
+
+              <Text style={{width: '22%', textAlign: 'center'}}>Message</Text>
+            </View>
             <ScrollView
               style={{
-                marginTop: 24,
+                marginTop: 12,
                 paddingHorizontal: 24,
                 zIndex: 10,
               }}>
-              <ServiceCard serviceName="Haircut" servicePrice="200" />
-              <ServiceCard serviceName="Beard Trim" servicePrice="150" />
-              <ServiceCard serviceName="Massage" servicePrice="200" />
-              <ServiceCard serviceName="Kids Haircut" servicePrice="250" />
-              <ServiceCard serviceName="Hair Dying" servicePrice="400" />
-              <ServiceCard serviceName="Hair Treatment" servicePrice="1200" />
-              <ServiceCard serviceName="Steam Wash" servicePrice="500" />
-              <ServiceCard serviceName="Facial" servicePrice="300" />
-              <ServiceCard serviceName="Beard Trim" servicePrice="150" />
-              <ServiceCard serviceName="Massage" servicePrice="200" />
-              <ServiceCard serviceName="Kids Haircut" servicePrice="250" />
-              <ServiceCard serviceName="Hair Dying" servicePrice="400" />
-              <ServiceCard serviceName="Hair Treatment" servicePrice="1200" />
-              <ServiceCard serviceName="Steam Wash" servicePrice="500" />
-              <ServiceCard serviceName="Facial" servicePrice="300" />
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="43"
+                totalSpend="500"
+              />
+
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="64"
+                totalSpend="108"
+              />
+
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="67"
+                totalSpend="562"
+              />
+
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="95"
+                totalSpend="493"
+              />
+
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="22"
+                totalSpend="768"
+              />
+
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="35"
+                totalSpend="121"
+              />
+
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="44"
+                totalSpend="500"
+              />
+
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="56"
+                totalSpend="500"
+              />
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="56"
+                totalSpend="500"
+              />
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="56"
+                totalSpend="500"
+              />
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="56"
+                totalSpend="500"
+              />
+              <LeadCard
+                PhoneNumber="03062925548"
+                lastVisit="56"
+                totalSpend="500"
+              />
             </ScrollView>
           </SafeAreaView>
-          <View style={styles.bottomContainer}>
-            <View style={styles.feildContainer}>
-              <Text
-                style={[styles.feildText, {width: '50%', textAlign: 'center'}]}>
-                <Text style={{color: '#CF3339'}}>Sub Total</Text> : 500 PKR
-              </Text>
 
-              <View
-                style={{
-                  display: 'flex',
-                  flexDirection: 'row',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '50%',
-                }}>
-                <Text style={[styles.feildText, {color: '#CF3339'}]}>
-                  Discount :{' '}
-                </Text>
-                <TextInput
-                  keyboardType="numeric"
-                  style={[{height: 18}]}
-                  maxLength={2}
-                  value={0}
-                />
-                <Text style={styles.feildText}>%</Text>
-              </View>
-            </View>
-
-            <View style={styles.feildContainer}>
-              <Text
-                style={[styles.feildText, {width: '50%', textAlign: 'center'}]}>
-                <Text style={{color: '#CF3339'}}>Discounted Amount</Text>: 500
-                PKR
-              </Text>
-              <Text
-                style={[styles.feildText, {width: '50%', textAlign: 'center'}]}>
-                <Text style={{color: '#CF3339'}}>Total</Text>: 500 PKR
-              </Text>
-            </View>
-
-            <View style={{paddingHorizontal: 24}}>
-              <TouchableOpacity
-                style={{
-                  backgroundColor: '#CF3339',
-                  paddingVertical: 10,
-                  borderRadius: 10,
-                }}>
-                <Text style={{textAlign: 'center', color: '#FFFFFF'}}>
-                  Submit
-                </Text>
-              </TouchableOpacity>
-            </View>
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate('CreateOffer');
+            }}
+            style={[
+              {
+                backgroundColor: '#CF3339',
+                display: 'flex',
+                alignItems: 'center',
+              },
+              styles.bottomContainer,
+            ]}>
+            <Text style={{color: '#FFFFFF', textAlign: 'center'}}>
+              Create Offer
+            </Text>
+          </TouchableOpacity>
         </View>
       </SafeAreaView>
     </LinearGradient>
@@ -156,11 +223,12 @@ const styles = StyleSheet.create({
   },
 
   bottomContainer: {
-    backgroundColor: '#ffffff',
     display: 'flex',
-    height: 200,
+    height: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
     paddingHorizontal: 24,
-    paddingVertical: 25,
+    paddingVertical: 5,
   },
   feildContainer: {
     display: 'flex',

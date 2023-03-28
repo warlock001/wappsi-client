@@ -19,20 +19,20 @@ const SplashScreenModal = props => {
       visible={isModalVisible}
       animationType="fade"
       style={{
-        width: PAGE_WIDTH,
-        height: PAGE_HEIGHT,
+        width: 500,
+        height: 500,
         backgroundColor: '#000',
       }}>
       <Lottie
         resizeMode="cover"
         // style={{width: PAGE_WIDTH + 20, height: PAGE_HEIGHT, marginLeft: 1}}
         style={{
-          // width: PAGE_WIDTH,
-          aspectRatio: 375 / 812,
+          // width: 500,
+          // aspectRatio: 375 / 812,
           flexGrow: 1,
           alignSelf: 'center',
         }}
-        source={require('../images/splashScreenLottie.json')}
+        source={require('../images/V222K1sGcf.json')}
         loop={false}
         autoPlay
         onAnimationFinish={handleAnimationFinish}
