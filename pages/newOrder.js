@@ -7,7 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Modal,
+  // Modal,
   ScrollView,
   Pressable,
   SafeAreaView,
@@ -18,6 +18,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import SidebarLayout from '../layouts/sidebarLayout';
 import {TextInput} from 'react-native-paper';
 import ServiceCard from '../components/serviceCard';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Modal} from 'react-native-paper';
 import {REACT_APP_BASE_URL} from '@env';
 import {
   CommonActions,
@@ -34,6 +36,8 @@ export default function NewOrder({route, navigation}) {
   const [netTotal, setNetTotal] = useState(0);
   const [discount, setDiscount] = useState(0);
   const [discountedAmount, setDiscountedAmount] = useState(0);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [phone, setPhone] = useState(false);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -48,10 +52,46 @@ export default function NewOrder({route, navigation}) {
     }, [shouldUpdate]),
   );
 
-  const calculateDiscount = discount => {
-    setDiscount(discount);
-    setDiscountedAmount((total * parseInt(discount)) / 100);
-    setNetTotal(parseInt(total) - parseInt(discountedAmount));
+  const hideModal = () => {
+    setModalVisible(false);
+  };
+
+  const postOrder = async () => {
+    await axios({
+      method: 'POST',
+      url: `${REACT_APP_BASE_URL}/postorder`,
+      data: {
+        phone: phone,
+        total: parseInt(total),
+      },
+    })
+      .then(async res => {
+        console.log(res);
+        setShouldUpdate(!shouldUpdate);
+        setPhone('');
+        setModalVisible(false);
+        setTotal(0);
+        setDiscount(0);
+        setDiscountedAmount(0);
+        setNetTotal(0);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const calculateDiscount = discountText => {
+    setDiscount(discountText);
+    setDiscountedAmount((parseInt(discountText) / 100) * parseInt(total));
+    var temp_discountedAmount =
+      (parseInt(discountText) / 100) * parseInt(total);
+    setNetTotal(parseInt(total) - temp_discountedAmount);
+  };
+
+  const containerStyle = {
+    backgroundColor: '#eedfe0',
+    padding: 20,
+    width: '100%',
   };
 
   const renderItem = ({item}) => (
@@ -111,7 +151,7 @@ export default function NewOrder({route, navigation}) {
               style={{
                 marginTop: 12,
                 paddingHorizontal: 24,
-                zIndex: 10,
+                // zIndex: 10,
                 height: 500,
               }}>
               <FlatList
@@ -121,6 +161,60 @@ export default function NewOrder({route, navigation}) {
                 // extraData={selectedId}
               />
             </View>
+            {/* EDIT MODAL */}
+
+            <Modal
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              visible={modalVisible}
+              onDismiss={hideModal}
+              contentContainerStyle={containerStyle}>
+              <KeyboardAwareScrollView>
+                <SafeAreaView>
+                  <TextInput
+                    value={phone}
+                    activeUnderlineColor={'red'}
+                    onChangeText={text => {
+                      setPhone(text);
+                    }}
+                    style={{
+                      backgroundColor: '#ffffff',
+                      width: PAGE_WIDTH - 50,
+                      borderWidth: 1,
+                      borderColor: '#CF3339',
+                      borderRadius: 5,
+                      padding: 10,
+                      marginHorizontal: 5,
+                      marginBottom: 15,
+                      height: 22,
+                    }}
+                    placeholder="Phone Number"
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      postOrder();
+                    }}
+                    style={[
+                      {
+                        backgroundColor: '#CF3339',
+                        display: 'flex',
+                        alignItems: 'center',
+                        borderRadius: 15,
+                        paddingVertical: 20,
+                      },
+                    ]}>
+                    <Text style={{color: '#FFFFFF', textAlign: 'center'}}>
+                      Save Changes
+                    </Text>
+                  </TouchableOpacity>
+                </SafeAreaView>
+              </KeyboardAwareScrollView>
+            </Modal>
+            {/* EDIT MODAL END */}
           </SafeAreaView>
           <View style={styles.bottomContainer}>
             <View style={styles.feildContainer}>
@@ -159,6 +253,7 @@ export default function NewOrder({route, navigation}) {
                   style={[{height: 18}]}
                   maxLength={2}
                   value={0}
+                  activeUnderlineColor={'red'}
                 />
                 <Text style={[styles.feildText, {fontSize: 12}]}>%</Text>
               </View>
@@ -193,6 +288,9 @@ export default function NewOrder({route, navigation}) {
 
             <View style={{paddingHorizontal: 24}}>
               <TouchableOpacity
+                onPress={() => {
+                  setModalVisible(true);
+                }}
                 style={{
                   backgroundColor: '#CF3339',
                   paddingVertical: 10,
@@ -226,6 +324,7 @@ const styles = StyleSheet.create({
     height: 170,
     paddingHorizontal: 24,
     paddingVertical: 25,
+    zIndex: 99999999,
   },
   feildContainer: {
     display: 'flex',

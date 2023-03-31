@@ -16,6 +16,7 @@ import {
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import SidebarLayout from '../layouts/sidebarLayout';
+import DatePicker from 'react-native-date-picker';
 import {TextInput} from 'react-native-paper';
 import ServiceCard from '../components/serviceCard';
 import LeadCard from '../components/leadCard';
@@ -46,11 +47,88 @@ const chartConfig = {
   useShadowColorFromDataset: false, // optional
   legendFontColor: '#CF3339',
 };
+
+const services = [
+  {
+    _id: '64261a7a87a2b08aa3dec623',
+    phone: '03062925548',
+    total: 500,
+    createdAt: '2023-02-17T23:25:46.683Z',
+    updatedAt: '2023-02-17T23:25:46.683Z',
+    __v: 0,
+  },
+  {
+    _id: '64261b7a87a2b08aa3dec62c',
+    phone: '03432244944',
+    total: 2000,
+    createdAt: '2023-03-30T23:30:02.033Z',
+    updatedAt: '2023-03-30T23:30:02.033Z',
+    __v: 0,
+  },
+  {
+    _id: '64261bae87a2b08aa3dec631',
+    phone: '03432244944',
+    total: 2060,
+    createdAt: '2023-03-30T23:30:54.129Z',
+    updatedAt: '2023-03-30T23:30:54.129Z',
+    __v: 0,
+  },
+  {
+    _id: '64261bae87a2b08aa3dec631',
+    phone: '03432244944',
+    total: 200,
+    createdAt: '2023-03-30T23:30:54.129Z',
+    updatedAt: '2023-03-30T23:30:54.129Z',
+    __v: 0,
+  },
+  {
+    _id: '64261bae87a2b08aa3dec631',
+    phone: '03432244944',
+    total: 800,
+    createdAt: '2023-03-30T23:30:54.129Z',
+    updatedAt: '2023-03-30T23:30:54.129Z',
+    __v: 0,
+  },
+  {
+    _id: '64261bae87a2b08aa3dec631',
+    phone: '03432244944',
+    total: 300,
+    createdAt: '2023-03-30T23:30:54.129Z',
+    updatedAt: '2023-03-30T23:30:54.129Z',
+    __v: 0,
+  },
+  {
+    _id: '64261bae87a2b08aa3dec631',
+    phone: '03432244944',
+    total: 1200,
+    createdAt: '2023-03-30T23:30:54.129Z',
+    updatedAt: '2023-03-30T23:30:54.129Z',
+    __v: 0,
+  },
+  {
+    _id: '64261bae87a2b08aa3dec631',
+    phone: '03432244944',
+    total: 1400,
+    createdAt: '2023-03-30T23:30:54.129Z',
+    updatedAt: '2023-03-30T23:30:54.129Z',
+    __v: 0,
+  },
+];
+
+const Labels = [];
+const points = [];
+
+services.forEach(item => {
+  // console.log(new Date(item.createdAt).getDate());
+  Labels.push(new Date(item.createdAt).getDate());
+  points.push(item.total);
+});
+
 const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+  labels: Labels,
   datasets: [
     {
-      data: [20, 45, 28, 80, 99, 43],
+      data: points,
       color: (opacity = 1) => `rgba(207, 51, 57, ${opacity})`, // optional
       strokeWidth: 2, // optional
     },
@@ -58,12 +136,29 @@ const data = {
   legend: ['Rainy Days'], // optional
 };
 export default function Analytics({route, navigation}) {
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(true);
+
   return (
     <LinearGradient
       colors={['#eedfe0', '#dbdcdc']}
       style={styles.gradientStyle}
       start={{x: 1, y: 0}}
       end={{x: 0, y: 1}}>
+      <DatePicker
+        mode="date"
+        modal
+        open={open}
+        date={date}
+        onConfirm={date => {
+          setOpen(false);
+          setDate(date);
+          console.log(date);
+        }}
+        onCancel={() => {
+          setOpen(false);
+        }}
+      />
       <SafeAreaView style={{flex: 1}}>
         <View style={{flex: 1}}>
           <SafeAreaView style={{flex: 1, position: 'relative'}}>

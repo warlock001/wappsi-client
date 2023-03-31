@@ -86,6 +86,7 @@ export default function ManageServices({route, navigation}) {
         setShouldUpdate(!shouldUpdate);
         setEditServiceName('');
         setEditServicePrice('');
+        setModalVisible(false);
       })
       .catch(err => {
         console.log(err);

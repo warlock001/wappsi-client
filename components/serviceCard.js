@@ -20,8 +20,15 @@ export default function ServiceCard(props) {
   async function handleIncrement() {
     setCounter(counter + 1);
     props.setTotal(parseInt(props.total) + parseInt(props.servicePrice));
-    props.setDiscountedAmount((props.total * parseInt(props.discount)) / 100);
-    props.setNetTotal(parseInt(props.total) - parseInt(props.discountedAmount));
+    var total_temp = parseInt(props.total) + parseInt(props.servicePrice);
+    var total_discount =
+      (parseInt(props.discount) / 100) *
+      (parseInt(props.total) + parseInt(props.servicePrice));
+    props.setDiscountedAmount(
+      (parseInt(props.discount) / 100) *
+        (parseInt(props.total) + parseInt(props.servicePrice)),
+    );
+    props.setNetTotal(total_temp - total_discount);
   }
 
   return (

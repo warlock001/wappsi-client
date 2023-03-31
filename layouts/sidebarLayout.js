@@ -441,7 +441,7 @@ const sidebarLayout = ({header, subheader}) => {
                   color: '#fff',
                   paddingTop: 5,
                 }}>
-                Lead Record
+                Expense Record
               </Text>
               <Text
                 style={{
