@@ -82,7 +82,7 @@ export default function CreateOffer({route, navigation}) {
                   marginHorizontal: '25%',
                 }}>
                 <Switch
-                  color="#CF3339"
+                  color="#fad00e"
                   value={isSwitchOn}
                   onValueChange={onToggleSwitch}
                   style={{
@@ -103,7 +103,7 @@ export default function CreateOffer({route, navigation}) {
                   marginHorizontal: '25%',
                 }}>
                 <Switch
-                  color="#CF3339"
+                  color="#fad00e"
                   value={isSwitchOn}
                   onValueChange={onToggleSwitch}
                   style={{
@@ -124,7 +124,7 @@ export default function CreateOffer({route, navigation}) {
                   marginHorizontal: '25%',
                 }}>
                 <Switch
-                  color="#CF3339"
+                  color="#fad00e"
                   value={isSwitchOn}
                   onValueChange={onToggleSwitch}
                   style={{
@@ -156,7 +156,7 @@ export default function CreateOffer({route, navigation}) {
                     backgroundColor: '#ffffff',
                     textAlignVertical: 'top',
                     borderWidth: 3,
-                    borderColor: '#CF3339',
+                    borderColor: '#fad00e',
                     borderRadius: 10,
                     padding: 20,
                   }}
@@ -175,7 +175,7 @@ export default function CreateOffer({route, navigation}) {
                 </Text>
                 <TouchableOpacity
                   style={{
-                    backgroundColor: '#CF3339',
+                    backgroundColor: '#fad00e',
                     padding: 20,
                     borderRadius: 15,
                     marginTop: 12,

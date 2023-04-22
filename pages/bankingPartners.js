@@ -46,19 +46,36 @@ export default function BankingPartners({navigation}) {
       name: 'DIGITAL BANKING FOR ENTREPRENEURS',
       image: require('../images/partner9.png'),
     },
-    {name: 'CRM PLATFORM AND SERVICES', image: require('../images/partner10.png')},
-    {name: 'BUSINESS FOR SALES MARKETPLACE', image: require('../images/partner11.png')},
+    {
+      name: 'CRM PLATFORM AND SERVICES',
+      image: require('../images/partner10.png'),
+    },
+    {
+      name: 'BUSINESS FOR SALES MARKETPLACE',
+      image: require('../images/partner11.png'),
+    },
     {name: 'INVESTMENT', image: require('../images/partner12.png')},
     {name: 'HELLO BUSINESS HUB', image: require('../images/partner13.png')},
-    {name: 'ISO CERTIFICATION SYSTEMS', image: require('../images/partner14.png')},
-    {name: 'DIGITAL MARKETING SOLUTIONS', image: require('../images/partner15.png')},
+    {
+      name: 'ISO CERTIFICATION SYSTEMS',
+      image: require('../images/partner14.png'),
+    },
+    {
+      name: 'DIGITAL MARKETING SOLUTIONS',
+      image: require('../images/partner15.png'),
+    },
     {name: 'CAR RENTAL SERVICE', image: require('../images/partner16.png')},
-    {name: 'ONLINE PAYMENTS AND TRANSACTIONS', image: require('../images/partner17.png')},
+    {
+      name: 'ONLINE PAYMENTS AND TRANSACTIONS',
+      image: require('../images/partner17.png'),
+    },
     {name: 'PAYMENT GATEWAY', image: require('../images/partner18.png')},
     {name: 'PHOTOGRAPHY', image: require('../images/partner19.png')},
-    {name: 'PREMIUM OFFICE SPACE AND WORKSPACE SOLUTIONS', image: require('../images/partner20.png')},
+    {
+      name: 'PREMIUM OFFICE SPACE AND WORKSPACE SOLUTIONS',
+      image: require('../images/partner20.png'),
+    },
   ];
-
 
   return (
     <LinearGradient
@@ -67,29 +84,33 @@ export default function BankingPartners({navigation}) {
       start={{x: 1, y: 0}}
       end={{x: 0, y: 1}}>
       <SafeAreaView style={{flex: 1}}>
-      
         <View style={{height: '100%', padding: 24}}>
           <SidebarLayout header={'Our Partners'} />
-          <View style={{flexDirection:'row' , alignItems:'center' ,width:'100%' , paddingTop:12}}>
-
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={{alignItems: 'flex-start'}}>
-            <Image
-              style={{padding: 0, alignSelf: 'flex-start'}}
-              source={require('../images/BackBlack.png')}
-            />
-          </TouchableOpacity>
-          <Text
-          style={{
-            fontSize: 20,
-            fontWeight: '700',
-            color: '#222222',
-            textAlign: 'center',
-            width:PAGE_WIDTH-125
-          }}>
-          Our Partners
-        </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              paddingTop: 12,
+            }}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{alignItems: 'flex-start'}}>
+              <Image
+                style={{padding: 0, alignSelf: 'flex-start'}}
+                source={require('../images/BackBlack.png')}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: '700',
+                color: '#222222',
+                textAlign: 'center',
+                width: PAGE_WIDTH - 125,
+              }}>
+              Our Partners
+            </Text>
           </View>
 
           <Text
@@ -98,7 +119,6 @@ export default function BankingPartners({navigation}) {
               fontSize: 12,
               color: '#000',
               textAlign: 'center',
-              
             }}>
             ENJOY EXCLUSIVE BENEFITS
           </Text>
@@ -189,6 +209,6 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 10,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
   },
 });

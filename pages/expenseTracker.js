@@ -21,15 +21,99 @@ import ServiceCard from '../components/serviceCard';
 import LeadCard from '../components/leadCard';
 import InputField from '../components/inputField';
 import {RadioButton, DataTable} from 'react-native-paper';
-
+import axios from 'axios';
+import {REACT_APP_BASE_URL} from '@env';
+import {
+  CommonActions,
+  NavigationContainer,
+  useFocusEffect,
+} from '@react-navigation/native';
 const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
 
 export default function ExpenseTracker({route, navigation}) {
   const [value, setValue] = React.useState('first');
+  const [expense, setExpense] = React.useState([]);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+  const [price, setPrice] = useState(0);
+  const [note, setNote] = useState('');
+
+  const renderItem = item => {
+    const monthNames = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
+    ];
+    const datetime = new Date(item.item.createdAt);
+    const month = monthNames[datetime.getMonth()];
+    const date = datetime.getDate();
+    return (
+      <DataTable.Row>
+        <DataTable.Cell>
+          {month} - {date}
+        </DataTable.Cell>
+        <DataTable.Cell>
+          <Text style={{fontWeight: 'bold'}}>{item.item.category}</Text>
+          <Text> - {item.item.note}</Text>
+        </DataTable.Cell>
+        <DataTable.Cell numeric>PKR {item.item.price}</DataTable.Cell>
+      </DataTable.Row>
+    );
+  };
+
+  const postData = async () => {
+    console.log('here');
+    await axios({
+      method: 'POST',
+      url: `${REACT_APP_BASE_URL}/postexpense`,
+      data: {
+        category: value,
+        note: note,
+        price: price,
+      },
+    })
+      .then(async res => {
+        setValue('');
+        setShouldUpdate(!shouldUpdate);
+        setPrice(0);
+        setNote('');
+
+        if (Platform.OS === 'android') {
+          ToastAndroid.show('Expense Saved', ToastAndroid.LONG);
+        } else {
+          AlertIOS.alert('Expense Saved');
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      axios({
+        method: 'GET',
+        url: `${REACT_APP_BASE_URL}/getexpense`,
+      })
+        .then(res => {
+          console.log(res.data.expense);
+          setExpense(res.data.expense);
+        })
+        .catch(err => console.log(err));
+    }, [shouldUpdate]),
+  );
 
   return (
     <LinearGradient
-      colors={['#eedfe0', '#dbdcdc']}
+      colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
       start={{x: 1, y: 0}}
       end={{x: 0, y: 1}}>
@@ -58,197 +142,201 @@ export default function ExpenseTracker({route, navigation}) {
                 style={{
                   fontSize: 20,
                   fontWeight: '700',
-                  color: '#222222',
+                  color: '#0e1437',
                   textAlign: 'center',
                   width: PAGE_WIDTH - 75,
                 }}>
                 Expense Tracker
               </Text>
             </View>
-
-            <View
-              style={{
-                paddingHorizontal: 22,
-                paddingVertical: 5,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
-              <TextInput
+            <ScrollView>
+              <View
                 style={{
-                  backgroundColor: '#ffffff',
-                  width: '90%',
-                  borderWidth: 1,
-                  borderColor: '#CF3339',
-                  borderRadius: 15,
-                  padding: 10,
-                  marginHorizontal: 5,
-                }}
-                placeholder="PKR"
-              />
-            </View>
-
-            <View
-              style={{
-                paddingHorizontal: 22,
-                paddingVertical: 5,
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'center',
-              }}>
-              <TextInput
-                style={{
-                  backgroundColor: '#ffffff',
-                  width: '90%',
-                  borderWidth: 1,
-                  borderColor: '#CF3339',
-                  borderRadius: 15,
-                  padding: 10,
-                  marginHorizontal: 5,
-                }}
-                placeholder="Expense Notes"
-              />
-            </View>
-
-            <View
-              style={{
-                paddingHorizontal: 22,
-                marginTop: 5,
-              }}>
-              <Text
-                style={{
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  marginBottom: 15,
+                  paddingHorizontal: 22,
+                  paddingVertical: 5,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
                 }}>
-                Expense Categories
-              </Text>
-
-              <RadioButton.Group
-                onValueChange={newValue => setValue(newValue)}
-                value={value}>
-                <View
+                <TextInput
+                  keyboardType="numeric"
+                  value={price}
+                  onChangeText={text => {
+                    setPrice(text);
+                  }}
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '35%',
-                    }}>
-                    <RadioButton color={'#CF3339'} value="Salaries" />
-                    <Text>Salaries</Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '35%',
-                    }}>
-                    <RadioButton color={'#CF3339'} value="Electricity" />
-                    <Text>Electricity</Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '35%',
-                    }}>
-                    <RadioButton color={'#CF3339'} value="Gas" />
-                    <Text>Gas</Text>
-                  </View>
-                </View>
+                    backgroundColor: '#ffffff',
+                    width: '90%',
+                    borderWidth: 1,
+                    borderColor: '#fad00e',
+                    borderRadius: 15,
+                    padding: 10,
+                    marginHorizontal: 5,
+                  }}
+                  placeholder="PKR"
+                />
+              </View>
 
-                <View
+              <View
+                style={{
+                  paddingHorizontal: 22,
+                  paddingVertical: 5,
+                  display: 'flex',
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                }}>
+                <TextInput
+                  value={note}
+                  onChangeText={text => {
+                    setNote(text);
+                  }}
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
-                  }}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '35%',
-                    }}>
-                    <RadioButton color={'#CF3339'} value="Rent" />
-                    <Text>Rent</Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '35%',
-                    }}>
-                    <RadioButton color={'#CF3339'} value="Equipments" />
-                    <Text>Health</Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '35%',
-                    }}>
-                    <RadioButton color={'#CF3339'} value="Fuel" />
-                    <Text>Fuel</Text>
-                  </View>
-                </View>
+                    backgroundColor: '#ffffff',
+                    width: '90%',
+                    borderWidth: 1,
+                    borderColor: '#fad00e',
+                    borderRadius: 15,
+                    padding: 10,
+                    marginHorizontal: 5,
+                  }}
+                  placeholder="Expense Notes"
+                />
+              </View>
 
-                <View
+              <View
+                style={{
+                  paddingHorizontal: 22,
+                  marginTop: 5,
+                }}>
+                <Text
                   style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    justifyContent: 'center',
+                    textAlign: 'center',
+                    fontWeight: 'bold',
+                    marginBottom: 15,
+                    color: '#0e1437',
                   }}>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '35%',
-                    }}>
-                    <RadioButton color={'#CF3339'} value="Food" />
-                    <Text>Food</Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '35%',
-                    }}>
-                    <RadioButton color={'#CF3339'} value="Gifts" />
-                    <Text>Gifts</Text>
-                  </View>
-                  <View
-                    style={{
-                      display: 'flex',
-                      flexDirection: 'row',
-                      alignItems: 'center',
-                      width: '35%',
-                    }}>
-                    <RadioButton color={'#CF3339'} value="Drinks" />
-                    <Text>Drinks</Text>
-                  </View>
-                </View>
-              </RadioButton.Group>
-            </View>
+                  Expense Categories
+                </Text>
 
-            <ScrollView
-              style={{
-                marginTop: 12,
-                paddingHorizontal: 24,
-                zIndex: 10,
-              }}>
+                <RadioButton.Group
+                  onValueChange={newValue => setValue(newValue)}
+                  value={value}>
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                    }}>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '35%',
+                      }}>
+                      <RadioButton color={'#0e1437'} value="Salaries" />
+                      <Text>Salaries</Text>
+                    </View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '35%',
+                      }}>
+                      <RadioButton color={'#0e1437'} value="Electricity" />
+                      <Text>Electricity</Text>
+                    </View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '35%',
+                      }}>
+                      <RadioButton color={'#0e1437'} value="Gas" />
+                      <Text>Gas</Text>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                    }}>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '35%',
+                      }}>
+                      <RadioButton color={'#0e1437'} value="Rent" />
+                      <Text>Rent</Text>
+                    </View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '35%',
+                      }}>
+                      <RadioButton color={'#0e1437'} value="Equipments" />
+                      <Text>Health</Text>
+                    </View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '35%',
+                      }}>
+                      <RadioButton color={'#0e1437'} value="Fuel" />
+                      <Text>Fuel</Text>
+                    </View>
+                  </View>
+
+                  <View
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                    }}>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '35%',
+                      }}>
+                      <RadioButton color={'#0e1437'} value="Food" />
+                      <Text>Food</Text>
+                    </View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '35%',
+                      }}>
+                      <RadioButton color={'#0e1437'} value="Gifts" />
+                      <Text>Gifts</Text>
+                    </View>
+                    <View
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: '35%',
+                      }}>
+                      <RadioButton color={'#0e1437'} value="Drinks" />
+                      <Text>Drinks</Text>
+                    </View>
+                  </View>
+                </RadioButton.Group>
+              </View>
+
               <DataTable>
                 <DataTable.Header>
                   <DataTable.Title>Date</DataTable.Title>
@@ -256,79 +344,32 @@ export default function ExpenseTracker({route, navigation}) {
                   <DataTable.Title numeric>Amount</DataTable.Title>
                 </DataTable.Header>
 
-                <DataTable.Row>
-                  <DataTable.Cell>Dec 25</DataTable.Cell>
-                  <DataTable.Cell>
-                    <Text style={{fontWeight: 'bold'}}>Drinks</Text>
-                    <Text> - Tea</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>PKR 80</DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row>
-                  <DataTable.Cell>Dec 25</DataTable.Cell>
-                  <DataTable.Cell>
-                    <Text style={{fontWeight: 'bold'}}>Salaries</Text>
-                    <Text> - Ahmad</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>PKR 30000</DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row>
-                  <DataTable.Cell>Dec 25</DataTable.Cell>
-                  <DataTable.Cell>
-                    <Text style={{fontWeight: 'bold'}}>Security</Text>
-                    <Text> - Police</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>PKR 5000</DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row>
-                  <DataTable.Cell>Dec 25</DataTable.Cell>
-                  <DataTable.Cell>
-                    <Text style={{fontWeight: 'bold'}}>Electricity</Text>
-                    <Text> - KE</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>PKR 12000</DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row>
-                  <DataTable.Cell>Dec 25</DataTable.Cell>
-                  <DataTable.Cell>
-                    <Text style={{fontWeight: 'bold'}}>Salaries</Text>
-                    <Text> - Ali</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>PKR 35000</DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row>
-                  <DataTable.Cell>Dec 25</DataTable.Cell>
-                  <DataTable.Cell>
-                    <Text style={{fontWeight: 'bold'}}>Rent</Text>
-                    <Text> - rent</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>PKR 25000</DataTable.Cell>
-                </DataTable.Row>
-
-                <DataTable.Row>
-                  <DataTable.Cell>Dec 25</DataTable.Cell>
-                  <DataTable.Cell>
-                    <Text style={{fontWeight: 'bold'}}>Fuel</Text>
-                    <Text> - bike</Text>
-                  </DataTable.Cell>
-                  <DataTable.Cell numeric>PKR 410</DataTable.Cell>
-                </DataTable.Row>
+                <View
+                  style={{
+                    // marginTop: 12,
+                    paddingHorizontal: 5,
+                    // zIndex: 10,
+                    // height: 500,
+                  }}>
+                  <FlatList
+                    // style={{marginBottom: 24}}
+                    data={expense}
+                    renderItem={renderItem}
+                    keyExtractor={item => item._id}
+                    // extraData={selectedId}
+                  />
+                </View>
               </DataTable>
             </ScrollView>
           </SafeAreaView>
 
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('CreateOffer');
+              postData();
             }}
             style={[
               {
-                backgroundColor: '#CF3339',
+                backgroundColor: '#141414',
                 display: 'flex',
                 alignItems: 'center',
               },

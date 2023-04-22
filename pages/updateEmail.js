@@ -117,7 +117,7 @@ export default function UpdateEmail({navigation}) {
                 <Text
                   style={{
                     fontSize: 14,
-                    color: '#CF3339',
+                    color: '#fad00e',
                     fontWeight: 'bold',
                   }}>
                   CANCEL
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
     marginBottom: 16,
   },
 });

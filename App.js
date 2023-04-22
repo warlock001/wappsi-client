@@ -162,44 +162,14 @@ const App = () => {
         // await defaultAppAnalytics.setAnalyticsCollectionEnabled(true);
         // defaultAppAnalytics.logAppOpen();
 
-        axios({
-          method: 'GET',
-          url: `${REACT_APP_BASE_URL}/allPromotions`,
-
-          headers: {
-            'x-auth-token': jwt,
+        images = [
+          {
+            image: `https://www.armymwr.com/application/files/7816/0130/4930/DG_banner_examples_WebPromo_Community.jpg`,
+            link: `https://www.armymwr.com/application/files/7816/0130/4930/DG_banner_examples_WebPromo_Community.jpg`,
           },
-        })
-          .then(async res => {
-            var images = [];
-            for (const promo of res.data.allPromos) {
-              const file = await axios({
-                method: 'GET',
-                url: `${REACT_APP_BASE_URL}/files/${promo.image}/true`,
-                headers: {
-                  'x-auth-token': jwt,
-                },
-              }).catch(err => console.log(err));
-              // images.push({
-              //   image: `data:${file.headers['content-type']};base64,${file.data}`,
-              //   link: promo.link,
-              // });
-            }
-            images = [
-              {
-                image: `https://www.armymwr.com/application/files/7816/0130/4930/DG_banner_examples_WebPromo_Community.jpg`,
-                link: `https://www.armymwr.com/application/files/7816/0130/4930/DG_banner_examples_WebPromo_Community.jpg`,
-              },
-            ];
-
-            dispatch(setPromotions(images));
-            // dispatch(setPromotions(images));
-            // SplashScreen.hide();
-            setAppInit(true);
-          })
-          .catch(err => {
-            console.log(err);
-          });
+        ];
+        dispatch(setPromotions(images));
+        setAppInit(true);
       } else {
         setLoggedIn(false);
         console.log('asdasd');

@@ -80,7 +80,7 @@ export default function BusinessSupportSingle({route, navigation}) {
                   <TouchableOpacity
                     onPress={() => sendInquiry(inquiry)}
                     style={{
-                      backgroundColor: '#cf3339',
+                      backgroundColor: '#fad00e',
                       borderRadius: 10,
                       paddingVertical: 10,
                       width: PAGE_WIDTH / 2 - 70,
@@ -98,7 +98,7 @@ export default function BusinessSupportSingle({route, navigation}) {
                     onPress={() => setConfirmModalVisible(false)}
                     style={{
                       borderWidth: 2,
-                      borderColor: '#cf3339',
+                      borderColor: '#fad00e',
                       borderRadius: 10,
                       paddingVertical: 10,
                       width: PAGE_WIDTH / 2 - 70,
@@ -111,7 +111,7 @@ export default function BusinessSupportSingle({route, navigation}) {
                       style={{
                         fontSize: 16,
                         fontWeight: '600',
-                        color: '#cf3339',
+                        color: '#fad00e',
                       }}>
                       Cancel
                     </Text>

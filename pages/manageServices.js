@@ -119,7 +119,7 @@ export default function ManageServices({route, navigation}) {
 
   return (
     <LinearGradient
-      colors={['#eedfe0', '#dbdcdc']}
+      colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
       start={{x: 1, y: 0}}
       end={{x: 0, y: 1}}>
@@ -175,7 +175,7 @@ export default function ManageServices({route, navigation}) {
                     backgroundColor: '#ffffff',
                     width: '50%',
                     borderWidth: 1,
-                    borderColor: '#CF3339',
+                    borderColor: '#fad00e',
                     borderRadius: 15,
                     padding: 10,
                     marginHorizontal: 5,
@@ -193,7 +193,7 @@ export default function ManageServices({route, navigation}) {
                     backgroundColor: '#ffffff',
                     width: '25%',
                     borderWidth: 1,
-                    borderColor: '#CF3339',
+                    borderColor: '#fad00e',
                     borderRadius: 15,
                     padding: 10,
                     marginHorizontal: 5,
@@ -226,10 +226,10 @@ export default function ManageServices({route, navigation}) {
               </View>
               <View
                 style={{
-                  marginTop: 12,
+                  marginVertical: 12,
                   paddingHorizontal: 24,
                   zIndex: 10,
-                  height: 500,
+                  height: PAGE_HEIGHT - 320,
                 }}>
                 <FlatList
                   data={services}
@@ -258,7 +258,7 @@ export default function ManageServices({route, navigation}) {
                       backgroundColor: '#ffffff',
                       width: '100%',
                       borderWidth: 1,
-                      borderColor: '#CF3339',
+                      borderColor: '#fad00e',
                       borderRadius: 15,
                       padding: 10,
                       marginHorizontal: 5,
@@ -276,7 +276,7 @@ export default function ManageServices({route, navigation}) {
                       backgroundColor: '#ffffff',
                       width: '100%',
                       borderWidth: 1,
-                      borderColor: '#CF3339',
+                      borderColor: '#fad00e',
                       borderRadius: 15,
                       padding: 10,
                       marginHorizontal: 5,
@@ -291,7 +291,7 @@ export default function ManageServices({route, navigation}) {
                     }}
                     style={[
                       {
-                        backgroundColor: '#CF3339',
+                        backgroundColor: '#fad00e',
                         display: 'flex',
                         alignItems: 'center',
                         borderRadius: 15,

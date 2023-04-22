@@ -61,169 +61,6 @@ const sidebarLayout = ({header, subheader}) => {
     };
   }, []);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      getMyStringValue = async () => {
-        rnBiometrics.biometricKeysExist().then(resultObject => {
-          setFingerprint(resultObject.keysExist);
-        });
-        try {
-          id = await AsyncStorage.getItem('@id');
-          setUserId(id);
-
-          if (id) {
-            getData(id);
-            func(id);
-          } else {
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      };
-
-      async function func(id) {
-        const token = await AsyncStorage.getItem('@jwt');
-        const notifications = await axios({
-          method: 'GET',
-          url: `${REACT_APP_BASE_URL}/notification?id=${id}`,
-          headers: {
-            'x-auth-token': token,
-          },
-        }).catch(err => console.log(err));
-        setNotificationCount(
-          notifications?.data?.notification
-            ? notifications?.data?.notification.filter(el => el.seen === false)
-                .length
-            : 0,
-        );
-
-        const {biometryType} = await rnBiometrics.isSensorAvailable();
-        setBiometryType(biometryType);
-      }
-      function getData(ids) {
-        axios({
-          method: 'GET',
-          url: `${REACT_APP_BASE_URL}/alluser?id=${ids}`,
-        })
-          .then(res => {
-            // console.log(res.data);
-            setEmail(res.data.user.email);
-            setFirstName(res.data.user.firstName);
-            setLastName(res.data.user.lastName);
-          })
-          .catch(function (error) {
-            if (error.response) {
-              console.log(error);
-            }
-          });
-      }
-
-      getMyStringValue();
-    }),
-  );
-
-  async function verifySignatureWithServer(signature, payload) {
-    await axios({
-      method: 'POST',
-      url: `${REACT_APP_BASE_URL}/verifyBiometric?id=${userId}`,
-      data: {
-        signature,
-        payload,
-      },
-    });
-  }
-
-  async function useFaceId() {
-    const {biometryType} = await rnBiometrics.isSensorAvailable();
-    console.log(biometryType);
-    setBiometryType(biometryType);
-    if (biometryType === 'FaceID') {
-      //do something face id specific
-      if (faceId) {
-        if (!fingerprint) {
-          rnBiometrics.deleteKeys().then(resultObject => {
-            const {keysDeleted} = resultObject;
-
-            if (keysDeleted) {
-              console.log('Successful deletion');
-              setFaceId(!faceId);
-            } else {
-              console.log(
-                'Unsuccessful deletion because there were no keys to delete',
-              );
-            }
-          });
-        } else {
-          setFaceId(!faceId);
-        }
-      } else {
-        rnBiometrics.biometricKeysExist().then(resultObject => {
-          const {keysExist} = resultObject;
-
-          // console.log(keysExist)
-          // if (!keysExist) {
-          rnBiometrics.createKeys().then(async resultObject => {
-            const {publicKey} = resultObject;
-            console.log(publicKey);
-
-            await axios({
-              method: 'PUT',
-              url: `${REACT_APP_BASE_URL}/publickey?id=${userId}`,
-              data: {publicKey: publicKey},
-            });
-            setFaceId(true);
-          });
-          // }
-        });
-      }
-    }
-  }
-
-  async function useFingerprint() {
-    const {biometryType} = await rnBiometrics.isSensorAvailable();
-    setBiometryType(biometryType);
-    console.log(biometryType);
-
-    if (biometryType === 'TouchID' || biometryType === 'Biometrics') {
-      console.log('entered');
-      if (fingerprint) {
-        if (!faceId) {
-          rnBiometrics.deleteKeys().then(resultObject => {
-            const {keysDeleted} = resultObject;
-
-            if (keysDeleted) {
-              console.log('Successful deletion');
-              setFingerprint(!fingerprint);
-            } else {
-              console.log(
-                'Unsuccessful deletion because there were no keys to delete',
-              );
-            }
-          });
-        } else {
-          setFingerprint(!fingerprint);
-        }
-      } else {
-        rnBiometrics.biometricKeysExist().then(resultObject => {
-          const {keysExist} = resultObject;
-
-          // if (!keysExist) {
-          rnBiometrics.createKeys().then(async resultObject => {
-            const {publicKey} = resultObject;
-            console.log(publicKey);
-            await axios({
-              method: 'PUT',
-              url: `${REACT_APP_BASE_URL}/publickey?id=${userId}`,
-              data: {publicKey: publicKey},
-            });
-            setFingerprint(!fingerprint);
-          });
-          // }
-        });
-      }
-    }
-  }
-
   async function logout() {
     disconnectSocket();
     await AsyncStorage.removeItem('@jwt');
@@ -285,7 +122,7 @@ const sidebarLayout = ({header, subheader}) => {
           style={{
             fontSize: 33,
             fontWeight: '900',
-            color: '#CF3339',
+            color: '#241515',
             textAlign: 'center',
           }}>
           Wappis
@@ -312,7 +149,7 @@ const sidebarLayout = ({header, subheader}) => {
           />
           <View
             style={{
-              backgroundColor: '#CF3339',
+              backgroundColor: '#fad00e',
               padding: 5,
               width: '100%',
               borderRadius: 100,
@@ -393,8 +230,7 @@ const sidebarLayout = ({header, subheader}) => {
                   style={{
                     fontSize: 33,
                     fontWeight: '900',
-                    color: '#CF3339',
-                    backgroundColor: '#FFFFFF',
+                    color: '#fad00e',
                   }}>
                   Wappis
                 </Text>
@@ -428,7 +264,7 @@ const sidebarLayout = ({header, subheader}) => {
                   style={{
                     fontWeight: '800',
                     fontSize: 24,
-                    color: '#cf3339',
+                    color: '#fad00e',
                     paddingLeft: 6,
                   }}>
                   #1
@@ -453,7 +289,7 @@ const sidebarLayout = ({header, subheader}) => {
                 Keeping App
               </Text>
             </View>
-            <View style={{backgroundColor: '#CF3339'}}>
+            <View style={{backgroundColor: '#fad00e'}}>
               <View style={{paddingHorizontal: 30, paddingVertical: 13}}>
                 <View style={{flexDirection: 'row'}}>
                   <Text
@@ -656,7 +492,7 @@ const sidebarLayout = ({header, subheader}) => {
                   </Pressable>
                   <Switch
                     trackColor={{true: '#F2F2F5', false: '#F2F2F5'}}
-                    thumbColor={faceId ? '#cf3339' : '#ffffff'}
+                    thumbColor={faceId ? '#fad00e' : '#ffffff'}
                     value={faceId}
                     onValueChange={() => {
                       useFaceId();
@@ -708,7 +544,7 @@ const sidebarLayout = ({header, subheader}) => {
                       }
                     }
                     trackColor={{true: '#F2F2F5', false: '#F2F2F5'}}
-                    thumbColor={fingerprint ? '#cf3339' : '#ffffff'}
+                    thumbColor={fingerprint ? '#fad00e' : '#ffffff'}
                     value={fingerprint}
                     onValueChange={() => {
                       useFingerprint();
@@ -768,7 +604,7 @@ const sidebarLayout = ({header, subheader}) => {
                   );
                 }}>
                 <Text
-                  style={{fontWeight: '500', fontSize: 16, color: '#cf3339'}}>
+                  style={{fontWeight: '500', fontSize: 16, color: '#fad00e'}}>
                   Logout
                 </Text>
               </TouchableOpacity>

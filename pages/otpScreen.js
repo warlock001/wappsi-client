@@ -84,7 +84,7 @@ export default function OtpScreen({navigation}) {
                   style={{
                     fontSize: 24,
                     fontWeight: '500',
-                    color: '#cf3339',
+                    color: '#fad00e',
                     textAlign: 'center',
                   }}>
                   You are member now!
@@ -165,7 +165,7 @@ export default function OtpScreen({navigation}) {
                   <Text
                     style={{
                       fontSize: 14,
-                      color: '#CF3339',
+                      color: '#fad00e',
                       fontWeight: 'bold',
                       textDecorationLine: 'underline',
                     }}>
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
     marginBottom: 15,
   },
   signInButton: {
@@ -212,7 +212,7 @@ const styles = StyleSheet.create({
     paddingLeft: 40,
     paddingRight: 40,
     borderRadius: 30,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
     marginBottom: 15,
   },
   otpBox: {

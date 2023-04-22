@@ -12,6 +12,7 @@ import {
   Pressable,
   SafeAreaView,
   Button,
+  Alert,
 } from 'react-native';
 import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -20,6 +21,12 @@ import DatePicker from 'react-native-date-picker';
 import {TextInput} from 'react-native-paper';
 import ServiceCard from '../components/serviceCard';
 import LeadCard from '../components/leadCard';
+import {REACT_APP_BASE_URL} from '@env';
+import {
+  CommonActions,
+  NavigationContainer,
+  useFocusEffect,
+} from '@react-navigation/native';
 import {
   LineChart,
   BarChart,
@@ -28,137 +35,332 @@ import {
   ContributionGraph,
   StackedBarChart,
 } from 'react-native-chart-kit';
+import axios from 'axios';
+import {Dialog, Portal, Provider} from 'react-native-paper';
 
 const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
 const chartConfig = {
+  decimalPlaces: 1,
   backgroundGradientFrom: '#FFFFFF',
-  backgroundGradientFromOpacity: 0,
+  backgroundGradientFromOpacity: 1,
   backgroundGradientTo: '#FFFFFF',
-  backgroundGradientToOpacity: 0.5,
+  backgroundGradientToOpacity: 1,
   color: (opacity = 1) => `rgba(207, 51, 57, ${opacity})`,
   labelColor: (opacity = 1) => `rgba(207, 51, 57, ${opacity})`,
   propsForDots: {
     r: '6',
     strokeWidth: '2',
-    stroke: '#CF3339',
+    stroke: '#001438',
   },
   strokeWidth: 2, // optional, default 3
   barPercentage: 0.5,
   useShadowColorFromDataset: false, // optional
-  legendFontColor: '#CF3339',
+  legendFontColor: '#fad00e',
 };
 
-const services = [
-  {
-    _id: '64261a7a87a2b08aa3dec623',
-    phone: '03062925548',
-    total: 500,
-    createdAt: '2023-02-17T23:25:46.683Z',
-    updatedAt: '2023-02-17T23:25:46.683Z',
-    __v: 0,
-  },
-  {
-    _id: '64261b7a87a2b08aa3dec62c',
-    phone: '03432244944',
-    total: 2000,
-    createdAt: '2023-03-30T23:30:02.033Z',
-    updatedAt: '2023-03-30T23:30:02.033Z',
-    __v: 0,
-  },
-  {
-    _id: '64261bae87a2b08aa3dec631',
-    phone: '03432244944',
-    total: 2060,
-    createdAt: '2023-03-30T23:30:54.129Z',
-    updatedAt: '2023-03-30T23:30:54.129Z',
-    __v: 0,
-  },
-  {
-    _id: '64261bae87a2b08aa3dec631',
-    phone: '03432244944',
-    total: 200,
-    createdAt: '2023-03-30T23:30:54.129Z',
-    updatedAt: '2023-03-30T23:30:54.129Z',
-    __v: 0,
-  },
-  {
-    _id: '64261bae87a2b08aa3dec631',
-    phone: '03432244944',
-    total: 800,
-    createdAt: '2023-03-30T23:30:54.129Z',
-    updatedAt: '2023-03-30T23:30:54.129Z',
-    __v: 0,
-  },
-  {
-    _id: '64261bae87a2b08aa3dec631',
-    phone: '03432244944',
-    total: 300,
-    createdAt: '2023-03-30T23:30:54.129Z',
-    updatedAt: '2023-03-30T23:30:54.129Z',
-    __v: 0,
-  },
-  {
-    _id: '64261bae87a2b08aa3dec631',
-    phone: '03432244944',
-    total: 1200,
-    createdAt: '2023-03-30T23:30:54.129Z',
-    updatedAt: '2023-03-30T23:30:54.129Z',
-    __v: 0,
-  },
-  {
-    _id: '64261bae87a2b08aa3dec631',
-    phone: '03432244944',
-    total: 1400,
-    createdAt: '2023-03-30T23:30:54.129Z',
-    updatedAt: '2023-03-30T23:30:54.129Z',
-    __v: 0,
-  },
-];
-
-const Labels = [];
-const points = [];
-
-services.forEach(item => {
-  // console.log(new Date(item.createdAt).getDate());
-  Labels.push(new Date(item.createdAt).getDate());
-  points.push(item.total);
-});
-
-const data = {
-  labels: Labels,
-  datasets: [
-    {
-      data: points,
-      color: (opacity = 1) => `rgba(207, 51, 57, ${opacity})`, // optional
-      strokeWidth: 2, // optional
-    },
-  ],
-  legend: ['Rainy Days'], // optional
-};
 export default function Analytics({route, navigation}) {
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(true);
+  ////Toggle Buttons////
+  const [salesButtonActive, setSalesButtonActive] = useState(true);
+  const [newCustomerButtonActive, setNewCustomerButtonActive] = useState(false);
+  const [repeatCustomerButtonActive, setRepeatCustomerButtonActive] =
+    useState(false);
+  const [totalCustomerButtonActive, setTotalCustomerButtonActive] =
+    useState(false);
+  const [expensesButtonActive, setExpensesButtonActive] = useState(false);
+  const [profitabilityButtonActive, setProfitabilityButtonActive] =
+    useState(false);
 
+  const [pastMonthButtonActive, setPastMonthButtonActive] = useState(true);
+  const [thisMonthButtonActive, setThisMonthButtonActive] = useState(false);
+  const [thisWeekButtonActive, setThisWeekButtonActive] = useState(false);
+  const [customDateButtonActive, setcustomDateButtonActive] = useState(false);
+  const [startDateButtonActive, setStartDateButtonActive] = useState(false);
+  const [endDateButtonActive, setEndDateButtonActive] = useState(false);
+
+  const [activeRoute, setActiveRoute] = useState('sales');
+
+  const SetAllButtonsFalse = () => {
+    setSalesButtonActive(false);
+    setNewCustomerButtonActive(false);
+    setRepeatCustomerButtonActive(false);
+    setTotalCustomerButtonActive(false);
+    setExpensesButtonActive(false);
+    setProfitabilityButtonActive(false);
+  };
+
+  const SetAllPeriodsFalse = () => {
+    setPastMonthButtonActive(false);
+    setThisMonthButtonActive(false);
+    setThisWeekButtonActive(false);
+    setcustomDateButtonActive(false);
+    setStartDateButtonActive(false);
+    setEndDateButtonActive(false);
+  };
+  ////Toggle Buttons End////
+
+  const [sales, setSales] = useState([]);
+  const [date, setDate] = useState(new Date());
+  const [openCustom, setOpenCustom] = useState(false);
+  const [openStart, setOpenStart] = useState(false);
+  const [openEnd, setOpenEnd] = useState(false);
+  const [data, setData] = useState({
+    labels: [1, 30],
+    datasets: [
+      {
+        data: [0, 0],
+      },
+    ],
+  });
+
+  useFocusEffect(
+    React.useCallback(() => {
+      getSalesPastMonth('sales');
+    }, []),
+  );
+
+  useFocusEffect(
+    React.useCallback(() => {
+      const tempData = {
+        labels: [],
+        datasets: [
+          {
+            data: [],
+          },
+        ],
+      };
+
+      if (sales.length != 0) {
+        console.log(sales);
+        sales.forEach(item => {
+          console.log(item);
+          tempData.labels.push(item.date);
+          tempData.datasets[0].data.push(item.total);
+        });
+
+        setData(tempData);
+      }
+    }, [sales]),
+  );
+
+  async function getSalesPastMonth(route) {
+    await axios({
+      method: 'GET',
+      url: `${REACT_APP_BASE_URL}/${route}?period=pastMonth `,
+    })
+      .then(res => {
+        if (res.data.sales.length == 0) {
+          Alert.alert('No Data Found.');
+          setData({
+            labels: [0],
+            datasets: [
+              {
+                data: [0],
+              },
+            ],
+          });
+        } else {
+          setSales(res.data.sales);
+        }
+      })
+      .catch(err => console.log(err));
+  }
+
+  // async function getSalesPastMonth() {
+  //   await axios({
+  //     method: 'GET',
+  //     url: `${REACT_APP_BASE_URL}/${activeRoute}?period=pastMonth `,
+  //   })
+  //     .then(res => {
+  //       if (res.data.sales.length == 0) {
+  //         Alert.alert('No Data Found.');
+  //         setData({
+  //           labels: [0],
+  //           datasets: [
+  //             {
+  //               data: [0],
+  //             },
+  //           ],
+  //         });
+  //       } else {
+  //         setSales(res.data.sales);
+  //       }
+  //     })
+  //     .catch(err => console.log(err));
+  // }
+
+  const getSalesThisMonth = async () => {
+    await axios({
+      method: 'GET',
+      url: `${REACT_APP_BASE_URL}/${activeRoute}?period=thisMonth `,
+    })
+      .then(res => {
+        if (res.data.sales.length == 0) {
+          Alert.alert('No Data Found.');
+          setData({
+            labels: [0],
+            datasets: [
+              {
+                data: [0],
+              },
+            ],
+          });
+        } else {
+          setSales(res.data.sales);
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getSalesThisWeek = async () => {
+    await axios({
+      method: 'GET',
+      url: `${REACT_APP_BASE_URL}/${activeRoute}?period=thisWeek `,
+    })
+      .then(res => {
+        if (res.data.sales.length == 0) {
+          Alert.alert('No Data Found.');
+          setData({
+            labels: [0],
+            datasets: [
+              {
+                data: [0],
+              },
+            ],
+          });
+        } else {
+          setSales(res.data.sales);
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getSalesCustomDate = async date => {
+    date = new Date(date);
+    date.setHours('00');
+    date.setMinutes('00');
+    date.setSeconds('00');
+    console.log(date);
+    await axios({
+      method: 'GET',
+      url: `${REACT_APP_BASE_URL}/${activeRoute}?period=customDate&date=${date} `,
+    })
+      .then(res => {
+        if (res.data.sales.length == 0) {
+          Alert.alert('No Data Found.');
+          setData({
+            labels: [0],
+            datasets: [
+              {
+                data: [0],
+              },
+            ],
+          });
+        } else {
+          setSales(res.data.sales);
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getSalesStartDate = async date => {
+    date = new Date(date);
+    date.setHours('00');
+    console.log(date);
+    await axios({
+      method: 'GET',
+      url: `${REACT_APP_BASE_URL}/${activeRoute}?period=startDate&date=${date} `,
+    })
+      .then(res => {
+        if (res.data.sales.length == 0) {
+          Alert.alert('No Data Found.');
+          setData({
+            labels: [0],
+            datasets: [
+              {
+                data: [0],
+              },
+            ],
+          });
+        } else {
+          setSales(res.data.sales);
+        }
+      })
+      .catch(err => console.log(err));
+  };
+
+  const getSalesEndDate = async date => {
+    date = new Date(date);
+    date.setHours('00');
+    console.log(date);
+    await axios({
+      method: 'GET',
+      url: `${REACT_APP_BASE_URL}/${activeRoute}?period=endDate&date=${date} `,
+    })
+      .then(res => {
+        if (res.data.sales.length == 0) {
+          Alert.alert('No Data Found.');
+          setData({
+            labels: [0],
+            datasets: [
+              {
+                data: [0],
+              },
+            ],
+          });
+        } else {
+          setSales(res.data.sales);
+        }
+      })
+      .catch(err => console.log(err));
+  };
   return (
     <LinearGradient
-      colors={['#eedfe0', '#dbdcdc']}
+      colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
       start={{x: 1, y: 0}}
       end={{x: 0, y: 1}}>
       <DatePicker
         mode="date"
         modal
-        open={open}
+        open={openCustom}
         date={date}
         onConfirm={date => {
-          setOpen(false);
-          setDate(date);
-          console.log(date);
+          setOpenCustom(false);
+          getSalesCustomDate(date);
         }}
         onCancel={() => {
-          setOpen(false);
+          setOpenCustom(false);
         }}
       />
+
+      <DatePicker
+        mode="date"
+        modal
+        open={openStart}
+        date={date}
+        onConfirm={date => {
+          setOpenStart(false);
+          getSalesStartDate(date);
+        }}
+        onCancel={() => {
+          setOpenStart(false);
+        }}
+      />
+
+      <DatePicker
+        mode="date"
+        modal
+        open={openEnd}
+        date={date}
+        onConfirm={date => {
+          setOpenEnd(false);
+          getSalesEndDate(date);
+        }}
+        onCancel={() => {
+          setOpenEnd(false);
+        }}
+      />
+
       <SafeAreaView style={{flex: 1}}>
         <View style={{flex: 1}}>
           <SafeAreaView style={{flex: 1, position: 'relative'}}>
@@ -204,8 +406,9 @@ export default function Analytics({route, navigation}) {
                   width={PAGE_WIDTH}
                   height={220}
                   chartConfig={chartConfig}
+                  fromZero={true}
                   getDotColor={() => {
-                    return '#CF3339';
+                    return '#001438';
                   }}
                 />
               </View>
@@ -223,45 +426,78 @@ export default function Analytics({route, navigation}) {
                     justifyContent: 'center',
                     marginBottom: 10,
                   }}>
-                  <View style={{width: '30%'}}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        backgroundColor: '#CF3339',
-                        color: '#FFFFFF',
-                        borderRadius: 15,
-                        paddingVertical: 5,
-                        marginHorizontal: 5,
-                      }}>
-                      Past Month
-                    </Text>
-                  </View>
-                  <View style={{width: '30%'}}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        backgroundColor: '#CF3339',
-                        color: '#FFFFFF',
-                        borderRadius: 15,
-                        paddingVertical: 5,
-                        marginHorizontal: 5,
-                      }}>
-                      This Month
-                    </Text>
-                  </View>
-                  <View style={{width: '30%'}}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        backgroundColor: '#CF3339',
-                        color: '#FFFFFF',
-                        borderRadius: 15,
-                        paddingVertical: 5,
-                        marginHorizontal: 5,
-                      }}>
-                      This Week
-                    </Text>
-                  </View>
+                  <TouchableOpacity
+                    style={{width: '30%'}}
+                    onPress={() => {
+                      SetAllPeriodsFalse();
+                      setPastMonthButtonActive(true);
+                      getSalesPastMonth(activeRoute);
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          backgroundColor:
+                            pastMonthButtonActive == true
+                              ? '#0e1437'
+                              : '#564d2a',
+                          color: '#FFFFFF',
+                          borderRadius: 15,
+                          paddingVertical: 5,
+                          marginHorizontal: 5,
+                        }}>
+                        Past Month
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{width: '30%'}}
+                    onPress={() => {
+                      SetAllPeriodsFalse();
+                      setThisMonthButtonActive(true);
+                      getSalesThisMonth();
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          backgroundColor:
+                            thisMonthButtonActive == true
+                              ? '#0e1437'
+                              : '#564d2a',
+                          color: '#FFFFFF',
+                          borderRadius: 15,
+                          paddingVertical: 5,
+                          marginHorizontal: 5,
+                        }}>
+                        This Month
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{width: '30%'}}
+                    onPress={() => {
+                      SetAllPeriodsFalse();
+                      setThisWeekButtonActive(true);
+                      getSalesThisWeek();
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          backgroundColor:
+                            thisWeekButtonActive == true
+                              ? '#0e1437'
+                              : '#564d2a',
+                          color: '#FFFFFF',
+                          borderRadius: 15,
+                          paddingVertical: 5,
+                          marginHorizontal: 5,
+                        }}>
+                        This Week
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
                 <View
                   style={{
@@ -270,45 +506,76 @@ export default function Analytics({route, navigation}) {
                     justifyContent: 'center',
                     marginBottom: 10,
                   }}>
-                  <View style={{width: '30%'}}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        backgroundColor: '#CF3339',
-                        color: '#FFFFFF',
-                        borderRadius: 15,
-                        paddingVertical: 5,
-                        marginHorizontal: 5,
-                      }}>
-                      Custom Date
-                    </Text>
-                  </View>
-                  <View style={{width: '30%'}}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        backgroundColor: '#CF3339',
-                        color: '#FFFFFF',
-                        borderRadius: 15,
-                        paddingVertical: 5,
-                        marginHorizontal: 5,
-                      }}>
-                      Start Date
-                    </Text>
-                  </View>
-                  <View style={{width: '30%'}}>
-                    <Text
-                      style={{
-                        textAlign: 'center',
-                        backgroundColor: '#CF3339',
-                        color: '#FFFFFF',
-                        borderRadius: 15,
-                        paddingVertical: 5,
-                        marginHorizontal: 5,
-                      }}>
-                      End Date
-                    </Text>
-                  </View>
+                  <TouchableOpacity
+                    style={{width: '30%'}}
+                    onPress={() => {
+                      SetAllPeriodsFalse();
+                      setcustomDateButtonActive(true);
+                      setOpenCustom(true);
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          backgroundColor:
+                            customDateButtonActive == true
+                              ? '#0e1437'
+                              : '#564d2a',
+                          color: '#FFFFFF',
+                          borderRadius: 15,
+                          paddingVertical: 5,
+                          marginHorizontal: 5,
+                        }}>
+                        Custom Date
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{width: '30%'}}
+                    onPress={() => {
+                      SetAllPeriodsFalse();
+                      setStartDateButtonActive(true);
+                      setOpenStart(true);
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          backgroundColor:
+                            startDateButtonActive == true
+                              ? '#0e1437'
+                              : '#564d2a',
+                          color: '#FFFFFF',
+                          borderRadius: 15,
+                          paddingVertical: 5,
+                          marginHorizontal: 5,
+                        }}>
+                        Start Date
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{width: '30%'}}
+                    onPress={() => {
+                      SetAllPeriodsFalse();
+                      setEndDateButtonActive(true);
+                      setOpenEnd(true);
+                    }}>
+                    <View>
+                      <Text
+                        style={{
+                          textAlign: 'center',
+                          backgroundColor:
+                            endDateButtonActive == true ? '#0e1437' : '#564d2a',
+                          color: '#FFFFFF',
+                          borderRadius: 15,
+                          paddingVertical: 5,
+                          marginHorizontal: 5,
+                        }}>
+                        End Date
+                      </Text>
+                    </View>
+                  </TouchableOpacity>
                 </View>
               </View>
 
@@ -325,11 +592,21 @@ export default function Analytics({route, navigation}) {
                     justifyContent: 'center',
                     marginBottom: 10,
                   }}>
-                  <View style={{width: '50%'}}>
+                  <TouchableOpacity
+                    style={{width: '50%'}}
+                    onPress={() => {
+                      setActiveRoute('sales');
+                      SetAllButtonsFalse();
+                      SetAllPeriodsFalse();
+                      setPastMonthButtonActive(true);
+                      setSalesButtonActive(true);
+                      getSalesPastMonth('sales');
+                    }}>
                     <Text
                       style={{
                         textAlign: 'center',
-                        backgroundColor: '#CF3339',
+                        backgroundColor:
+                          salesButtonActive == true ? '#0e1437' : '#564d2a',
                         color: '#FFFFFF',
                         borderRadius: 15,
                         fontSize: 22,
@@ -341,12 +618,24 @@ export default function Analytics({route, navigation}) {
                       }}>
                       Sales
                     </Text>
-                  </View>
-                  <View style={{width: '50%'}}>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{width: '50%'}}
+                    onPress={() => {
+                      setActiveRoute('customers');
+                      SetAllButtonsFalse();
+                      SetAllPeriodsFalse();
+                      setPastMonthButtonActive(true);
+                      setNewCustomerButtonActive(true);
+                      getSalesPastMonth('customers');
+                    }}>
                     <Text
                       style={{
                         textAlign: 'center',
-                        backgroundColor: '#CF3339',
+                        backgroundColor:
+                          newCustomerButtonActive == true
+                            ? '#0e1437'
+                            : '#564d2a',
                         color: '#FFFFFF',
                         borderRadius: 15,
                         fontSize: 22,
@@ -358,7 +647,7 @@ export default function Analytics({route, navigation}) {
                       }}>
                       New Customers
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
                 <View
                   style={{
@@ -367,11 +656,19 @@ export default function Analytics({route, navigation}) {
                     justifyContent: 'center',
                     marginBottom: 10,
                   }}>
-                  <View style={{width: '50%'}}>
+                  <TouchableOpacity
+                    style={{width: '50%'}}
+                    onPress={() => {
+                      SetAllButtonsFalse();
+                      setRepeatCustomerButtonActive(true);
+                    }}>
                     <Text
                       style={{
                         textAlign: 'center',
-                        backgroundColor: '#CF3339',
+                        backgroundColor:
+                          repeatCustomerButtonActive == true
+                            ? '#0e1437'
+                            : '#564d2a',
                         color: '#FFFFFF',
                         borderRadius: 15,
                         fontSize: 22,
@@ -383,12 +680,20 @@ export default function Analytics({route, navigation}) {
                       }}>
                       Repeat Customer
                     </Text>
-                  </View>
-                  <View style={{width: '50%'}}>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{width: '50%'}}
+                    onPress={() => {
+                      SetAllButtonsFalse();
+                      setTotalCustomerButtonActive(true);
+                    }}>
                     <Text
                       style={{
                         textAlign: 'center',
-                        backgroundColor: '#CF3339',
+                        backgroundColor:
+                          totalCustomerButtonActive == true
+                            ? '#0e1437'
+                            : '#564d2a',
                         color: '#FFFFFF',
                         borderRadius: 15,
                         fontSize: 22,
@@ -400,7 +705,7 @@ export default function Analytics({route, navigation}) {
                       }}>
                       Total Customers
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
                 <View
                   style={{
@@ -409,11 +714,17 @@ export default function Analytics({route, navigation}) {
                     justifyContent: 'center',
                     marginBottom: 10,
                   }}>
-                  <View style={{width: '50%'}}>
+                  <TouchableOpacity
+                    style={{width: '50%'}}
+                    onPress={() => {
+                      SetAllButtonsFalse();
+                      setExpensesButtonActive(true);
+                    }}>
                     <Text
                       style={{
                         textAlign: 'center',
-                        backgroundColor: '#CF3339',
+                        backgroundColor:
+                          expensesButtonActive == true ? '#0e1437' : '#564d2a',
                         color: '#FFFFFF',
                         borderRadius: 15,
                         fontSize: 22,
@@ -425,12 +736,20 @@ export default function Analytics({route, navigation}) {
                       }}>
                       Expenses
                     </Text>
-                  </View>
-                  <View style={{width: '50%'}}>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={{width: '50%'}}
+                    onPress={() => {
+                      SetAllButtonsFalse();
+                      setProfitabilityButtonActive(true);
+                    }}>
                     <Text
                       style={{
                         textAlign: 'center',
-                        backgroundColor: '#CF3339',
+                        backgroundColor:
+                          profitabilityButtonActive == true
+                            ? '#0e1437'
+                            : '#564d2a',
                         color: '#FFFFFF',
                         borderRadius: 15,
                         fontSize: 22,
@@ -442,7 +761,7 @@ export default function Analytics({route, navigation}) {
                       }}>
                       Profitability
                     </Text>
-                  </View>
+                  </TouchableOpacity>
                 </View>
               </View>
             </ScrollView>

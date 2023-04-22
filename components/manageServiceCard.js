@@ -33,7 +33,7 @@ export default function ManageServiceCard(props) {
         onPress={() => {
           deleteService(props.id);
         }}>
-        <FontAwesomeIcon icon={faTrash} color={'#CF3339'} size={30} />
+        <FontAwesomeIcon icon={faTrash} color={'#0e1437'} size={30} />
       </TouchableOpacity>
       <Text style={styles.serviceName}>{props.serviceName}</Text>
 
@@ -46,7 +46,7 @@ export default function ManageServiceCard(props) {
           props.setEditServiceId(props.id);
           props.setModalVisible(true);
         }}>
-        <FontAwesomeIcon icon={faPenToSquare} color={'#CF3339'} size={30} />
+        <FontAwesomeIcon icon={faPenToSquare} color={'#0e1437'} size={30} />
       </TouchableOpacity>
     </View>
   );

@@ -50,9 +50,9 @@ export default function BusinessSupportServices({route, navigation}) {
           headers: {
             'x-auth-token': token,
           },
-          data:{
-            user:id
-          }
+          data: {
+            user: id,
+          },
         }).catch(err => console.log(err));
       }
       func();
@@ -67,26 +67,32 @@ export default function BusinessSupportServices({route, navigation}) {
       end={{x: 0, y: 1}}>
       <View style={{flex: 1, padding: 24}}>
         <SafeAreaView style={{flex: 1}}>
-        <View style={{flexDirection:'row' , alignItems:'center' ,width:'100%' , paddingTop:12}}>
-
-<TouchableOpacity
-  onPress={() => navigation.goBack()}
-  style={{alignItems: 'flex-start'}}>
-  <Image
-    style={{padding: 0, alignSelf: 'flex-start'}}
-    source={require('../images/BackBlack.png')}
-  />
-</TouchableOpacity>
-<Text
-style={{
-  fontSize: 20,
-  fontWeight: '700',
-  color: '#222222',
-  textAlign: 'center',
-  width:PAGE_WIDTH-125
-}}>
-Notifications</Text>
-</View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              paddingTop: 12,
+            }}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{alignItems: 'flex-start'}}>
+              <Image
+                style={{padding: 0, alignSelf: 'flex-start'}}
+                source={require('../images/BackBlack.png')}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: '700',
+                color: '#222222',
+                textAlign: 'center',
+                width: PAGE_WIDTH - 125,
+              }}>
+              Notifications
+            </Text>
+          </View>
           <FlatList
             style={{paddingTop: 12}}
             data={notifications}

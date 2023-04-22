@@ -406,7 +406,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
     marginBottom: 15,
   },
   centeredView: {

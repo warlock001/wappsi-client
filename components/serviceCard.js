@@ -39,7 +39,7 @@ export default function ServiceCard(props) {
         style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
         <TouchableOpacity
           style={{
-            backgroundColor: '#CF3339',
+            backgroundColor: '#fad00e',
             color: '#FFFFFF',
             display: 'flex',
             justifyContent: 'center',
@@ -52,10 +52,10 @@ export default function ServiceCard(props) {
           onPress={handleIncrement}>
           <Text style={styles.counterBtn}>+</Text>
         </TouchableOpacity>
-        <Text style={{padding: 10}}>{counter}</Text>
+        <Text style={{padding: 10, color: '#FFFFFF'}}>{counter}</Text>
         <TouchableOpacity
           style={{
-            backgroundColor: '#CF3339',
+            backgroundColor: '#fad00e',
             color: '#FFFFFF',
             display: 'flex',
             justifyContent: 'center',
@@ -70,7 +70,7 @@ export default function ServiceCard(props) {
         </TouchableOpacity>
       </View>
 
-      <Text style={{paddingHorizontal: 3, width: '20%'}}>
+      <Text style={{paddingHorizontal: 3, width: '20%', color: '#FFFFFF'}}>
         {props.servicePrice} PKR
       </Text>
     </View>
@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: '#141414',
     alignItems: 'center',
     borderRadius: 25,
     padding: 10,
@@ -97,5 +97,6 @@ const styles = StyleSheet.create({
   },
   serviceName: {
     width: 100,
+    color: '#FFFFFF',
   },
 });

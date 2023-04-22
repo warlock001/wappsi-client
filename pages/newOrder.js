@@ -110,7 +110,7 @@ export default function NewOrder({route, navigation}) {
 
   return (
     <LinearGradient
-      colors={['#eedfe0', '#dbdcdc']}
+      colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
       start={{x: 1, y: 0}}
       end={{x: 0, y: 1}}>
@@ -152,7 +152,7 @@ export default function NewOrder({route, navigation}) {
                 marginTop: 12,
                 paddingHorizontal: 24,
                 // zIndex: 10,
-                height: 500,
+                height: PAGE_HEIGHT - 370,
               }}>
               <FlatList
                 data={services}
@@ -184,7 +184,7 @@ export default function NewOrder({route, navigation}) {
                       backgroundColor: '#ffffff',
                       width: PAGE_WIDTH - 50,
                       borderWidth: 1,
-                      borderColor: '#CF3339',
+                      borderColor: '#fad00e',
                       borderRadius: 5,
                       padding: 10,
                       marginHorizontal: 5,
@@ -200,7 +200,7 @@ export default function NewOrder({route, navigation}) {
                     }}
                     style={[
                       {
-                        backgroundColor: '#CF3339',
+                        backgroundColor: '#fad00e',
                         display: 'flex',
                         alignItems: 'center',
                         borderRadius: 15,
@@ -208,7 +208,7 @@ export default function NewOrder({route, navigation}) {
                       },
                     ]}>
                     <Text style={{color: '#FFFFFF', textAlign: 'center'}}>
-                      Save Changes
+                      Save Order
                     </Text>
                   </TouchableOpacity>
                 </SafeAreaView>
@@ -228,7 +228,7 @@ export default function NewOrder({route, navigation}) {
                     fontSize: 12,
                   },
                 ]}>
-                <Text style={{color: '#CF3339', fontSize: 12}}>Sub Total</Text>{' '}
+                <Text style={{color: '#141414', fontSize: 12}}>Sub Total</Text>{' '}
                 : {total} PKR
               </Text>
 
@@ -242,7 +242,7 @@ export default function NewOrder({route, navigation}) {
                   paddingHorizontal: 10,
                 }}>
                 <Text
-                  style={[styles.feildText, {color: '#CF3339', fontSize: 12}]}>
+                  style={[styles.feildText, {color: '#141414', fontSize: 12}]}>
                   Discount :{' '}
                 </Text>
                 <TextInput
@@ -265,7 +265,7 @@ export default function NewOrder({route, navigation}) {
                   styles.feildText,
                   {width: '50%', textAlign: 'center', paddingHorizontal: 10},
                 ]}>
-                <Text style={{color: '#CF3339', fontSize: 12}}>
+                <Text style={{color: '#141414', fontSize: 12}}>
                   Discounted Amount
                 </Text>
                 : {discountedAmount} PKR
@@ -280,7 +280,7 @@ export default function NewOrder({route, navigation}) {
                     fontSize: 12,
                   },
                 ]}>
-                <Text style={{color: '#CF3339', fontSize: 12}}>Total</Text>:{' '}
+                <Text style={{color: '#141414', fontSize: 12}}>Total</Text>:{' '}
                 {netTotal}
                 PKR
               </Text>
@@ -292,7 +292,7 @@ export default function NewOrder({route, navigation}) {
                   setModalVisible(true);
                 }}
                 style={{
-                  backgroundColor: '#CF3339',
+                  backgroundColor: '#fad00e',
                   paddingVertical: 10,
                   borderRadius: 10,
                 }}>

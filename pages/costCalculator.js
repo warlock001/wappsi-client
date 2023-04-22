@@ -67,27 +67,32 @@ export default function CostCalculator({navigation}) {
       <SafeAreaView style={{flex: 1}}>
         <View style={{height: '100%', padding: 24}}>
           <SidebarLayout header={'Cost Calculator'} />
-          <View style={{flexDirection:'row' , alignItems:'center' ,width:'100%' , paddingTop:12}}>
-
-<TouchableOpacity
-  onPress={() => navigation.goBack()}
-  style={{alignItems: 'flex-start'}}>
-  <Image
-    style={{padding: 0, alignSelf: 'flex-start'}}
-    source={require('../images/BackBlack.png')}
-  />
-</TouchableOpacity>
-<Text
-style={{
-  fontSize: 20,
-  fontWeight: '700',
-  color: '#222222',
-  textAlign: 'center',
-  width:PAGE_WIDTH-125
-}}>
-Cost Calculator
-</Text>
-</View>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'center',
+              width: '100%',
+              paddingTop: 12,
+            }}>
+            <TouchableOpacity
+              onPress={() => navigation.goBack()}
+              style={{alignItems: 'flex-start'}}>
+              <Image
+                style={{padding: 0, alignSelf: 'flex-start'}}
+                source={require('../images/BackBlack.png')}
+              />
+            </TouchableOpacity>
+            <Text
+              style={{
+                fontSize: 20,
+                fontWeight: '700',
+                color: '#222222',
+                textAlign: 'center',
+                width: PAGE_WIDTH - 125,
+              }}>
+              Cost Calculator
+            </Text>
+          </View>
           <FlatList
             style={{marginBottom: 0}}
             data={allRecords}
@@ -100,7 +105,7 @@ Cost Calculator
                 }}>
                 <View
                   style={{
-                    backgroundColor: '#cf3339',
+                    backgroundColor: '#fad00e',
                     borderTopRightRadius: 16,
                     borderTopLeftRadius: 16,
                     paddingHorizontal: 20,
@@ -271,6 +276,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 12,
     borderRadius: 10,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
   },
 });

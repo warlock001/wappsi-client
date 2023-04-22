@@ -82,15 +82,17 @@ export default function ExpandableListItem({item, navigation}) {
     _downloadFile2();
     var type;
     const checkFile = await axios({
-      method:'GET',
-      url:`${REACT_APP_BASE_URL}/files/${item}/false`,
-      headers:{
+      method: 'GET',
+      url: `${REACT_APP_BASE_URL}/files/${item}/false`,
+      headers: {
         'x-auth-token': token,
-      }
-    }).catch(err => console.lof('err'))
-    console.log(checkFile.headers['content-type'].includes("pdf"))
-    type = checkFile.headers['content-type'].includes("pdf") ? "pdf" : checkFile.headers['content-type'].split('/')[1]
-    console.log(type)
+      },
+    }).catch(err => console.lof('err'));
+    console.log(checkFile.headers['content-type'].includes('pdf'));
+    type = checkFile.headers['content-type'].includes('pdf')
+      ? 'pdf'
+      : checkFile.headers['content-type'].split('/')[1];
+    console.log(type);
 
     let dirs = RNFetchBlob.fs.dirs;
     RNFetchBlob.config({
@@ -101,12 +103,11 @@ export default function ExpandableListItem({item, navigation}) {
       addAndroidDownloads: {
         useDownloadManager: true,
         notification: true,
-      
       },
       path:
-      Platform.OS == 'ios'
-        ? dirs.LibraryDir + '/' + item + '.'+type
-        : dirs.DownloadDir + '/' + item + '.'+type,
+        Platform.OS == 'ios'
+          ? dirs.LibraryDir + '/' + item + '.' + type
+          : dirs.DownloadDir + '/' + item + '.' + type,
     })
       .fetch('GET', `${REACT_APP_BASE_URL}/files/${item}/false`, {
         'x-auth-token': token,
@@ -114,7 +115,7 @@ export default function ExpandableListItem({item, navigation}) {
 
       .then(res => {
         console.log(res.path());
-        if(Platform.OS === "ios"){
+        if (Platform.OS === 'ios') {
           RNFetchBlob.ios.openDocument(res.data);
         }
       })
@@ -198,7 +199,7 @@ export default function ExpandableListItem({item, navigation}) {
                     style={{
                       fontWeight: '500',
                       fontSize: 12,
-                      color: '#CF3339',
+                      color: '#fad00e',
                       paddingHorizontal: 10,
                     }}>
                     View
@@ -232,7 +233,7 @@ export default function ExpandableListItem({item, navigation}) {
                     style={{
                       fontWeight: '500',
                       fontSize: 12,
-                      color: '#CF3339',
+                      color: '#fad00e',
                       paddingLeft: 10,
                     }}>
                     Download

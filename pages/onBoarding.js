@@ -49,7 +49,7 @@ export default function OnBoarding({navigation}) {
             source={require('../images/ManSmartphone.jpg')}
             style={{width: '100%', height: '100%'}}>
             <LinearGradient
-              colors={['#CF333900', '#CF3339']}
+              colors={['#0e143700', '#0e1437']}
               style={styles.gradientStyle}
               start={{x: 0.5, y: 0.5}}
               end={{x: 0.5, y: 1.5}}
@@ -67,7 +67,7 @@ export default function OnBoarding({navigation}) {
             source={require('../images/Notification.png')}
             style={{width: '100%', height: '100%'}}>
             <LinearGradient
-              colors={['#CF333900', '#CF3339']}
+              colors={['#0e143700', '#0e1437']}
               style={styles.gradientStyle}
               start={{x: 0.5, y: 0.5}}
               end={{x: 0.5, y: 1.5}}
@@ -84,7 +84,7 @@ export default function OnBoarding({navigation}) {
             source={require('../images/Document1.png')}
             style={{width: '100%', height: '100%'}}>
             <LinearGradient
-              colors={['#CF333900', '#CF3339']}
+              colors={['#0e143700', '#0e1437']}
               style={styles.gradientStyle}
               start={{x: 0.5, y: 0.5}}
               end={{x: 0.5, y: 1.5}}
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
     marginTop: 26,
     marginBottom: 40,
     bottom: 0,

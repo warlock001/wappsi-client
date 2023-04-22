@@ -422,7 +422,7 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   textStyle: {fontSize: 20, fontWeight: 'bold', color: '#000000'},
-  textStyle2: {fontSize: 16, fontWeight: '600', color: '#cf3339'},
+  textStyle2: {fontSize: 16, fontWeight: '600', color: '#fad00e'},
   label: {
     fontSize: 16,
     fontWeight: 'bold',
@@ -446,7 +446,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
     marginBottom: 16,
   },
   otpBox: {

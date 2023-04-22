@@ -32,6 +32,7 @@ export default function SignIn({navigation}) {
   const [password, setPassword] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [status, setStatus] = useState(false);
   let payload = Math.round(new Date().getTime() / 1000).toString();
   const passwordRef = useRef(null);
   const dispatch = useDispatch();
@@ -63,201 +64,165 @@ export default function SignIn({navigation}) {
       getMyStringValue();
     }, []),
   );
-  function verifySignatureWithServer(signature, payload, id) {
-    setLoader(true);
-    console.log(id);
-    axios({
-      method: 'POST',
-      url: `${REACT_APP_BASE_URL}/verifyBiometric?id=${id}`,
-      data: {
-        signature,
-        payload,
-      },
-    })
-      .then(async res => {
-        console.log(res.data.token);
-        await AsyncStorage.setItem('@id', res.data._id);
-        await AsyncStorage.setItem('@jwt', res.data.token);
-        await AsyncStorage.setItem('@demo', `${!res.data.isVerified}`);
-        const token = res.data.token;
+  // function verifySignatureWithServer(signature, payload, id) {
+  //   setLoader(true);
+  //   console.log(id);
+  //   axios({
+  //     method: 'POST',
+  //     url: `${REACT_APP_BASE_URL}/verifyBiometric?id=${id}`,
+  //     data: {
+  //       signature,
+  //       payload,
+  //     },
+  //   })
+  //     .then(async res => {
+  //       console.log(res.data.token);
+  //       await AsyncStorage.setItem('@id', res.data._id);
+  //       await AsyncStorage.setItem('@jwt', res.data.token);
+  //       await AsyncStorage.setItem('@demo', `${!res.data.isVerified}`);
+  //       const token = res.data.token;
 
-        console.log('verified = ' + token);
-        axios({
-          method: 'GET',
-          url: `${REACT_APP_BASE_URL}/allPromotions`,
-          // headers: {
-          //   'x-auth-token': token,
-          // },
-        })
-          .then(async resp => {
-            var images = [];
+  //       console.log('verified = ' + token);
+  //       axios({
+  //         method: 'GET',
+  //         url: `${REACT_APP_BASE_URL}/allPromotions`,
+  //         // headers: {
+  //         //   'x-auth-token': token,
+  //         // },
+  //       })
+  //         .then(async resp => {
+  //           var images = [];
 
-            for (const promo of resp.data.allPromos) {
-              console.log(promo);
-              const file = await axios({
-                method: 'GET',
-                url: `${REACT_APP_BASE_URL}/files/${promo.image}/true`,
-                headers: {
-                  'x-auth-token': res.data.token,
-                },
-              }).catch(err => console.log('promo = ' + err));
-              images.push({
-                image: `data:${file.headers['content-type']};base64,${file.data}`,
-                link: promo.link,
-              });
-            }
-            console.log('hello');
-            dispatch(setPromotions(images));
-            dispatch(setSidebar(false));
-            setLoader(false);
+  //           for (const promo of resp.data.allPromos) {
+  //             console.log(promo);
+  //             const file = await axios({
+  //               method: 'GET',
+  //               url: `${REACT_APP_BASE_URL}/files/${promo.image}/true`,
+  //               headers: {
+  //                 'x-auth-token': res.data.token,
+  //               },
+  //             }).catch(err => console.log('promo = ' + err));
+  //             images.push({
+  //               image: `data:${file.headers['content-type']};base64,${file.data}`,
+  //               link: promo.link,
+  //             });
+  //           }
+  //           console.log('hello');
+  //           dispatch(setPromotions(images));
+  //           dispatch(setSidebar(false));
+  //           setLoader(false);
 
-            navigation.dispatch(
-              CommonActions.reset({
-                index: 1,
-                routes: [{name: 'HomeStack', params: {shouldRedirect: false}}],
-              }),
-            );
-          })
-          .catch(err => {
-            console.log('promi err : ' + err);
-            setLoader(false);
-          });
-      })
-      .catch(err => {
-        console.log(err);
-        setLoader(false);
-      });
-  }
+  //           navigation.dispatch(
+  //             CommonActions.reset({
+  //               index: 1,
+  //               routes: [{name: 'HomeStack', params: {shouldRedirect: false}}],
+  //             }),
+  //           );
+  //         })
+  //         .catch(err => {
+  //           console.log('promi err : ' + err);
+  //           setLoader(false);
+  //         });
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //       setLoader(false);
+  //     });
+  // }
 
-  async function useFaceId() {
-    const id = await AsyncStorage.getItem('@id');
-    rnBiometrics.biometricKeysExist().then(resultObject => {
-      const {keysExist} = resultObject;
+  // async function useFaceId() {
+  //   const id = await AsyncStorage.getItem('@id');
+  //   rnBiometrics.biometricKeysExist().then(resultObject => {
+  //     const {keysExist} = resultObject;
 
-      if (keysExist) {
-        rnBiometrics
-          .createSignature({
-            promptMessage: 'Sign in',
-            payload: payload,
-          })
-          .then(resultObject => {
-            const {success, signature} = resultObject;
+  //     if (keysExist) {
+  //       rnBiometrics
+  //         .createSignature({
+  //           promptMessage: 'Sign in',
+  //           payload: payload,
+  //         })
+  //         .then(resultObject => {
+  //           const {success, signature} = resultObject;
 
-            console.log(signature);
-            if (success) {
-              console.log(payload);
-              verifySignatureWithServer(signature, payload, id);
-            }
-          });
-      }
-    });
-  }
-  async function useFingerprint() {
-    const id = await AsyncStorage.getItem('@id');
-    rnBiometrics.biometricKeysExist().then(resultObject => {
-      const {keysExist} = resultObject;
+  //           console.log(signature);
+  //           if (success) {
+  //             console.log(payload);
+  //             verifySignatureWithServer(signature, payload, id);
+  //           }
+  //         });
+  //     }
+  //   });
+  // }
+  // async function useFingerprint() {
+  //   const id = await AsyncStorage.getItem('@id');
+  //   rnBiometrics.biometricKeysExist().then(resultObject => {
+  //     const {keysExist} = resultObject;
 
-      if (keysExist) {
-        rnBiometrics
-          .createSignature({
-            promptMessage: 'Sign in',
-            payload: payload,
-          })
-          .then(resultObject => {
-            const {success, signature} = resultObject;
+  //     if (keysExist) {
+  //       rnBiometrics
+  //         .createSignature({
+  //           promptMessage: 'Sign in',
+  //           payload: payload,
+  //         })
+  //         .then(resultObject => {
+  //           const {success, signature} = resultObject;
 
-            console.log(signature);
-            if (success) {
-              console.log(payload);
-              verifySignatureWithServer(signature, payload, id);
-            }
-          });
-      }
-    });
-  }
+  //           console.log(signature);
+  //           if (success) {
+  //             console.log(payload);
+  //             verifySignatureWithServer(signature, payload, id);
+  //           }
+  //         });
+  //     }
+  //   });
+  // }
 
   function signIn() {
     setLoader(true);
     console.log(REACT_APP_BASE_URL);
 
-    // axios({
-    //   timeout: 20000,
-    //   method: 'POST',
-    //   url: `${REACT_APP_BASE_URL}/login`,
-    //   data: {
-    //     email: email,
-    //     password: password,
-    //   },
-    // })
-    //   .then(async res => {
-
-    // await AsyncStorage.setItem('@id', res.data._id);
-    // await AsyncStorage.setItem('@jwt', res.data.token);
-    // await AsyncStorage.setItem('@demo', `${!res.data.isVerified}`);
-    // console.log('verified = ' + res.data.isVerified);
-    // axios({
-    //   method: 'GET',
-    //   url: `${REACT_APP_BASE_URL}/allPromotions`,
-    //   // headers: {
-    //   //   'x-auth-token': res.data.token,
-    //   // },
-    // })
-    //   .then(async resp => {
-    //     var images = [];
-    //     console.log(resp);
-    //     for (const promo of resp.data.allPromos) {
-    //       console.log(promo);
-    //       const file = await axios({
-    //         method: 'GET',
-    //         url: `${REACT_APP_BASE_URL}/files/${promo.image}/true`,
-    //         // headers: {
-    //         //   'x-auth-token': res.data.token,
-    //         // },
-    //       }).catch(err => console.log(err));
-
-    images = [
-      {
-        image: `https://www.armymwr.com/application/files/7816/0130/4930/DG_banner_examples_WebPromo_Community.jpg`,
-        link: `https://www.armymwr.com/application/files/7816/0130/4930/DG_banner_examples_WebPromo_Community.jpg`,
+    axios({
+      timeout: 20000,
+      method: 'POST',
+      url: `${REACT_APP_BASE_URL}/login`,
+      data: {
+        email: email,
+        password: password,
       },
-    ];
-
-    //   images.push({
-    //     image: `data:${file.headers['content-type']};base64,${file.data}`,
-    //     link: promo.link,
-    //   });
-    // }
-
-    console.log('hello');
-    dispatch(setPromotions(images));
-    dispatch(setSidebar(false));
-    setLoader(false);
-
-    navigation.dispatch(
-      CommonActions.reset({
-        index: 1,
-        routes: [{name: 'HomeStack', params: {shouldRedirect: false}}],
-      }),
-    );
-    // })
-    // .catch(err => {
-    //   console.log(err);
-    // });
-    // })
-    // .catch(er => {
-    //   setLoader(false);
-    //   console.log(er.response.data);
-    //   console.log(email);
-    //   Alert.alert(
-    //     'Failed',
-    //     `${
-    //       er.response.data.message
-    //         ? er.response.data.message
-    //         : 'Something went wrong'
-    //     }`,
-    //     [{text: 'OK', onPress: () => console.log('OK Pressed')}],
-    //   );
-    // });
+    })
+      .then(async res => {
+        await AsyncStorage.setItem('@id', res.data._id);
+        await AsyncStorage.setItem('@jwt', res.data.token);
+        await AsyncStorage.setItem('@demo', `${!res.data.isVerified}`);
+        console.log('verified = ' + res.data.isVerified);
+        images = [
+          {
+            image: `https://www.armymwr.com/application/files/7816/0130/4930/DG_banner_examples_WebPromo_Community.jpg`,
+            link: `https://www.armymwr.com/application/files/7816/0130/4930/DG_banner_examples_WebPromo_Community.jpg`,
+          },
+        ];
+        dispatch(setPromotions(images));
+        dispatch(setSidebar(false));
+        setLoader(false);
+        navigation.dispatch(
+          CommonActions.reset({
+            index: 1,
+            routes: [{name: 'HomeStack', params: {shouldRedirect: false}}],
+          }),
+        );
+      })
+      .catch(err => {
+        setLoader(false);
+        if (err.response) {
+          if (err.response.status == 403) {
+            setStatus('No User Found');
+          } else if (err.response.status == 400) {
+            setStatus('Invalid Credentails');
+          }
+        } else if (err.request) {
+          setStatus('Network Error');
+        }
+      });
   }
 
   return (
@@ -352,6 +317,7 @@ export default function SignIn({navigation}) {
                     />
                   }
                 />
+                <Text>{status}</Text>
                 <TouchableOpacity
                   style={{alignSelf: 'flex-end'}}
                   onPress={() => navigation.navigate('ForgotPassword')}>
@@ -386,7 +352,7 @@ export default function SignIn({navigation}) {
                     <Text
                       style={{
                         fontSize: 14,
-                        color: '#CF3339',
+                        color: '#fad00e',
                         fontWeight: 'bold',
                         textDecorationLine: 'underline',
                       }}>
@@ -504,7 +470,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
     marginBottom: 15,
   },
 });

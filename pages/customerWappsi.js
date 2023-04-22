@@ -19,13 +19,51 @@ import SidebarLayout from '../layouts/sidebarLayout';
 import {TextInput} from 'react-native-paper';
 import ServiceCard from '../components/serviceCard';
 import LeadCard from '../components/leadCard';
-
+import axios from 'axios';
+import {REACT_APP_BASE_URL} from '@env';
+import {
+  CommonActions,
+  NavigationContainer,
+  useFocusEffect,
+} from '@react-navigation/native';
 const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
 
 export default function CustomerWappsi({route, navigation}) {
+  const [lead, setLead] = React.useState([]);
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+
+  const renderItem = item => {
+    console.log(item.item.order);
+    const orderDate = new Date(item.item.order.createdAt);
+    const d = new Date();
+    const diffTime = Math.abs(d - orderDate);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    return (
+      <LeadCard
+        PhoneNumber={item.item.order.phone}
+        lastVisit={diffDays}
+        totalSpend={item.item.order.total}
+      />
+    );
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      axios({
+        method: 'GET',
+        url: `${REACT_APP_BASE_URL}/getorder`,
+      })
+        .then(res => {
+          console.log(res.data.order);
+          setLead(res.data.order);
+        })
+        .catch(err => console.log(err));
+    }, [shouldUpdate]),
+  );
+
   return (
     <LinearGradient
-      colors={['#eedfe0', '#dbdcdc']}
+      colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
       start={{x: 1, y: 0}}
       end={{x: 0, y: 1}}>
@@ -91,7 +129,7 @@ export default function CustomerWappsi({route, navigation}) {
                   value={0}
                   activeUnderlineColor={'red'}
                 />
-                <Text style={{fontWeight: 'bold'}}>Days</Text>
+                <Text style={{fontWeight: 'bold'}}> Days</Text>
               </View>
             </View>
             <View
@@ -114,80 +152,18 @@ export default function CustomerWappsi({route, navigation}) {
 
               <Text style={{width: '22%', textAlign: 'center'}}>Message</Text>
             </View>
-            <ScrollView
+
+            <FlatList
               style={{
                 marginTop: 12,
                 paddingHorizontal: 24,
                 zIndex: 10,
-              }}>
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="43"
-                totalSpend="500"
-              />
-
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="64"
-                totalSpend="108"
-              />
-
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="67"
-                totalSpend="562"
-              />
-
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="95"
-                totalSpend="493"
-              />
-
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="22"
-                totalSpend="768"
-              />
-
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="35"
-                totalSpend="121"
-              />
-
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="44"
-                totalSpend="500"
-              />
-
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="56"
-                totalSpend="500"
-              />
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="56"
-                totalSpend="500"
-              />
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="56"
-                totalSpend="500"
-              />
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="56"
-                totalSpend="500"
-              />
-              <LeadCard
-                PhoneNumber="03062925548"
-                lastVisit="56"
-                totalSpend="500"
-              />
-            </ScrollView>
+              }}
+              data={lead}
+              renderItem={renderItem}
+              keyExtractor={item => item._id}
+              // extraData={selectedId}
+            />
           </SafeAreaView>
 
           <TouchableOpacity
@@ -196,7 +172,7 @@ export default function CustomerWappsi({route, navigation}) {
             }}
             style={[
               {
-                backgroundColor: '#CF3339',
+                backgroundColor: '#141414',
                 display: 'flex',
                 alignItems: 'center',
               },

@@ -246,7 +246,7 @@ export default function BookAnAppointment({route, navigation}) {
                         flex: 1,
                         paddingTop: 11,
                         fontWeight: '600',
-                        color: '#cf3339',
+                        color: '#fad00e',
                       }}>
                       {item.name}
                     </Text>
@@ -264,7 +264,7 @@ export default function BookAnAppointment({route, navigation}) {
                       onPress={() => sendInquiry(item.name)}>
                       <View
                         style={{
-                          backgroundColor: '#cf3339',
+                          backgroundColor: '#fad00e',
                           marginTop: 11,
                           paddingVertical: 9,
                           width: '100%',
@@ -317,7 +317,7 @@ export default function BookAnAppointment({route, navigation}) {
                   fontSize: 14,
                   paddingTop: 11,
                   fontWeight: '600',
-                  color: '#cf3339',
+                  color: '#fad00e',
                 }}>
                 {company?.relationshipManagerName}
               </Text>
@@ -327,7 +327,7 @@ export default function BookAnAppointment({route, navigation}) {
                 onPress={() => sendInquiry(company?.relationshipManagerName)}>
                 <View
                   style={{
-                    backgroundColor: '#cf3339',
+                    backgroundColor: '#fad00e',
                     marginTop: 11,
                     paddingVertical: 9,
                     width: '100%',

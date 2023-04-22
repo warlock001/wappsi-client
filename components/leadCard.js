@@ -27,7 +27,7 @@ export default function LeadCard(props) {
       <Text style={{width: '22%', fontSize: 12}}>Rs. {props.totalSpend}</Text>
 
       <Switch
-        color="#CF3339"
+        color="#fad00e"
         value={isSwitchOn}
         onValueChange={onToggleSwitch}
         style={{width: '22%'}}
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
   },
   counterBtn: {
     fontSize: 18,
-    color: '#CF3339',
+    color: '#fad00e',
   },
   serviceName: {
     width: 100,

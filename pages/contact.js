@@ -181,7 +181,7 @@ export default function Home({navigation}) {
                     paddingTop: 31,
                     fontSize: 24,
                     fontWeight: '500',
-                    color: '#cf3339',
+                    color: '#fad00e',
                     textAlign: 'center',
                   }}>
                   Missing Details
@@ -270,7 +270,7 @@ export default function Home({navigation}) {
                 </View>
                 <View
                   style={{
-                    backgroundColor: '#cf3339',
+                    backgroundColor: '#fad00e',
                     paddingHorizontal: 28,
                     paddingVertical: 6,
                     borderBottomRightRadius: 16,
@@ -416,7 +416,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 12,
     borderRadius: 10,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
   },
   centeredView: {
     flex: 1,

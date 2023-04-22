@@ -165,7 +165,7 @@ export default function Register({navigation}) {
                 paddingTop: 31,
                 fontSize: 24,
                 fontWeight: '500',
-                color: '#cf3339',
+                color: '#fad00e',
                 textAlign: 'center',
               }}>
               Missing Details
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 10,
     borderRadius: 10,
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
     marginBottom: 16,
   },
   otpBox: {

@@ -84,7 +84,7 @@ export default function Refer({route, navigation}) {
                 paddingTop: 31,
                 fontSize: 24,
                 fontWeight: '500',
-                color: '#cf3339',
+                color: '#fad00e',
                 textAlign: 'center',
               }}>
               Missing Details
@@ -264,7 +264,7 @@ export default function Refer({route, navigation}) {
                 styles.buttonStyle,
                 {
                   flex: 1,
-                  backgroundColor: option === 1 ? '#CF3339' : 'transparent',
+                  backgroundColor: option === 1 ? '#fad00e' : 'transparent',
                 },
               ]}>
               <Text
@@ -281,7 +281,7 @@ export default function Refer({route, navigation}) {
                 styles.buttonStyle,
                 {
                   flex: 2,
-                  backgroundColor: option === 2 ? '#CF3339' : 'transparent',
+                  backgroundColor: option === 2 ? '#fad00e' : 'transparent',
                 },
               ]}>
               <Text
@@ -461,7 +461,7 @@ const styles = StyleSheet.create({
     // marginTop: 22,
   },
   sendButton: {
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
     alignSelf: 'center',
     paddingHorizontal: 35,
     paddingVertical: 12,
@@ -490,7 +490,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     borderRadius: 10,
-    borderColor: '#CF3339',
+    borderColor: '#fad00e',
     borderWidth: 1,
     paddingHorizontal: 15,
     paddingVertical: 12,

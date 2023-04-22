@@ -79,7 +79,7 @@ export default function Home({navigation}) {
   var timer;
   return (
     <LinearGradient
-      colors={['#eedfe0', '#dbdcdc']}
+      colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
       start={{x: 1, y: 0}}
       end={{x: 0, y: 1}}>
@@ -118,7 +118,7 @@ export default function Home({navigation}) {
                   paddingTop: 31,
                   fontSize: 24,
                   fontWeight: '500',
-                  color: '#CF3339',
+                  color: '#fad00e',
                   textAlign: 'center',
                 }}>
                 Looks like your company is not registered
@@ -146,8 +146,14 @@ export default function Home({navigation}) {
         <View style={{flex: 1, padding: 24}}>
           <SidebarLayout header={company?.name} subheader={expiry} />
 
-          <View style={{paddingTop: 24, flexDirection: 'row'}}>
-            {/* <TouchableOpacity
+          <ScrollView
+            style={{
+              height: '100%',
+              width: '100%',
+              marginBottom: 30,
+            }}>
+            <View style={{paddingTop: 24, flexDirection: 'row'}}>
+              {/* <TouchableOpacity
             onPress={() => {
               setEntries([
                 ...entries,
@@ -178,51 +184,51 @@ export default function Home({navigation}) {
             </View>
           </TouchableOpacity> */}
 
-            <Carousel
-              {...baseOptions}
-              loop={false}
-              ref={swiper}
-              style={{width: '100%', paddingLeft: 0, height: 180}}
-              autoPlay={false}
-              autoPlayInterval={2000}
-              onProgressChange={(_, absoluteProgress) =>
-                (progressValue.value = absoluteProgress)
-              }
-              data={promotions}
-              pagingEnabled={true}
-              onSnapToItem={index => console.log('current index:', index)}
-              renderItem={({item, index}) => {
-                return (
-                  <View style={{flex: 1, marginRight: 24}}>
-                    <TouchableOpacity
-                      onPressIn={() => {
-                        seconds = 0;
-                        timer = setInterval(function () {
-                          seconds++;
-                        }, 5);
-                      }}
-                      onPressOut={() => {
-                        console.log(seconds);
-                        if (seconds < 5) {
+              <Carousel
+                {...baseOptions}
+                loop={false}
+                ref={swiper}
+                style={{width: '100%', paddingLeft: 0, height: 180}}
+                autoPlay={false}
+                autoPlayInterval={2000}
+                onProgressChange={(_, absoluteProgress) =>
+                  (progressValue.value = absoluteProgress)
+                }
+                data={promotions}
+                pagingEnabled={true}
+                onSnapToItem={index => console.log('current index:', index)}
+                renderItem={({item, index}) => {
+                  return (
+                    <View style={{flex: 1, marginRight: 24}}>
+                      <TouchableOpacity
+                        onPressIn={() => {
                           seconds = 0;
+                          timer = setInterval(function () {
+                            seconds++;
+                          }, 5);
+                        }}
+                        onPressOut={() => {
+                          console.log(seconds);
+                          if (seconds < 5) {
+                            seconds = 0;
 
-                          Linking.openURL(`http://${item.link}`).catch(err =>
-                            console.error("Couldn't load page", err),
-                          );
-                          seconds = 0;
-                          clearTimeout(timer);
-                        } else {
-                          seconds = 0;
-                          clearTimeout(timer);
-                        }
-                      }}
-                      // onPress={() => {
-                      //   Linking.openURL(`http://${item.link}`).catch(err =>
-                      //     console.error("Couldn't load page", err),
-                      //   );
-                      // }}
-                    >
-                      {/* <TapGestureHandler 
+                            Linking.openURL(`http://${item.link}`).catch(err =>
+                              console.error("Couldn't load page", err),
+                            );
+                            seconds = 0;
+                            clearTimeout(timer);
+                          } else {
+                            seconds = 0;
+                            clearTimeout(timer);
+                          }
+                        }}
+                        // onPress={() => {
+                        //   Linking.openURL(`http://${item.link}`).catch(err =>
+                        //     console.error("Couldn't load page", err),
+                        //   );
+                        // }}
+                      >
+                        {/* <TapGestureHandler 
                        onHandlerStateChange={event => {
                          if (event.nativeEvent.state === State.ACTIVE) {
                            console.log('hello');
@@ -233,48 +239,43 @@ export default function Home({navigation}) {
                        }}
                        enabled={true}
                        onHandlerStateChange={onSingleTapEvent}> */}
-                      <ImageBackground
-                        source={{uri: item.image}}
-                        resizeMode="stretch"
-                        style={{
-                          width: '100%',
-                          height: 180,
-                          borderRadius: 25,
-                          overflow: 'hidden',
-                        }}></ImageBackground>
-                      {/* </TapGestureHandler> */}
-                    </TouchableOpacity>
-                  </View>
+                        <ImageBackground
+                          source={{uri: item.image}}
+                          resizeMode="stretch"
+                          style={{
+                            width: '100%',
+                            height: 180,
+                            borderRadius: 25,
+                            overflow: 'hidden',
+                          }}></ImageBackground>
+                        {/* </TapGestureHandler> */}
+                      </TouchableOpacity>
+                    </View>
+                  );
+                }}
+              />
+            </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'center',
+                width: '100%',
+                alignSelf: 'center',
+                paddingVertical: 24,
+              }}>
+              {promotions.map((data, index) => {
+                return (
+                  <PaginationItem
+                    backgroundColor={'#fad00e'}
+                    animValue={progressValue}
+                    index={index}
+                    key={index}
+                    length={promotions.length}
+                  />
                 );
-              }}
-            />
-          </View>
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-              width: '100%',
-              alignSelf: 'center',
-              paddingVertical: 24,
-            }}>
-            {promotions.map((data, index) => {
-              return (
-                <PaginationItem
-                  backgroundColor={'#CF3339'}
-                  animValue={progressValue}
-                  index={index}
-                  key={index}
-                  length={promotions.length}
-                />
-              );
-            })}
-          </View>
-          <ScrollView
-            style={{
-              height: '100%',
-              width: '100%',
-              marginBottom: 30,
-            }}>
+              })}
+            </View>
             <View style={{width: '100%'}}>
               <TouchableOpacity
                 onPress={() => {
@@ -317,7 +318,7 @@ export default function Home({navigation}) {
                           style={{
                             fontSize: 28,
                             fontWeight: '700',
-                            color: '#CF3339',
+                            color: '#fad00e',
                           }}>
                           2,500 PKR
                         </Text>
@@ -491,6 +492,14 @@ const styles = StyleSheet.create({
     backgroundColor: '#000',
     marginTop: 40,
     marginBottom: 16,
+  },
+  square: {
+    alignSelf: 'center',
+    backgroundColor: 'white',
+    borderRadius: 4,
+    height: 150,
+    shadowColor: 'black',
+    width: 150,
   },
   modalView: {
     margin: 20,

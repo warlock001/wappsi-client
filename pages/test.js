@@ -60,7 +60,7 @@ const Test = () => {
         {colors.map((backgroundColor, index) => {
           return (
             <PaginationItem
-              backgroundColor={'#CF3339'}
+              backgroundColor={'#fad00e'}
               animValue={progressValue}
               index={index}
               key={index}

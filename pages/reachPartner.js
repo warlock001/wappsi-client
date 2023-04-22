@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     // marginTop: 22,
   },
   sendButton: {
-    backgroundColor: '#CF3339',
+    backgroundColor: '#fad00e',
     alignSelf: 'center',
     paddingHorizontal: 35,
     paddingVertical: 12,
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
   },
   buttonStyle: {
     borderRadius: 10,
-    borderColor: '#CF3339',
+    borderColor: '#fad00e',
     borderWidth: 1,
     paddingHorizontal: 15,
     paddingVertical: 12,
