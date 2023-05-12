@@ -13,19 +13,19 @@ import {
   Alert,
   KeyboardAvoidingView,
 } from 'react-native';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import TextField from '../components/inputField';
-import React, {useState, useRef} from 'react';
+import React, { useState, useRef } from 'react';
 import IntlPhoneInput from 'react-native-international-telephone-input';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import axios from 'axios';
 import Lottie from 'lottie-react-native';
 
-import {REACT_APP_BASE_URL} from '@env';
+import { REACT_APP_BASE_URL } from '@env';
 
-const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
+const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
 
-export default function Register({navigation}) {
+export default function Register({ navigation }) {
   const [firstName, setFirstName] = useState(null);
   const [lastName, setLastName] = useState(null);
   const [email, setEmail] = useState(null);
@@ -35,6 +35,7 @@ export default function Register({navigation}) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [dialCode, setDialCode] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
+  const [companyName, setCompanyName] = useState(false);
 
   function sendData() {
     console.log({
@@ -50,13 +51,13 @@ export default function Register({navigation}) {
       method: 'POST',
       url: `${REACT_APP_BASE_URL}/signup`,
       data: {
-        firstName: firstName,
-        lastName: lastName,
+        name: firstName + lastName,
         email: email,
         mobile: phoneNumber,
         dialCode: dialCode,
         isVerified: false,
         role: 'client',
+        companyName: companyName
       },
     })
       .then(res => {
@@ -74,7 +75,7 @@ export default function Register({navigation}) {
       .catch(err => {
         console.log(err);
         Alert.alert('', 'Email already registered', [
-          {text: 'OK', onPress: () => console.log('OK Pressed')},
+          { text: 'OK', onPress: () => console.log('OK Pressed') },
         ]);
       });
     //     if (firstName &&
@@ -92,7 +93,7 @@ export default function Register({navigation}) {
   }
 
   return (
-    <View style={{height: '100%'}}>
+    <View style={{ height: '100%' }}>
       <Modal
         animationType="fade"
         transparent={true}
@@ -103,7 +104,7 @@ export default function Register({navigation}) {
         <View
           style={[
             styles.centeredView,
-            modalVisible ? {backgroundColor: 'rgba(0,0,0,0.5)'} : '',
+            modalVisible ? { backgroundColor: 'rgba(0,0,0,0.5)' } : '',
           ]}>
           <View style={styles.modalView}>
             {/* <Image
@@ -146,7 +147,7 @@ export default function Register({navigation}) {
             <Pressable
               style={[styles.doneButton]}
               onPress={() => navigation.goBack()}>
-              <Text style={{color: '#FFF', fontSize: 17, fontWeight: '700'}}>
+              <Text style={{ color: '#FFF', fontSize: 17, fontWeight: '700' }}>
                 Done
               </Text>
             </Pressable>
@@ -155,19 +156,19 @@ export default function Register({navigation}) {
       </Modal>
       <ImageBackground
         source={require('../images/SignIn.jpg')}
-        style={{width: '100%', height: 250}}>
+        style={{ width: '100%', height: 250 }}>
         <View style={styles.topheader}>
           <View style={styles.textView}>
             <TouchableOpacity
               onPress={() => navigation.goBack()}
-              style={{alignItems: 'flex-start', padding: 0}}>
+              style={{ alignItems: 'flex-start', padding: 0 }}>
               <Image
-                style={{padding: 0, alignSelf: 'flex-start'}}
+                style={{ padding: 0, alignSelf: 'flex-start' }}
                 source={require('../images/Back.png')}
               />
             </TouchableOpacity>
             <Text style={styles.textStyle}>Register for</Text>
-            <Text style={[styles.textStyle, {paddingBottom: 20}]}>
+            <Text style={[styles.textStyle, { paddingBottom: 20 }]}>
               New Account
             </Text>
             {/* <Text style={styles.textStyle2}>
@@ -181,19 +182,19 @@ export default function Register({navigation}) {
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         style={styles.container}>
         <ScrollView style={styles.bottomSection}>
-          <View style={{height: '100%', padding: 24}}>
-            <SafeAreaView style={{marginBottom: 20}}>
+          <View style={{ height: '100%', padding: 24 }}>
+            <SafeAreaView style={{ marginBottom: 20 }}>
               <TextField
                 label="First Name"
                 onChangeText={text => setFirstName(text)}
                 left={
                   <TextInput.Icon
                     resizeMode="contain"
-                    style={{width: 25}}
+                    style={{ width: 25 }}
                     name={() => (
                       <Image
                         resizeMode="contain"
-                        style={{width: 25}}
+                        style={{ width: 25 }}
                         source={require('../images/User1.png')}
                       />
                     )}
@@ -201,7 +202,7 @@ export default function Register({navigation}) {
                 }
               />
             </SafeAreaView>
-            <SafeAreaView style={{marginBottom: 20}}>
+            <SafeAreaView style={{ marginBottom: 20 }}>
               <TextField
                 label="Last Name"
                 onChangeText={text => setLastName(text)}
@@ -210,7 +211,7 @@ export default function Register({navigation}) {
                     name={() => (
                       <Image
                         resizeMode="contain"
-                        style={{width: 25}}
+                        style={{ width: 25 }}
                         source={require('../images/User1.png')}
                       />
                     )}
@@ -219,7 +220,7 @@ export default function Register({navigation}) {
               />
             </SafeAreaView>
 
-            <SafeAreaView style={{marginBottom: 20}}>
+            <SafeAreaView style={{ marginBottom: 20 }}>
               <TextField
                 label="Email Address"
                 onChangeText={text => setEmail(text)}
@@ -228,7 +229,7 @@ export default function Register({navigation}) {
                     name={() => (
                       <Image
                         resizeMode="contain"
-                        style={{width: 25}}
+                        style={{ width: 25 }}
                         source={require('../images/EnvelopeClosed.png')}
                       />
                     )}
@@ -237,7 +238,26 @@ export default function Register({navigation}) {
               />
             </SafeAreaView>
 
-            <SafeAreaView style={{marginBottom: 20}}>
+
+            <SafeAreaView style={{ marginBottom: 20 }}>
+              <TextField
+                label="Company Name"
+                onChangeText={text => setCompanyName(text)}
+                left={
+                  <TextInput.Icon
+                    name={() => (
+                      <Image
+                        resizeMode="contain"
+                        style={{ width: 25 }}
+                        source={require('../images/password_icon.png')}
+                      />
+                    )}
+                  />
+                }
+              />
+            </SafeAreaView>
+
+            <SafeAreaView style={{ marginBottom: 20 }}>
               <IntlPhoneInput
                 // flagStyle={{display: 'none'}}
                 defaultCountry="AE"
@@ -353,7 +373,7 @@ export default function Register({navigation}) {
                 _storeData();
                 sendData();
               }}>
-              <Text style={{textAlign: 'center', fontSize: 20, color: '#FFF'}}>
+              <Text style={{ textAlign: 'center', fontSize: 20, color: '#FFF' }}>
                 Register Now
               </Text>
             </TouchableOpacity>
@@ -366,7 +386,7 @@ export default function Register({navigation}) {
               }}>
               <Image
                 resizeMode="contain"
-                style={{width: PAGE_WIDTH - 186}}
+                style={{ width: PAGE_WIDTH - 186 }}
                 source={require('../images/Tagline.png')}
               />
             </View>
@@ -384,8 +404,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
-  textStyle: {fontSize: 35, fontWeight: 'bold', color: '#FFF'},
-  textStyle2: {fontSize: 16, fontWeight: '400', color: '#FFF'},
+  textStyle: { fontSize: 35, fontWeight: 'bold', color: '#FFF' },
+  textStyle2: { fontSize: 16, fontWeight: '400', color: '#FFF' },
 
   bottomSection: {
     backgroundColor: '#f1f1f1',

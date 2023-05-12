@@ -7,37 +7,54 @@ import {
   Text,
   TouchableOpacity,
   View,
-  TextInput,
-  Modal,
   ScrollView,
   Pressable,
   SafeAreaView,
   Button,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import SidebarLayout from '../layouts/sidebarLayout';
+import { Modal } from 'react-native-paper';
+import { Switch } from 'react-native-paper';
+import { faL } from '@fortawesome/free-solid-svg-icons';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
+import { TextInput } from 'react-native-paper';
+export default function CreateOffer({ route, navigation }) {
 
-import {Switch} from 'react-native-paper';
+  const [discountP, setDiscountP] = useState(null);
+  const [discountA, setDiscountA] = useState(null);
 
-const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
+  const [isServicesSwitchOn, setIsServicesSwitchOn] = useState(false);
+  const [isDiscountPSwitchOn, setIsDiscountPSwitchOn] = useState(false);
+  const [isDiscountASwitchOn, setIsDiscountASwitchOn] = useState(false);
 
-export default function CreateOffer({route, navigation}) {
-  const [isSwitchOn, setIsSwitchOn] = useState(null);
-  var temp =
-    "Hi! It's been a while since we've seen you. We'd love to welcome you back to <Business Name> and are offering you <Selected package> off your next order!";
-  const [message, setMessage] = useState(temp);
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const [discountModalVisible, setDiscountModalVisible] = useState(false);
+  const [discountAModalVisible, setDiscountAModalVisible] = useState(false);
+
+
+
+  const [message, setMessage] = useState("Hi! It's been a while since we've seen you. We'd love to welcome you back to <Business Name> and are offering you <Selected package> off your next order!");
+
+
+
+
+  const containerStyle = {
+    backgroundColor: '#eedfe0',
+    padding: 20,
+    width: '100%',
+  };
   return (
     <LinearGradient
       colors={['#eedfe0', '#dbdcdc']}
       style={styles.gradientStyle}
-      start={{x: 1, y: 0}}
-      end={{x: 0, y: 1}}>
-      <SafeAreaView style={{flex: 1}}>
-        <View style={{flex: 1}}>
-          <SafeAreaView style={{flex: 1, position: 'relative'}}>
-            <View style={{padding: 24}}>
+      start={{ x: 1, y: 0 }}
+      end={{ x: 0, y: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1, position: 'relative' }}>
+            <View style={{ padding: 24 }}>
               <SidebarLayout header={'Business Support'} />
             </View>
             <View
@@ -49,9 +66,9 @@ export default function CreateOffer({route, navigation}) {
               }}>
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
-                style={{alignItems: 'flex-start'}}>
+                style={{ alignItems: 'flex-start' }}>
                 <Image
-                  style={{padding: 0, alignSelf: 'flex-start'}}
+                  style={{ padding: 0, alignSelf: 'flex-start' }}
                   source={require('../images/BackBlack.png')}
                 />
               </TouchableOpacity>
@@ -83,8 +100,17 @@ export default function CreateOffer({route, navigation}) {
                 }}>
                 <Switch
                   color="#fad00e"
-                  value={isSwitchOn}
-                  onValueChange={onToggleSwitch}
+                  value={isServicesSwitchOn}
+                  onValueChange={(value) => {
+                    if (value) {
+                      setIsServicesSwitchOn(true)
+                      setIsDiscountASwitchOn(false)
+                      setIsDiscountPSwitchOn(false)
+                    } else {
+                      setIsServicesSwitchOn(false)
+                    }
+
+                  }}
                   style={{
                     width: '10%',
                     margin: 5,
@@ -104,8 +130,17 @@ export default function CreateOffer({route, navigation}) {
                 }}>
                 <Switch
                   color="#fad00e"
-                  value={isSwitchOn}
-                  onValueChange={onToggleSwitch}
+                  value={isDiscountPSwitchOn}
+                  onValueChange={(value) => {
+                    if (value) {
+                      setIsServicesSwitchOn(false)
+                      setIsDiscountASwitchOn(false)
+                      setIsDiscountPSwitchOn(true)
+                      setDiscountModalVisible(true)
+                    } else {
+                      setIsDiscountPSwitchOn(false)
+                    }
+                  }}
                   style={{
                     width: '10%',
                     margin: 5,
@@ -125,15 +160,24 @@ export default function CreateOffer({route, navigation}) {
                 }}>
                 <Switch
                   color="#fad00e"
-                  value={isSwitchOn}
-                  onValueChange={onToggleSwitch}
+                  value={isDiscountASwitchOn}
+                  onValueChange={(value) => {
+                    if (value) {
+                      setIsServicesSwitchOn(false)
+                      setIsDiscountASwitchOn(true)
+                      setIsDiscountPSwitchOn(false)
+                      setDiscountAModalVisible(true)
+                    } else {
+                      setIsDiscountASwitchOn(false)
+                    }
+                  }}
                   style={{
                     width: '10%',
                     margin: 5,
                   }}
                 />
                 <TouchableOpacity>
-                  <Text style={{width: 170}}>Enter Discount Amount</Text>
+                  <Text style={{ width: 170 }}>Enter Discount Amount</Text>
                 </TouchableOpacity>
               </View>
 
@@ -148,17 +192,16 @@ export default function CreateOffer({route, navigation}) {
                 <TextInput
                   multiline={true}
                   numberOfLines={4}
-                  onChangeText={text => setMessage({text})}
+                  onChangeText={text => setMessage({ text })}
                   value={message}
                   style={{
-                    height: 200,
                     width: '80%',
                     backgroundColor: '#ffffff',
                     textAlignVertical: 'top',
                     borderWidth: 3,
                     borderColor: '#fad00e',
                     borderRadius: 10,
-                    padding: 20,
+                    padding: 2,
                   }}
                 />
               </View>
@@ -170,9 +213,10 @@ export default function CreateOffer({route, navigation}) {
                   justifyContent: 'center',
                   paddingTop: 50,
                 }}>
-                <Text style={{fontWeight: 'bold', fontSize: 22}}>
+                <Text style={{ fontWeight: 'bold', fontSize: 22 }}>
                   15 Customers Selected
                 </Text>
+
                 <TouchableOpacity
                   style={{
                     backgroundColor: '#fad00e',
@@ -191,10 +235,131 @@ export default function CreateOffer({route, navigation}) {
                 </TouchableOpacity>
               </View>
             </View>
+            <Modal
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              visible={discountModalVisible}
+              onDismiss={() => {
+                setDiscountModalVisible(false)
+                setMessage(`Hi! It's been a while since we've seen you. We'd love to welcome you back to <Business Name> and are offering you ${discountP} % off your next order!`)
+              }}
+              contentContainerStyle={containerStyle}>
+              <KeyboardAwareScrollView>
+                <SafeAreaView>
+                  <TextInput
+                    keyboardType='numeric'
+                    value={discountP}
+                    maxLength={2}
+                    activeUnderlineColor={'red'}
+                    onChangeText={text => {
+                      setDiscountP(text);
+                    }}
+                    style={{
+                      backgroundColor: '#ffffff',
+                      width: PAGE_WIDTH - 50,
+                      borderWidth: 1,
+                      borderColor: '#fad00e',
+                      borderRadius: 5,
+                      padding: 10,
+                      marginHorizontal: 5,
+                      marginBottom: 15,
+                      height: 22,
+                    }}
+                    placeholder="Discount Percentage"
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      setDiscountModalVisible(false);
+                      setMessage(`Hi! It's been a while since we've seen you. We'd love to welcome you back to <Business Name> and are offering you ${discountP} % off your next order!`)
+                    }}
+                    style={[
+                      {
+                        backgroundColor: '#fad00e',
+                        display: 'flex',
+                        alignItems: 'center',
+                        borderRadius: 15,
+                        paddingVertical: 20,
+                      },
+                    ]}>
+                    <Text style={{ color: '#FFFFFF', textAlign: 'center' }}>
+                      Apply
+                    </Text>
+                  </TouchableOpacity>
+                </SafeAreaView>
+              </KeyboardAwareScrollView>
+            </Modal>
+
+
+
+            <Modal
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+              visible={discountAModalVisible}
+              onDismiss={() => {
+                setDiscountAModalVisible(false)
+                setMessage(`Hi! It's been a while since we've seen you. We'd love to welcome you back to <Business Name> and are offering you ${discountA} Rs/- off your next order!`)
+              }}
+              contentContainerStyle={containerStyle}>
+              <KeyboardAwareScrollView>
+                <SafeAreaView>
+                  <TextInput
+                    keyboardType='numeric'
+                    value={discountP}
+                    activeUnderlineColor={'red'}
+                    onChangeText={text => {
+                      setDiscountA(text);
+                    }}
+                    style={{
+                      backgroundColor: '#ffffff',
+                      width: PAGE_WIDTH - 50,
+                      borderWidth: 1,
+                      borderColor: '#fad00e',
+                      borderRadius: 5,
+                      padding: 10,
+                      marginHorizontal: 5,
+                      marginBottom: 15,
+                      height: 22,
+                    }}
+                    placeholder="Discount Amount"
+                  />
+
+                  <TouchableOpacity
+                    onPress={() => {
+                      setDiscountAModalVisible(false);
+                      setMessage(`Hi! It's been a while since we've seen you. We'd love to welcome you back to <Business Name> and are offering you ${discountA} Rs/- off your next order!`)
+                    }}
+                    style={[
+                      {
+                        backgroundColor: '#fad00e',
+                        display: 'flex',
+                        alignItems: 'center',
+                        borderRadius: 15,
+                        paddingVertical: 20,
+                      },
+                    ]}>
+                    <Text style={{ color: '#FFFFFF', textAlign: 'center' }}>
+                      Apply
+                    </Text>
+                  </TouchableOpacity>
+                </SafeAreaView>
+              </KeyboardAwareScrollView>
+            </Modal>
           </SafeAreaView>
         </View>
+
+
+
       </SafeAreaView>
+
     </LinearGradient>
+
   );
 }
 

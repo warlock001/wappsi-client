@@ -13,23 +13,23 @@ import {
   Button,
   TextInput,
 } from 'react-native';
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import {REACT_APP_BASE_URL} from '@env';
+import { REACT_APP_BASE_URL } from '@env';
 import SidebarLayout from '../layouts/sidebarLayout';
-import {Modal} from 'react-native-paper';
-import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
-import {faPlus} from '@fortawesome/free-solid-svg-icons';
+import { Modal } from 'react-native-paper';
+import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import ManageServiceCard from '../components/manageServiceCard';
 import axios from 'axios';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
-const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
 import {
   CommonActions,
   NavigationContainer,
   useFocusEffect,
 } from '@react-navigation/native';
-export default function ManageServices({route, navigation}) {
+export default function ManageServices({ route, navigation }) {
   const [services, setServices] = useState([]);
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [newServiceName, setNewServiceName] = useState('');
@@ -93,7 +93,7 @@ export default function ManageServices({route, navigation}) {
       });
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <ManageServiceCard
       id={item._id}
       serviceName={item.name}
@@ -121,13 +121,13 @@ export default function ManageServices({route, navigation}) {
     <LinearGradient
       colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
-      start={{x: 1, y: 0}}
-      end={{x: 0, y: 1}}>
+      start={{ x: 1, y: 0 }}
+      end={{ x: 0, y: 1 }}>
       <KeyboardAwareScrollView>
-        <SafeAreaView style={{flex: 1}}>
-          <View style={{flex: 1}}>
-            <SafeAreaView style={{flex: 1, position: 'relative'}}>
-              <View style={{padding: 24}}>
+        <SafeAreaView style={{ flex: 1 }}>
+          <View style={{ flex: 1 }}>
+            <SafeAreaView style={{ flex: 1, position: 'relative' }}>
+              <View style={{ padding: 24 }}>
                 <SidebarLayout header={'Business Support'} />
               </View>
               <View
@@ -139,9 +139,9 @@ export default function ManageServices({route, navigation}) {
                 }}>
                 <TouchableOpacity
                   onPress={() => navigation.goBack()}
-                  style={{alignItems: 'flex-start'}}>
+                  style={{ alignItems: 'flex-start' }}>
                   <Image
-                    style={{padding: 0, alignSelf: 'flex-start'}}
+                    style={{ padding: 0, alignSelf: 'flex-start' }}
                     source={require('../images/BackBlack.png')}
                   />
                 </TouchableOpacity>
@@ -185,6 +185,7 @@ export default function ManageServices({route, navigation}) {
 
                 <TextInput
                   value={newServicePrice}
+                  keyboardType='numeric'
                   onChangeText={text => {
                     console.log(text);
                     setNewServicePrice(text);
@@ -235,7 +236,7 @@ export default function ManageServices({route, navigation}) {
                   data={services}
                   renderItem={renderItem}
                   keyExtractor={item => item._id}
-                  // extraData={selectedId}
+                // extraData={selectedId}
                 />
 
                 {/* EDIT MODAL */}
@@ -298,7 +299,7 @@ export default function ManageServices({route, navigation}) {
                       },
                       styles.bottomContainer,
                     ]}>
-                    <Text style={{color: '#FFFFFF', textAlign: 'center'}}>
+                    <Text style={{ color: '#FFFFFF', textAlign: 'center' }}>
                       Save Changes
                     </Text>
                   </TouchableOpacity>

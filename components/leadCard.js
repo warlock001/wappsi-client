@@ -1,9 +1,20 @@
-import {StyleSheet, View, Image, Text} from 'react-native';
-import React, {useEffect, useState, useRef} from 'react';
-import {Button, TextInput} from 'react-native-paper';
-import {Switch} from 'react-native-paper';
+import { StyleSheet, View, Image, Text } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { Button, TextInput } from 'react-native-paper';
+import { Switch } from 'react-native-paper';
 
 export default function LeadCard(props) {
+
+
+  useEffect(() => {
+    if (props.selectAll) {
+      setIsSwitchOn(true)
+    } else {
+      setIsSwitchOn(false)
+    }
+  }, [props.selectAll]);
+
+
   const [isSwitchOn, setIsSwitchOn] = useState(null);
   const [counter, setCounter] = useState(1);
 
@@ -22,15 +33,15 @@ export default function LeadCard(props) {
 
   return (
     <View style={styles.cardContainer}>
-      <Text style={{width: '34%', fontSize: 12}}>{props.PhoneNumber}</Text>
-      <Text style={{width: '22%', fontSize: 12}}>{props.lastVisit} Days</Text>
-      <Text style={{width: '22%', fontSize: 12}}>Rs. {props.totalSpend}</Text>
+      <Text style={{ width: '34%', fontSize: 12 }}>{props.PhoneNumber}</Text>
+      <Text style={{ width: '22%', fontSize: 12 }}>{props.lastVisit} Days</Text>
+      <Text style={{ width: '22%', fontSize: 12 }}>Rs. {props.totalSpend}</Text>
 
       <Switch
         color="#fad00e"
         value={isSwitchOn}
         onValueChange={onToggleSwitch}
-        style={{width: '22%'}}
+        style={{ width: '22%' }}
       />
     </View>
   );

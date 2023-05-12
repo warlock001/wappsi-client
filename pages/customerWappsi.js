@@ -13,24 +13,27 @@ import {
   SafeAreaView,
   Button,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import SidebarLayout from '../layouts/sidebarLayout';
-import {TextInput} from 'react-native-paper';
+import { TextInput } from 'react-native-paper';
 import ServiceCard from '../components/serviceCard';
 import LeadCard from '../components/leadCard';
 import axios from 'axios';
-import {REACT_APP_BASE_URL} from '@env';
+import { REACT_APP_BASE_URL } from '@env';
+import { Switch } from 'react-native-paper';
 import {
   CommonActions,
   NavigationContainer,
   useFocusEffect,
 } from '@react-navigation/native';
-const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
+const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
 
-export default function CustomerWappsi({route, navigation}) {
+export default function CustomerWappsi({ route, navigation }) {
   const [lead, setLead] = React.useState([]);
   const [shouldUpdate, setShouldUpdate] = useState(false);
+  const [selectAll, setSelectAll] = useState(false);
+  const [pastDays, setPastDays] = useState(0);
 
   const renderItem = item => {
     console.log(item.item.order);
@@ -43,34 +46,59 @@ export default function CustomerWappsi({route, navigation}) {
         PhoneNumber={item.item.order.phone}
         lastVisit={diffDays}
         totalSpend={item.item.order.total}
+        selectAll={selectAll}
       />
     );
   };
 
   useFocusEffect(
     React.useCallback(() => {
-      axios({
-        method: 'GET',
-        url: `${REACT_APP_BASE_URL}/getorder`,
-      })
-        .then(res => {
-          console.log(res.data.order);
-          setLead(res.data.order);
+
+      if (pastDays > 0) {
+        var d = new Date();
+        d.setDate(d.getDate() - pastDays);
+        console.log(d)
+        axios({
+          method: 'GET',
+
+          url: `${REACT_APP_BASE_URL}/getorder?daysLimit=${d}`,
+
         })
-        .catch(err => console.log(err));
-    }, [shouldUpdate]),
+          .then(res => {
+            setLead(res.data.order);
+          })
+          .catch(err => console.log(err));
+
+
+
+      } else {
+        axios({
+          method: 'GET',
+          url: `${REACT_APP_BASE_URL}/getorder`,
+        })
+          .then(res => {
+            setLead(res.data.order);
+          })
+          .catch(err => console.log(err));
+      }
+
+
+
+
+
+    }, [shouldUpdate, pastDays]),
   );
 
   return (
     <LinearGradient
       colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
-      start={{x: 1, y: 0}}
-      end={{x: 0, y: 1}}>
-      <SafeAreaView style={{flex: 1}}>
-        <View style={{flex: 1}}>
-          <SafeAreaView style={{flex: 1, position: 'relative'}}>
-            <View style={{padding: 24}}>
+      start={{ x: 1, y: 0 }}
+      end={{ x: 0, y: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1, position: 'relative' }}>
+            <View style={{ padding: 24 }}>
               <SidebarLayout header={'Business Support'} />
             </View>
             <View
@@ -82,9 +110,9 @@ export default function CustomerWappsi({route, navigation}) {
               }}>
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
-                style={{alignItems: 'flex-start'}}>
+                style={{ alignItems: 'flex-start' }}>
                 <Image
-                  style={{padding: 0, alignSelf: 'flex-start'}}
+                  style={{ padding: 0, alignSelf: 'flex-start' }}
                   source={require('../images/BackBlack.png')}
                 />
               </TouchableOpacity>
@@ -99,7 +127,7 @@ export default function CustomerWappsi({route, navigation}) {
                 Customer Wappsi
               </Text>
             </View>
-            <Text style={{textAlign: 'center'}}>
+            <Text style={{ textAlign: 'center' }}>
               Customer from less than 3 weeks are not shown to reduce spamming
             </Text>
             <View
@@ -124,12 +152,15 @@ export default function CustomerWappsi({route, navigation}) {
                 }}>
                 <TextInput
                   keyboardType="numeric"
-                  style={[{height: 18, borderColor: 'red'}]}
+                  style={[{ height: 18, borderColor: 'red' }]}
                   maxLength={3}
-                  value={0}
+                  value={pastDays}
+                  onChangeText={text => {
+                    setPastDays(text);
+                  }}
                   activeUnderlineColor={'red'}
                 />
-                <Text style={{fontWeight: 'bold'}}> Days</Text>
+                <Text style={{ fontWeight: 'bold' }}> Days</Text>
               </View>
             </View>
             <View
@@ -140,17 +171,33 @@ export default function CustomerWappsi({route, navigation}) {
                 paddingTop: 22,
                 marginTop: 5,
               }}>
-              <Text style={{width: '32%', textAlign: 'center'}}>
+              <Text style={{ width: '32%', textAlign: 'center' }}>
                 Phone Number
               </Text>
-              <Text style={{width: '22%', textAlign: 'center'}}>
+              <Text style={{ width: '22%', textAlign: 'center' }}>
                 Last Visit
               </Text>
-              <Text style={{width: '22%', textAlign: 'center'}}>
+              <Text style={{ width: '22%', textAlign: 'center' }}>
                 Total Spend
               </Text>
 
-              <Text style={{width: '22%', textAlign: 'center'}}>Message</Text>
+              <Text style={{ width: '22%', textAlign: 'center' }}>Message</Text>
+            </View>
+            <View style={{
+              display: 'flex', flexDirection: 'row', justifyContent: "flex-end", alignItems: "center", paddingHorizontal: 42,
+              paddingTop: 22,
+            }}>
+
+              <Text>
+                Select All
+              </Text>
+              <Switch
+                color="#FFF"
+                value={selectAll}
+                onValueChange={() => { setSelectAll(!selectAll) }}
+              // style={{ width: '22%' }}
+              />
+
             </View>
 
             <FlatList
@@ -162,7 +209,7 @@ export default function CustomerWappsi({route, navigation}) {
               data={lead}
               renderItem={renderItem}
               keyExtractor={item => item._id}
-              // extraData={selectedId}
+            // extraData={selectedId}
             />
           </SafeAreaView>
 
@@ -178,7 +225,7 @@ export default function CustomerWappsi({route, navigation}) {
               },
               styles.bottomContainer,
             ]}>
-            <Text style={{color: '#FFFFFF', textAlign: 'center'}}>
+            <Text style={{ color: '#FFFFFF', textAlign: 'center' }}>
               Create Offer
             </Text>
           </TouchableOpacity>
