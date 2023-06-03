@@ -18,18 +18,18 @@ export default function LeadCard(props) {
   const [isSwitchOn, setIsSwitchOn] = useState(null);
   const [counter, setCounter] = useState(1);
 
-  const onToggleSwitch = () => setIsSwitchOn(!isSwitchOn);
+  const onToggleSwitch = (e) => {
+    setIsSwitchOn(!isSwitchOn);
+    if (e) {
+      props.setSelectedLeads([...props.selectedLeads, props.id])
 
-  const handleDecrement = () => setCounter(counter - 1);
+    } else {
+      props.setSelectedLeads(props.selectedLeads.filter(item => item !== props.id))
 
-  async function handleIncrement() {
-    console.log('hello');
-    setCounter(counter + 1);
+    }
   }
 
-  // async function handleDecrement() {
-  //   setCounter(counter - 1);
-  // }
+
 
   return (
     <View style={styles.cardContainer}>
@@ -40,7 +40,7 @@ export default function LeadCard(props) {
       <Switch
         color="#fad00e"
         value={isSwitchOn}
-        onValueChange={onToggleSwitch}
+        onValueChange={(e) => { onToggleSwitch(e) }}
         style={{ width: '22%' }}
       />
     </View>

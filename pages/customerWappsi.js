@@ -12,6 +12,7 @@ import {
   Pressable,
   SafeAreaView,
   Button,
+  PermissionsAndroid,
 } from 'react-native';
 import React, { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
@@ -22,6 +23,7 @@ import LeadCard from '../components/leadCard';
 import axios from 'axios';
 import { REACT_APP_BASE_URL } from '@env';
 import { Switch } from 'react-native-paper';
+import RNFetchBlob from 'rn-fetch-blob';
 import {
   CommonActions,
   NavigationContainer,
@@ -34,9 +36,9 @@ export default function CustomerWappsi({ route, navigation }) {
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [selectAll, setSelectAll] = useState(false);
   const [pastDays, setPastDays] = useState(0);
-
+  const [selectedLeads, setSelectedLeads] = useState([]);
   const renderItem = item => {
-    console.log(item.item.order);
+    // console.log(item.item.order);
     const orderDate = new Date(item.item.order.createdAt);
     const d = new Date();
     const diffTime = Math.abs(d - orderDate);
@@ -44,12 +46,60 @@ export default function CustomerWappsi({ route, navigation }) {
     return (
       <LeadCard
         PhoneNumber={item.item.order.phone}
+        id={item.item.order._id}
         lastVisit={diffDays}
         totalSpend={item.item.order.total}
         selectAll={selectAll}
+        selectedLeads={selectedLeads}
+        setSelectedLeads={setSelectedLeads}
       />
     );
   };
+
+  async function exportData() {
+
+    if (Platform.OS === 'android') {
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+      );
+      await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      );
+    }
+
+    var data = []
+
+    lead.forEach(item => {
+      if (selectedLeads.includes(item.order._id)) {
+        var d = new Date(item.order.createdAt)
+        var date = d.getUTCDate();
+        var month = d.getUTCMonth();
+        var year = d.getUTCFullYear();
+
+        // console.log(date.getUTCDate())
+        data.push([`'${item.order.phone}'`, `${item.order.total}`, `${date + "-" + month + '-' + year}`])
+      }
+
+    });
+    // console.log(item.order._id)
+    console.log(data)
+    // construct csvString
+    const headerString = 'Phone Number,Total,Last Visit\n';
+    const rowString = data.map(d => `${d[0]},${d[1]},${d[2]}\n`).join('');
+    const csvString = `${headerString}${rowString}`;
+
+    // write the current list of answers to a local csv file
+    const pathToWrite = `${RNFetchBlob.fs.dirs.DownloadDir}/data.csv`;
+    console.log('pathToWrite', pathToWrite);
+    // pathToWrite /storage/emulated/0/Download/data.csv
+    RNFetchBlob.fs
+      .writeFile(pathToWrite, csvString, 'utf8')
+      .then(() => {
+        console.log(`wrote file ${pathToWrite}`);
+        // wrote file /storage/emulated/0/Download/data.csv
+      })
+      .catch(error => console.error(error));
+  }
 
   useFocusEffect(
     React.useCallback(() => {
@@ -215,7 +265,7 @@ export default function CustomerWappsi({ route, navigation }) {
 
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate('CreateOffer');
+              exportData()
             }}
             style={[
               {
@@ -226,7 +276,7 @@ export default function CustomerWappsi({ route, navigation }) {
               styles.bottomContainer,
             ]}>
             <Text style={{ color: '#FFFFFF', textAlign: 'center' }}>
-              Create Offer
+              Export Data
             </Text>
           </TouchableOpacity>
         </View>

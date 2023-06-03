@@ -12,7 +12,7 @@ import {
   SafeAreaView,
   Button,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import SidebarLayout from '../layouts/sidebarLayout';
 import { Modal } from 'react-native-paper';
@@ -21,11 +21,12 @@ import { faL } from '@fortawesome/free-solid-svg-icons';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
 import { TextInput } from 'react-native-paper';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 export default function CreateOffer({ route, navigation }) {
 
   const [discountP, setDiscountP] = useState(null);
   const [discountA, setDiscountA] = useState(null);
-
+  const [company, setCompany] = useState("");
   const [isServicesSwitchOn, setIsServicesSwitchOn] = useState(false);
   const [isDiscountPSwitchOn, setIsDiscountPSwitchOn] = useState(false);
   const [isDiscountASwitchOn, setIsDiscountASwitchOn] = useState(false);
@@ -35,10 +36,22 @@ export default function CreateOffer({ route, navigation }) {
 
 
 
-  const [message, setMessage] = useState("Hi! It's been a while since we've seen you. We'd love to welcome you back to <Business Name> and are offering you <Selected package> off your next order!");
+  const [message, setMessage] = useState(``);
 
 
 
+  useEffect(() => {
+    async function getCases() {
+      const companyName = await AsyncStorage.getItem('@company')
+      console.log(companyName)
+      setCompany(companyName)
+      setMessage(`Hi! It's been a while since we've seen you. We'd love to welcome you back to ${companyName} and are offering you <Selected package> off your next order!`)
+    }
+    getCases()
+
+
+
+  }, []);
 
   const containerStyle = {
     backgroundColor: '#eedfe0',

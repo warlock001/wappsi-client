@@ -14,23 +14,23 @@ import {
   Button,
   TextInput,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import SidebarLayout from '../layouts/sidebarLayout';
 import ServiceCard from '../components/serviceCard';
 import LeadCard from '../components/leadCard';
 import InputField from '../components/inputField';
-import {RadioButton, DataTable} from 'react-native-paper';
+import { RadioButton, DataTable } from 'react-native-paper';
 import axios from 'axios';
-import {REACT_APP_BASE_URL} from '@env';
+import { REACT_APP_BASE_URL } from '@env';
 import {
   CommonActions,
   NavigationContainer,
   useFocusEffect,
 } from '@react-navigation/native';
-const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
+const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
 
-export default function ExpenseTracker({route, navigation}) {
+export default function ExpenseTracker({ route, navigation }) {
   const [value, setValue] = React.useState('first');
   const [expense, setExpense] = React.useState([]);
   const [shouldUpdate, setShouldUpdate] = useState(false);
@@ -61,7 +61,7 @@ export default function ExpenseTracker({route, navigation}) {
           {month} - {date}
         </DataTable.Cell>
         <DataTable.Cell>
-          <Text style={{fontWeight: 'bold'}}>{item.item.category}</Text>
+          <Text style={{ fontWeight: 'bold' }}>{item.item.category}</Text>
           <Text> - {item.item.note}</Text>
         </DataTable.Cell>
         <DataTable.Cell numeric>PKR {item.item.price}</DataTable.Cell>
@@ -115,12 +115,12 @@ export default function ExpenseTracker({route, navigation}) {
     <LinearGradient
       colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
-      start={{x: 1, y: 0}}
-      end={{x: 0, y: 1}}>
-      <SafeAreaView style={{flex: 1}}>
-        <View style={{flex: 1}}>
-          <SafeAreaView style={{flex: 1, position: 'relative'}}>
-            <View style={{padding: 24}}>
+      start={{ x: 1, y: 0 }}
+      end={{ x: 0, y: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <View style={{ flex: 1 }}>
+          <SafeAreaView style={{ flex: 1, position: 'relative' }}>
+            <View style={{ padding: 24 }}>
               <SidebarLayout header={'Business Support'} />
             </View>
             <View
@@ -132,9 +132,9 @@ export default function ExpenseTracker({route, navigation}) {
               }}>
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
-                style={{alignItems: 'flex-start'}}>
+                style={{ alignItems: 'flex-start' }}>
                 <Image
-                  style={{padding: 0, alignSelf: 'flex-start'}}
+                  style={{ padding: 0, alignSelf: 'flex-start' }}
                   source={require('../images/BackBlack.png')}
                 />
               </TouchableOpacity>
@@ -356,27 +356,34 @@ export default function ExpenseTracker({route, navigation}) {
                     data={expense}
                     renderItem={renderItem}
                     keyExtractor={item => item._id}
-                    // extraData={selectedId}
+                  // extraData={selectedId}
                   />
                 </View>
               </DataTable>
             </ScrollView>
           </SafeAreaView>
+          <View style={styles.bottomContainer}>
+            {/* <View style={styles.feildContainer}> */}
+            <TouchableOpacity
+              onPress={() => {
+                postData();
+              }}
+              style={[
+                {
+                  backgroundColor: '#fad00e',
+                  // display: 'flex',
+                  // alignItems: 'center',
+                  width: '100%',
+                  paddingVertical: 10,
+                  borderRadius: 10,
+                },
+                // styles.bottomContainer,
+              ]}>
+              <Text style={{ color: '#FFFFFF', textAlign: 'center' }}>Enter</Text>
+            </TouchableOpacity>
+            {/* </View> */}
+          </View>
 
-          <TouchableOpacity
-            onPress={() => {
-              postData();
-            }}
-            style={[
-              {
-                backgroundColor: '#141414',
-                display: 'flex',
-                alignItems: 'center',
-              },
-              styles.bottomContainer,
-            ]}>
-            <Text style={{color: '#FFFFFF', textAlign: 'center'}}>Enter</Text>
-          </TouchableOpacity>
         </View>
       </SafeAreaView>
     </LinearGradient>
@@ -395,11 +402,12 @@ const styles = StyleSheet.create({
 
   bottomContainer: {
     display: 'flex',
-    height: 50,
+    // height: 50,
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 24,
-    paddingVertical: 5,
+    paddingVertical: 20,
+    backgroundColor: '#FFFFFF'
   },
   feildContainer: {
     display: 'flex',
