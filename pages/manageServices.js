@@ -12,24 +12,27 @@ import {
   SafeAreaView,
   Button,
   TextInput,
+  ToastAndroid,
 } from 'react-native';
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
-import { REACT_APP_BASE_URL } from '@env';
+import {REACT_APP_BASE_URL} from '@env';
 import SidebarLayout from '../layouts/sidebarLayout';
-import { Modal } from 'react-native-paper';
-import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import {Modal} from 'react-native-paper';
+import {FontAwesomeIcon} from '@fortawesome/react-native-fontawesome';
+import {faPlus} from '@fortawesome/free-solid-svg-icons';
 import ManageServiceCard from '../components/manageServiceCard';
 import axios from 'axios';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {ActivityIndicator} from 'react-native-paper';
+const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
 import {
   CommonActions,
   NavigationContainer,
   useFocusEffect,
 } from '@react-navigation/native';
-export default function ManageServices({ route, navigation }) {
+import {set} from 'date-fns';
+export default function ManageServices({route, navigation}) {
   const [services, setServices] = useState([]);
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [newServiceName, setNewServiceName] = useState('');
@@ -38,7 +41,7 @@ export default function ManageServices({ route, navigation }) {
   const [editServicePrice, setEditServicePrice] = useState('');
   const [editServiceId, setEditServiceId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
-
+  const [loaderModalVisible, setLoaderModalVisible] = useState(false);
   useFocusEffect(
     React.useCallback(() => {
       axios({
@@ -53,23 +56,34 @@ export default function ManageServices({ route, navigation }) {
   );
 
   async function postNewService() {
-    await axios({
-      method: 'POST',
-      url: `${REACT_APP_BASE_URL}/postservice`,
-      data: {
-        name: newServiceName,
-        price: newServicePrice,
-      },
-    })
-      .then(async res => {
-        console.log(res);
-        setShouldUpdate(!shouldUpdate);
-        setNewServiceName('');
-        setNewServicePrice('');
+    if (newServiceName && newServicePrice) {
+      setLoaderModalVisible(true);
+      await axios({
+        method: 'POST',
+        url: `${REACT_APP_BASE_URL}/postservice`,
+        data: {
+          name: newServiceName,
+          price: newServicePrice,
+        },
       })
-      .catch(err => {
-        console.log(err);
-      });
+        .then(async res => {
+          console.log(res);
+          setShouldUpdate(!shouldUpdate);
+          setNewServiceName('');
+          setNewServicePrice('');
+          setLoaderModalVisible(false);
+        })
+        .catch(err => {
+          console.log(err);
+          setLoaderModalVisible(false);
+        });
+    } else {
+      ToastAndroid.showWithGravity(
+        `Feilds can't be empty`,
+        ToastAndroid.SHORT,
+        ToastAndroid.CENTER,
+      );
+    }
   }
 
   const updateService = async () => {
@@ -93,7 +107,7 @@ export default function ManageServices({ route, navigation }) {
       });
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <ManageServiceCard
       id={item._id}
       serviceName={item.name}
@@ -117,17 +131,23 @@ export default function ManageServices({ route, navigation }) {
     width: '100%',
   };
 
+  const loderContainerStyle = {
+    // backgroundColor: '#eedfe0',
+    padding: 20,
+    width: '100%',
+  };
+
   return (
     <LinearGradient
       colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
-      start={{ x: 1, y: 0 }}
-      end={{ x: 0, y: 1 }}>
+      start={{x: 1, y: 0}}
+      end={{x: 0, y: 1}}>
       <KeyboardAwareScrollView>
-        <SafeAreaView style={{ flex: 1 }}>
-          <View style={{ flex: 1 }}>
-            <SafeAreaView style={{ flex: 1, position: 'relative' }}>
-              <View style={{ padding: 24 }}>
+        <SafeAreaView style={{flex: 1}}>
+          <View style={{flex: 1}}>
+            <SafeAreaView style={{flex: 1, position: 'relative'}}>
+              <View style={{padding: 24}}>
                 <SidebarLayout header={'Business Support'} />
               </View>
               <View
@@ -139,9 +159,9 @@ export default function ManageServices({ route, navigation }) {
                 }}>
                 <TouchableOpacity
                   onPress={() => navigation.goBack()}
-                  style={{ alignItems: 'flex-start' }}>
+                  style={{alignItems: 'flex-start'}}>
                   <Image
-                    style={{ padding: 0, alignSelf: 'flex-start' }}
+                    style={{padding: 0, alignSelf: 'flex-start'}}
                     source={require('../images/BackBlack.png')}
                   />
                 </TouchableOpacity>
@@ -185,7 +205,7 @@ export default function ManageServices({ route, navigation }) {
 
                 <TextInput
                   value={newServicePrice}
-                  keyboardType='numeric'
+                  keyboardType="numeric"
                   onChangeText={text => {
                     console.log(text);
                     setNewServicePrice(text);
@@ -227,101 +247,105 @@ export default function ManageServices({ route, navigation }) {
               </View>
               <View
                 style={{
-                  marginVertical: 12,
+                  // marginVertical: 12,
                   paddingHorizontal: 24,
                   zIndex: 10,
-                  height: PAGE_HEIGHT - 320,
+                  // height: PAGE_HEIGHT - 320,
                 }}>
                 <FlatList
                   data={services}
                   renderItem={renderItem}
                   keyExtractor={item => item._id}
-                // extraData={selectedId}
+                  // extraData={selectedId}
                 />
-
-                {/* EDIT MODAL */}
-
-                <Modal
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                  visible={modalVisible}
-                  onDismiss={hideModal}
-                  contentContainerStyle={containerStyle}>
-                  <TextInput
-                    value={editServiceName}
-                    onChangeText={text => {
-                      setEditServiceName(text);
-                    }}
-                    style={{
-                      backgroundColor: '#ffffff',
-                      width: '100%',
-                      borderWidth: 1,
-                      borderColor: '#fad00e',
-                      borderRadius: 15,
-                      padding: 10,
-                      marginHorizontal: 5,
-                      marginBottom: 15,
-                    }}
-                    placeholder="Service Name"
-                  />
-
-                  <TextInput
-                    value={editServicePrice}
-                    onChangeText={text => {
-                      setEditServicePrice(text);
-                    }}
-                    style={{
-                      backgroundColor: '#ffffff',
-                      width: '100%',
-                      borderWidth: 1,
-                      borderColor: '#fad00e',
-                      borderRadius: 15,
-                      padding: 10,
-                      marginHorizontal: 5,
-                      marginBottom: 15,
-                    }}
-                    placeholder="Price"
-                  />
-
-                  <TouchableOpacity
-                    onPress={() => {
-                      updateService();
-                    }}
-                    style={[
-                      {
-                        backgroundColor: '#fad00e',
-                        display: 'flex',
-                        alignItems: 'center',
-                        borderRadius: 15,
-                      },
-                      styles.bottomContainer,
-                    ]}>
-                    <Text style={{ color: '#FFFFFF', textAlign: 'center' }}>
-                      Save Changes
-                    </Text>
-                  </TouchableOpacity>
-                </Modal>
-                {/* EDIT MODAL END */}
-
-                {/* <ManageServiceCard serviceName="Haircut" servicePrice="200" />
-              <ManageServiceCard serviceName="Beard Trim" servicePrice="150" />
-              <ManageServiceCard serviceName="Massage" servicePrice="200" />
-              <ManageServiceCard serviceName="Kids Hair" servicePrice="250" />
-              <ManageServiceCard serviceName="Hair Deying" servicePrice="400" />
-              <ManageServiceCard
-                serviceName="Hair Treatment"
-                servicePrice="1200"
-              />
-              <ManageServiceCard serviceName="Stream Wash" servicePrice="500" />
-              <ManageServiceCard serviceName="Beard Dye" servicePrice="300" /> */}
               </View>
             </SafeAreaView>
           </View>
         </SafeAreaView>
       </KeyboardAwareScrollView>
+      {/* EDIT MODAL */}
+      <Modal
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        visible={loaderModalVisible}
+        // onDismiss={()=>}
+        contentContainerStyle={loderContainerStyle}>
+        <ActivityIndicator
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            height: PAGE_HEIGHT,
+          }}
+          animating={true}
+        />
+      </Modal>
+      <Modal
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+        visible={modalVisible}
+        onDismiss={hideModal}
+        contentContainerStyle={containerStyle}>
+        <TextInput
+          value={editServiceName}
+          onChangeText={text => {
+            setEditServiceName(text);
+          }}
+          style={{
+            backgroundColor: '#ffffff',
+            width: '100%',
+            borderWidth: 1,
+            borderColor: '#fad00e',
+            borderRadius: 15,
+            padding: 10,
+            marginHorizontal: 5,
+            marginBottom: 15,
+          }}
+          placeholder="Service Name"
+        />
+
+        <TextInput
+          value={editServicePrice}
+          onChangeText={text => {
+            setEditServicePrice(text);
+          }}
+          style={{
+            backgroundColor: '#ffffff',
+            width: '100%',
+            borderWidth: 1,
+            borderColor: '#fad00e',
+            borderRadius: 15,
+            padding: 10,
+            marginHorizontal: 5,
+            marginBottom: 15,
+          }}
+          placeholder="Price"
+        />
+
+        <TouchableOpacity
+          onPress={() => {
+            updateService();
+          }}
+          style={[
+            {
+              backgroundColor: '#fad00e',
+              display: 'flex',
+              alignItems: 'center',
+              borderRadius: 15,
+            },
+            styles.bottomContainer,
+          ]}>
+          <Text style={{color: '#FFFFFF', textAlign: 'center'}}>
+            Save Changes
+          </Text>
+        </TouchableOpacity>
+      </Modal>
     </LinearGradient>
   );
 }

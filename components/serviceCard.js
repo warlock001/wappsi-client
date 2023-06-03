@@ -1,9 +1,9 @@
-import { StyleSheet, View, Image, Text } from 'react-native';
-import React, { useEffect, useState, useRef } from 'react';
-import { Button, TextInput } from 'react-native-paper';
-import { Switch } from 'react-native-paper';
-import { Touchable } from 'react-native';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import {StyleSheet, View, Image, Text} from 'react-native';
+import React, {useEffect, useState, useRef} from 'react';
+import {Button, TextInput} from 'react-native-paper';
+import {Switch} from 'react-native-paper';
+import {Touchable} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export default function ServiceCard(props) {
   const [isSwitchOn, setIsSwitchOn] = useState(null);
@@ -26,7 +26,7 @@ export default function ServiceCard(props) {
       (parseInt(props.total) + parseInt(props.servicePrice));
     props.setDiscountedAmount(
       (parseInt(props.discount) / 100) *
-      (parseInt(props.total) + parseInt(props.servicePrice)),
+        (parseInt(props.total) + parseInt(props.servicePrice)),
     );
     props.setNetTotal(total_temp - total_discount);
   }
@@ -34,27 +34,11 @@ export default function ServiceCard(props) {
   return (
     <View style={styles.cardContainer}>
       <Text style={styles.serviceName}>{props.serviceName}</Text>
-      <Text style={{ paddingHorizontal: 3, width: '20%', color: '#FFFFFF' }}>
+      <Text style={{paddingHorizontal: 3, width: '20%', color: '#FFFFFF'}}>
         {props.servicePrice} PKR
       </Text>
       <View
-        style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-        <TouchableOpacity
-          style={{
-            backgroundColor: '#fad00e',
-            color: '#FFFFFF',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            borderRadius: 5,
-            height: 25,
-            width: 25,
-          }}
-          elevated
-          onPress={handleIncrement}>
-          <Text style={styles.counterBtn}>+</Text>
-        </TouchableOpacity>
-        <Text style={{ padding: 10, color: '#FFFFFF' }}>{counter}</Text>
+        style={{display: 'flex', flexDirection: 'row', alignItems: 'center'}}>
         <TouchableOpacity
           style={{
             backgroundColor: '#fad00e',
@@ -70,9 +54,23 @@ export default function ServiceCard(props) {
           onPress={handleDecrement}>
           <Text style={styles.counterBtn}>-</Text>
         </TouchableOpacity>
+        <Text style={{padding: 10, color: '#FFFFFF'}}>{counter}</Text>
+        <TouchableOpacity
+          style={{
+            backgroundColor: '#fad00e',
+            color: '#FFFFFF',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            borderRadius: 5,
+            height: 25,
+            width: 25,
+          }}
+          elevated
+          onPress={handleIncrement}>
+          <Text style={styles.counterBtn}>+</Text>
+        </TouchableOpacity>
       </View>
-
-
     </View>
   );
 }

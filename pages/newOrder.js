@@ -13,23 +13,23 @@ import {
   SafeAreaView,
   Button,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import LinearGradient from 'react-native-linear-gradient';
 import SidebarLayout from '../layouts/sidebarLayout';
-import { TextInput } from 'react-native-paper';
+import {TextInput} from 'react-native-paper';
 import ServiceCard from '../components/serviceCard';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-import { Modal } from 'react-native-paper';
-import { REACT_APP_BASE_URL } from '@env';
+import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import {Modal} from 'react-native-paper';
+import {REACT_APP_BASE_URL} from '@env';
 import {
   CommonActions,
   NavigationContainer,
   useFocusEffect,
 } from '@react-navigation/native';
 import axios from 'axios';
-const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
+const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
 
-export default function NewOrder({ route, navigation }) {
+export default function NewOrder({route, navigation}) {
   const [services, setServices] = useState([]);
   const [shouldUpdate, setShouldUpdate] = useState(false);
   const [total, setTotal] = useState(0);
@@ -38,7 +38,6 @@ export default function NewOrder({ route, navigation }) {
   const [discountedAmount, setDiscountedAmount] = useState(0);
   const [modalVisible, setModalVisible] = useState(false);
   const [phone, setPhone] = useState(false);
-
 
   useFocusEffect(
     React.useCallback(() => {
@@ -89,10 +88,9 @@ export default function NewOrder({ route, navigation }) {
     setNetTotal(parseInt(total) - temp_discountedAmount);
   };
 
-
   const calculateDiscountAmount = discountText => {
     setDiscountedAmount(discountText);
-    setDiscount(parseInt(discountText / parseInt(total)) * 100)
+    setDiscount(parseInt(discountText / parseInt(total)) * 100);
     setNetTotal(parseInt(total) - discountText);
   };
 
@@ -102,7 +100,7 @@ export default function NewOrder({ route, navigation }) {
     width: '100%',
   };
 
-  const renderItem = ({ item }) => (
+  const renderItem = ({item}) => (
     <ServiceCard
       id={item._id}
       serviceName={item.name}
@@ -120,12 +118,12 @@ export default function NewOrder({ route, navigation }) {
     <LinearGradient
       colors={['#fad00e', '#ffd40e']}
       style={styles.gradientStyle}
-      start={{ x: 1, y: 0 }}
-      end={{ x: 0, y: 1 }}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={{ flex: 1 }}>
-          <SafeAreaView style={{ flex: 1, position: 'relative' }}>
-            <View style={{ padding: 24 }}>
+      start={{x: 1, y: 0}}
+      end={{x: 0, y: 1}}>
+      <SafeAreaView style={{flex: 1}}>
+        <View style={{flex: 1}}>
+          <SafeAreaView style={{flex: 1, position: 'relative'}}>
+            <View style={{padding: 24}}>
               <SidebarLayout header={'Business Support'} />
             </View>
             <View
@@ -137,9 +135,9 @@ export default function NewOrder({ route, navigation }) {
               }}>
               <TouchableOpacity
                 onPress={() => navigation.goBack()}
-                style={{ alignItems: 'flex-start' }}>
+                style={{alignItems: 'flex-start'}}>
                 <Image
-                  style={{ padding: 0, alignSelf: 'flex-start' }}
+                  style={{padding: 0, alignSelf: 'flex-start'}}
                   source={require('../images/BackBlack.png')}
                 />
               </TouchableOpacity>
@@ -166,7 +164,7 @@ export default function NewOrder({ route, navigation }) {
                 data={services}
                 renderItem={renderItem}
                 keyExtractor={item => item._id}
-              // extraData={selectedId}
+                // extraData={selectedId}
               />
             </View>
             {/* EDIT MODAL */}
@@ -215,7 +213,7 @@ export default function NewOrder({ route, navigation }) {
                         paddingVertical: 20,
                       },
                     ]}>
-                    <Text style={{ color: '#FFFFFF', textAlign: 'center' }}>
+                    <Text style={{color: '#FFFFFF', textAlign: 'center'}}>
                       Save Order
                     </Text>
                   </TouchableOpacity>
@@ -236,7 +234,7 @@ export default function NewOrder({ route, navigation }) {
                     fontSize: 12,
                   },
                 ]}>
-                <Text style={{ color: '#141414', fontSize: 12 }}>Sub Total</Text>{' '}
+                <Text style={{color: '#141414', fontSize: 12}}>Sub Total</Text>{' '}
                 : {total} PKR
               </Text>
 
@@ -250,7 +248,7 @@ export default function NewOrder({ route, navigation }) {
                   paddingHorizontal: 10,
                 }}>
                 <Text
-                  style={[styles.feildText, { color: '#141414', fontSize: 12 }]}>
+                  style={[styles.feildText, {color: '#141414', fontSize: 12}]}>
                   Discount :{' '}
                 </Text>
                 <TextInput
@@ -259,11 +257,11 @@ export default function NewOrder({ route, navigation }) {
                   }}
                   value={discount}
                   keyboardType="numeric"
-                  style={[{ height: 18 }]}
+                  style={[{height: 18}]}
                   maxLength={2}
                   activeUnderlineColor={'red'}
                 />
-                <Text style={[styles.feildText, { fontSize: 12 }]}>%</Text>
+                <Text style={[styles.feildText, {fontSize: 12}]}>%</Text>
               </View>
             </View>
 
@@ -278,7 +276,7 @@ export default function NewOrder({ route, navigation }) {
                   paddingHorizontal: 10,
                 }}>
                 <Text
-                  style={[styles.feildText, { color: '#141414', fontSize: 12 }]}>
+                  style={[styles.feildText, {color: '#141414', fontSize: 12}]}>
                   Discounted Amount :{' '}
                 </Text>
                 <TextInput
@@ -286,12 +284,12 @@ export default function NewOrder({ route, navigation }) {
                     calculateDiscountAmount(text);
                   }}
                   keyboardType="numeric"
-                  style={[{ height: 18 }]}
-                  maxLength={2}
+                  style={[{height: 18}]}
+                  maxLength={5}
                   value={discountedAmount}
                   activeUnderlineColor={'red'}
                 />
-                <Text style={[styles.feildText, { fontSize: 12 }]}>PKR</Text>
+                <Text style={[styles.feildText, {fontSize: 12}]}>PKR</Text>
               </View>
               <Text
                 style={[
@@ -303,13 +301,13 @@ export default function NewOrder({ route, navigation }) {
                     fontSize: 12,
                   },
                 ]}>
-                <Text style={{ color: '#141414', fontSize: 12 }}>Total</Text>:{' '}
+                <Text style={{color: '#141414', fontSize: 12}}>Total</Text>:{' '}
                 {netTotal}
                 PKR
               </Text>
             </View>
 
-            <View style={{ paddingHorizontal: 24 }}>
+            <View style={{paddingHorizontal: 24}}>
               <TouchableOpacity
                 onPress={() => {
                   setModalVisible(true);
@@ -319,7 +317,7 @@ export default function NewOrder({ route, navigation }) {
                   paddingVertical: 10,
                   borderRadius: 10,
                 }}>
-                <Text style={{ textAlign: 'center', color: '#FFFFFF' }}>
+                <Text style={{textAlign: 'center', color: '#FFFFFF'}}>
                   Submit
                 </Text>
               </TouchableOpacity>
