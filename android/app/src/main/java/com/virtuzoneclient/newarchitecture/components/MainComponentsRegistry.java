@@ -1,4 +1,4 @@
-package com.virtuzoneclient.newarchitecture.components;
+package com.wappis.newarchitecture.components;
 
 import com.facebook.jni.HybridData;
 import com.facebook.proguard.annotations.DoNotStrip;

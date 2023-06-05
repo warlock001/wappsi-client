@@ -7,7 +7,7 @@ install! 'cocoapods', :deterministic_uuids => false
 production = ENV["PRODUCTION"] == "1"
 
 
-target 'virtuzoneClient' do
+target 'wappis' do
   config = use_native_modules!
 
   # Flags change depending on the env values.
@@ -26,7 +26,7 @@ target 'virtuzoneClient' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'virtuzoneClientTests' do
+  target 'wappisTests' do
     inherit! :complete
     # Pods for testing
   end

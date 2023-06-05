@@ -140,7 +140,7 @@ android {
         pickFirst 'lib/arm64-v8a/libc++_shared.so'
     }
     defaultConfig {
-        applicationId "com.virtuzoneclient"
+        applicationId "com.wappis"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 3
@@ -164,7 +164,7 @@ android {
                     cppFlags "-std=c++17"
                     // Make sure this target name is the same you specify inside the
                     // src/main/jni/Android.mk file for the `LOCAL_MODULE` variable.
-                    targets "virtuzoneclient_appmodules"
+                    targets "wappis_appmodules"
                 }
             }
             if (!enableSeparateBuildPerCPUArchitecture) {
@@ -269,7 +269,7 @@ android {
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
-
+    implementation 'com.facebook.android:facebook-android-sdk:latest.release'
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation project(':react-native-notifications')

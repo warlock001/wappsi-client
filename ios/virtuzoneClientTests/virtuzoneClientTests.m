@@ -7,11 +7,11 @@
 #define TIMEOUT_SECONDS 600
 #define TEXT_TO_LOOK_FOR @"Welcome to React"
 
-@interface virtuzoneClientTests : XCTestCase
+@interface wappisTests : XCTestCase
 
 @end
 
-@implementation virtuzoneClientTests
+@implementation wappisTests
 
 - (BOOL)findSubviewInView:(UIView *)view matching:(BOOL (^)(UIView *view))test
 {

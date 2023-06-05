@@ -7,12 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		00E356F31AD99517003FC87E /* virtuzoneClientTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* virtuzoneClientTests.m */; };
-		11A39CA28F2DE420DD213610 /* libPods-virtuzoneClient-virtuzoneClientTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 355F1A258A08AD69B33CE50E /* libPods-virtuzoneClient-virtuzoneClientTests.a */; };
+		00E356F31AD99517003FC87E /* wappisTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* wappisTests.m */; };
+		11A39CA28F2DE420DD213610 /* libPods-wappis-wappisTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 355F1A258A08AD69B33CE50E /* libPods-wappis-wappisTests.a */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		6F4993F3505C1DC0F0389A9F /* libPods-virtuzoneClient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B50C77DAF71BEACB098E5F6 /* libPods-virtuzoneClient.a */; };
+		6F4993F3505C1DC0F0389A9F /* libPods-wappis.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B50C77DAF71BEACB098E5F6 /* libPods-wappis.a */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 /* End PBXBuildFile section */
 
@@ -22,28 +22,28 @@
 			containerPortal = 83CBB9F71A601CBA00E9B192 /* Project object */;
 			proxyType = 1;
 			remoteGlobalIDString = 13B07F861A680F5B00A75B9A;
-			remoteInfo = virtuzoneClient;
+			remoteInfo = wappis;
 		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		00E356EE1AD99517003FC87E /* virtuzoneClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = virtuzoneClientTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356EE1AD99517003FC87E /* wappisTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = wappisTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		00E356F21AD99517003FC87E /* virtuzoneClientTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = virtuzoneClientTests.m; sourceTree = "<group>"; };
-		02D519535B12C8148AD86CC1 /* Pods-virtuzoneClient-virtuzoneClientTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtuzoneClient-virtuzoneClientTests.debug.xcconfig"; path = "Target Support Files/Pods-virtuzoneClient-virtuzoneClientTests/Pods-virtuzoneClient-virtuzoneClientTests.debug.xcconfig"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* virtuzoneClient.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = virtuzoneClient.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = virtuzoneClient/AppDelegate.h; sourceTree = "<group>"; };
-		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = virtuzoneClient/AppDelegate.mm; sourceTree = "<group>"; };
-		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = virtuzoneClient/Images.xcassets; sourceTree = "<group>"; };
-		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = virtuzoneClient/Info.plist; sourceTree = "<group>"; };
-		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = virtuzoneClient/main.m; sourceTree = "<group>"; };
-		355F1A258A08AD69B33CE50E /* libPods-virtuzoneClient-virtuzoneClientTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-virtuzoneClient-virtuzoneClientTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = virtuzoneClient/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		84ACEE05C51397964C8C976D /* Pods-virtuzoneClient.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtuzoneClient.release.xcconfig"; path = "Target Support Files/Pods-virtuzoneClient/Pods-virtuzoneClient.release.xcconfig"; sourceTree = "<group>"; };
-		9B50C77DAF71BEACB098E5F6 /* libPods-virtuzoneClient.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-virtuzoneClient.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		00E356F21AD99517003FC87E /* wappisTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = wappisTests.m; sourceTree = "<group>"; };
+		02D519535B12C8148AD86CC1 /* Pods-wappis-wappisTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wappis-wappisTests.debug.xcconfig"; path = "Target Support Files/Pods-wappis-wappisTests/Pods-wappis-wappisTests.debug.xcconfig"; sourceTree = "<group>"; };
+		13B07F961A680F5B00A75B9A /* wappis.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wappis.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = wappis/AppDelegate.h; sourceTree = "<group>"; };
+		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = wappis/AppDelegate.mm; sourceTree = "<group>"; };
+		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = wappis/Images.xcassets; sourceTree = "<group>"; };
+		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = wappis/Info.plist; sourceTree = "<group>"; };
+		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = wappis/main.m; sourceTree = "<group>"; };
+		355F1A258A08AD69B33CE50E /* libPods-wappis-wappisTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wappis-wappisTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = wappis/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		84ACEE05C51397964C8C976D /* Pods-wappis.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wappis.release.xcconfig"; path = "Target Support Files/Pods-wappis/Pods-wappis.release.xcconfig"; sourceTree = "<group>"; };
+		9B50C77DAF71BEACB098E5F6 /* libPods-wappis.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-wappis.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
-		F7FB16F58A14F09131F3A814 /* Pods-virtuzoneClient-virtuzoneClientTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtuzoneClient-virtuzoneClientTests.release.xcconfig"; path = "Target Support Files/Pods-virtuzoneClient-virtuzoneClientTests/Pods-virtuzoneClient-virtuzoneClientTests.release.xcconfig"; sourceTree = "<group>"; };
-		FC5EF0D7A6A23050B5033BDD /* Pods-virtuzoneClient.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-virtuzoneClient.debug.xcconfig"; path = "Target Support Files/Pods-virtuzoneClient/Pods-virtuzoneClient.debug.xcconfig"; sourceTree = "<group>"; };
+		F7FB16F58A14F09131F3A814 /* Pods-wappis-wappisTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wappis-wappisTests.release.xcconfig"; path = "Target Support Files/Pods-wappis-wappisTests/Pods-wappis-wappisTests.release.xcconfig"; sourceTree = "<group>"; };
+		FC5EF0D7A6A23050B5033BDD /* Pods-wappis.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-wappis.debug.xcconfig"; path = "Target Support Files/Pods-wappis/Pods-wappis.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,7 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				11A39CA28F2DE420DD213610 /* libPods-virtuzoneClient-virtuzoneClientTests.a in Frameworks */,
+				11A39CA28F2DE420DD213610 /* libPods-wappis-wappisTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -59,20 +59,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6F4993F3505C1DC0F0389A9F /* libPods-virtuzoneClient.a in Frameworks */,
+				6F4993F3505C1DC0F0389A9F /* libPods-wappis.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		00E356EF1AD99517003FC87E /* virtuzoneClientTests */ = {
+		00E356EF1AD99517003FC87E /* wappisTests */ = {
 			isa = PBXGroup;
 			children = (
-				00E356F21AD99517003FC87E /* virtuzoneClientTests.m */,
+				00E356F21AD99517003FC87E /* wappisTests.m */,
 				00E356F01AD99517003FC87E /* Supporting Files */,
 			);
-			path = virtuzoneClientTests;
+			path = wappisTests;
 			sourceTree = "<group>";
 		};
 		00E356F01AD99517003FC87E /* Supporting Files */ = {
@@ -83,7 +83,7 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		13B07FAE1A68108700A75B9A /* virtuzoneClient */ = {
+		13B07FAE1A68108700A75B9A /* wappis */ = {
 			isa = PBXGroup;
 			children = (
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -93,15 +93,15 @@
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
-			name = virtuzoneClient;
+			name = wappis;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
-				9B50C77DAF71BEACB098E5F6 /* libPods-virtuzoneClient.a */,
-				355F1A258A08AD69B33CE50E /* libPods-virtuzoneClient-virtuzoneClientTests.a */,
+				9B50C77DAF71BEACB098E5F6 /* libPods-wappis.a */,
+				355F1A258A08AD69B33CE50E /* libPods-wappis-wappisTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -116,9 +116,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				13B07FAE1A68108700A75B9A /* virtuzoneClient */,
+				13B07FAE1A68108700A75B9A /* wappis */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
-				00E356EF1AD99517003FC87E /* virtuzoneClientTests */,
+				00E356EF1AD99517003FC87E /* wappisTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				BBD78D7AC51CEA395F1C20DB /* Pods */,
@@ -131,8 +131,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* virtuzoneClient.app */,
-				00E356EE1AD99517003FC87E /* virtuzoneClientTests.xctest */,
+				13B07F961A680F5B00A75B9A /* wappis.app */,
+				00E356EE1AD99517003FC87E /* wappisTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -140,10 +140,10 @@
 		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				FC5EF0D7A6A23050B5033BDD /* Pods-virtuzoneClient.debug.xcconfig */,
-				84ACEE05C51397964C8C976D /* Pods-virtuzoneClient.release.xcconfig */,
-				02D519535B12C8148AD86CC1 /* Pods-virtuzoneClient-virtuzoneClientTests.debug.xcconfig */,
-				F7FB16F58A14F09131F3A814 /* Pods-virtuzoneClient-virtuzoneClientTests.release.xcconfig */,
+				FC5EF0D7A6A23050B5033BDD /* Pods-wappis.debug.xcconfig */,
+				84ACEE05C51397964C8C976D /* Pods-wappis.release.xcconfig */,
+				02D519535B12C8148AD86CC1 /* Pods-wappis-wappisTests.debug.xcconfig */,
+				F7FB16F58A14F09131F3A814 /* Pods-wappis-wappisTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -151,9 +151,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		00E356ED1AD99517003FC87E /* virtuzoneClientTests */ = {
+		00E356ED1AD99517003FC87E /* wappisTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "virtuzoneClientTests" */;
+			buildConfigurationList = 00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "wappisTests" */;
 			buildPhases = (
 				0A850837B8DAF7D8F7D79FD7 /* [CP] Check Pods Manifest.lock */,
 				00E356EA1AD99517003FC87E /* Sources */,
@@ -167,14 +167,14 @@
 			dependencies = (
 				00E356F51AD99517003FC87E /* PBXTargetDependency */,
 			);
-			name = virtuzoneClientTests;
-			productName = virtuzoneClientTests;
-			productReference = 00E356EE1AD99517003FC87E /* virtuzoneClientTests.xctest */;
+			name = wappisTests;
+			productName = wappisTests;
+			productReference = 00E356EE1AD99517003FC87E /* wappisTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		13B07F861A680F5B00A75B9A /* virtuzoneClient */ = {
+		13B07F861A680F5B00A75B9A /* wappis */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "virtuzoneClient" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "wappis" */;
 			buildPhases = (
 				3AFFCD3AA296547D43610E34 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -189,9 +189,9 @@
 			);
 			dependencies = (
 			);
-			name = virtuzoneClient;
-			productName = virtuzoneClient;
-			productReference = 13B07F961A680F5B00A75B9A /* virtuzoneClient.app */;
+			name = wappis;
+			productName = wappis;
+			productReference = 13B07F961A680F5B00A75B9A /* wappis.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -211,7 +211,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "virtuzoneClient" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "wappis" */;
 			compatibilityVersion = "Xcode 12.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -224,8 +224,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* virtuzoneClient */,
-				00E356ED1AD99517003FC87E /* virtuzoneClientTests */,
+				13B07F861A680F5B00A75B9A /* wappis */,
+				00E356ED1AD99517003FC87E /* wappisTests */,
 			);
 		};
 /* End PBXProject section */
@@ -281,7 +281,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-virtuzoneClient-virtuzoneClientTests-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-wappis-wappisTests-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -294,15 +294,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient-virtuzoneClientTests/Pods-virtuzoneClient-virtuzoneClientTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-wappis-wappisTests/Pods-wappis-wappisTests-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient-virtuzoneClientTests/Pods-virtuzoneClient-virtuzoneClientTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-wappis-wappisTests/Pods-wappis-wappisTests-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient-virtuzoneClientTests/Pods-virtuzoneClient-virtuzoneClientTests-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wappis-wappisTests/Pods-wappis-wappisTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		3AFFCD3AA296547D43610E34 /* [CP] Check Pods Manifest.lock */ = {
@@ -320,7 +320,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-virtuzoneClient-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-wappis-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -333,15 +333,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient/Pods-virtuzoneClient-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-wappis/Pods-wappis-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient/Pods-virtuzoneClient-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-wappis/Pods-wappis-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient/Pods-virtuzoneClient-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wappis/Pods-wappis-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		9482E79961A6A6AC0D8A9719 /* [CP] Embed Pods Frameworks */ = {
@@ -350,15 +350,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient/Pods-virtuzoneClient-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-wappis/Pods-wappis-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient/Pods-virtuzoneClient-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-wappis/Pods-wappis-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient/Pods-virtuzoneClient-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wappis/Pods-wappis-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E8F344A5781B9BAC890F2232 /* [CP] Copy Pods Resources */ = {
@@ -367,15 +367,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient-virtuzoneClientTests/Pods-virtuzoneClient-virtuzoneClientTests-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-wappis-wappisTests/Pods-wappis-wappisTests-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient-virtuzoneClientTests/Pods-virtuzoneClient-virtuzoneClientTests-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-wappis-wappisTests/Pods-wappis-wappisTests-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-virtuzoneClient-virtuzoneClientTests/Pods-virtuzoneClient-virtuzoneClientTests-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-wappis-wappisTests/Pods-wappis-wappisTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FD10A7F022414F080027D42C /* Start Packager */ = {
@@ -404,7 +404,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				00E356F31AD99517003FC87E /* virtuzoneClientTests.m in Sources */,
+				00E356F31AD99517003FC87E /* wappisTests.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -422,7 +422,7 @@
 /* Begin PBXTargetDependency section */
 		00E356F51AD99517003FC87E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 13B07F861A680F5B00A75B9A /* virtuzoneClient */;
+			target = 13B07F861A680F5B00A75B9A /* wappis */;
 			targetProxy = 00E356F41AD99517003FC87E /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -430,14 +430,14 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 02D519535B12C8148AD86CC1 /* Pods-virtuzoneClient-virtuzoneClientTests.debug.xcconfig */;
+			baseConfigurationReference = 02D519535B12C8148AD86CC1 /* Pods-wappis-wappisTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
 				);
-				INFOPLIST_FILE = virtuzoneClientTests/Info.plist;
+				INFOPLIST_FILE = wappisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -451,17 +451,17 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/virtuzoneClient.app/virtuzoneClient";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wappis.app/wappis";
 			};
 			name = Debug;
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F7FB16F58A14F09131F3A814 /* Pods-virtuzoneClient-virtuzoneClientTests.release.xcconfig */;
+			baseConfigurationReference = F7FB16F58A14F09131F3A814 /* Pods-wappis-wappisTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
-				INFOPLIST_FILE = virtuzoneClientTests/Info.plist;
+				INFOPLIST_FILE = wappisTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 12.4;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -475,13 +475,13 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/virtuzoneClient.app/virtuzoneClient";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/wappis.app/wappis";
 			};
 			name = Release;
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = FC5EF0D7A6A23050B5033BDD /* Pods-virtuzoneClient.debug.xcconfig */;
+			baseConfigurationReference = FC5EF0D7A6A23050B5033BDD /* Pods-wappis.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -490,7 +490,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X8VAGF9993;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = virtuzoneClient/Info.plist;
+				INFOPLIST_FILE = wappis/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -501,7 +501,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.virtugroup.virtuzone;
-				PRODUCT_NAME = virtuzoneClient;
+				PRODUCT_NAME = wappis;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -511,7 +511,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 84ACEE05C51397964C8C976D /* Pods-virtuzoneClient.release.xcconfig */;
+			baseConfigurationReference = 84ACEE05C51397964C8C976D /* Pods-wappis.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -519,7 +519,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = X8VAGF9993;
-				INFOPLIST_FILE = virtuzoneClient/Info.plist;
+				INFOPLIST_FILE = wappis/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -530,7 +530,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.virtugroup.virtuzone;
-				PRODUCT_NAME = virtuzoneClient;
+				PRODUCT_NAME = wappis;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -675,7 +675,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "virtuzoneClientTests" */ = {
+		00E357021AD99517003FC87E /* Build configuration list for PBXNativeTarget "wappisTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				00E356F61AD99517003FC87E /* Debug */,
@@ -684,7 +684,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "virtuzoneClient" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "wappis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -693,7 +693,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "virtuzoneClient" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "wappis" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,
