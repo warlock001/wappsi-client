@@ -9,27 +9,28 @@ import {
   TouchableOpacity,
   Dimensions,
 } from 'react-native';
-import React, {useRef, useState} from 'react';
-import {TextInput} from 'react-native-paper';
+import React, { useRef, useState } from 'react';
+import { TextInput } from 'react-native-paper';
 import TextField from '../components/inputField';
 import axios from 'axios';
-import {REACT_APP_BASE_URL} from '@env';
-import {setPromotions} from '../reducers/promotions';
-import {useDispatch} from 'react-redux';
+import { REACT_APP_BASE_URL } from '@env';
+import { setPromotions } from '../reducers/promotions';
+import { useDispatch } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {CommonActions, useFocusEffect} from '@react-navigation/native';
+import { CommonActions, useFocusEffect } from '@react-navigation/native';
 import ReactNativeBiometrics from 'react-native-biometrics';
-import {setSidebar} from '../reducers/sidebar';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
+import { setSidebar } from '../reducers/sidebar';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import LoadingModal from '../components/loadingScreen';
-import {LoginButton, AccessToken} from 'react-native-fbsdk';
+import { LoginButton, AccessToken } from 'react-native-fbsdk';
 const rnBiometrics = ReactNativeBiometrics;
 
-const {width: PAGE_WIDTH, height: PAGE_HEIGHT} = Dimensions.get('window');
+const { width: PAGE_WIDTH, height: PAGE_HEIGHT } = Dimensions.get('window');
 
-export default function SignIn({navigation}) {
+export default function SignIn({ navigation }) {
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
+  const [facebookAuthToken, setFacebookAuthToken] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [loader, setLoader] = useState(false);
   const [status, setStatus] = useState(false);
@@ -38,32 +39,11 @@ export default function SignIn({navigation}) {
   const dispatch = useDispatch();
   const [biometryTypeState, setBiometryType] = useState(null);
 
-  function initUser(token) {
-    fetch(
-      'https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' +
-        token,
-    )
-      .then(response => response.json())
-      .then(json => {
-        console.log(JSON.stringify(json));
-        // Some user object has been set up somewhere, build that user here
-        user.name = json.name;
-        user.id = json.id;
-        user.user_friends = json.friends;
-        user.email = json.email;
-        user.username = json.name;
-        user.loading = false;
-        user.loggedIn = true;
-        user.avatar = setAvatar(json.id);
-      })
-      .catch(() => {
-        reject('ERROR GETTING DATA FROM FACEBOOK');
-      });
-  }
+
 
   getMyStringValue = async () => {
     try {
-      const {biometryType} = await rnBiometrics.isSensorAvailable();
+      const { biometryType } = await rnBiometrics.isSensorAvailable();
       console.log('biometry type =' + biometryType);
       setBiometryType(biometryType);
       const jwt = await AsyncStorage.getItem('@jwt');
@@ -77,7 +57,7 @@ export default function SignIn({navigation}) {
       navigation.dispatch(
         CommonActions.reset({
           index: 1,
-          routes: [{name: 'HomeStack'}],
+          routes: [{ name: 'HomeStack' }],
         }),
       );
     }
@@ -88,138 +68,35 @@ export default function SignIn({navigation}) {
       getMyStringValue();
     }, []),
   );
-  // function verifySignatureWithServer(signature, payload, id) {
-  //   setLoader(true);
-  //   console.log(id);
-  //   axios({
-  //     method: 'POST',
-  //     url: `${REACT_APP_BASE_URL}/verifyBiometric?id=${id}`,
-  //     data: {
-  //       signature,
-  //       payload,
-  //     },
-  //   })
-  //     .then(async res => {
-  //       console.log(res.data.token);
-  //       await AsyncStorage.setItem('@id', res.data._id);
-  //       await AsyncStorage.setItem('@jwt', res.data.token);
-  //       await AsyncStorage.setItem('@demo', `${!res.data.isVerified}`);
-  //       const token = res.data.token;
 
-  //       console.log('verified = ' + token);
-  //       axios({
-  //         method: 'GET',
-  //         url: `${REACT_APP_BASE_URL}/allPromotions`,
-  //         // headers: {
-  //         //   'x-auth-token': token,
-  //         // },
-  //       })
-  //         .then(async resp => {
-  //           var images = [];
 
-  //           for (const promo of resp.data.allPromos) {
-  //             console.log(promo);
-  //             const file = await axios({
-  //               method: 'GET',
-  //               url: `${REACT_APP_BASE_URL}/files/${promo.image}/true`,
-  //               headers: {
-  //                 'x-auth-token': res.data.token,
-  //               },
-  //             }).catch(err => console.log('promo = ' + err));
-  //             images.push({
-  //               image: `data:${file.headers['content-type']};base64,${file.data}`,
-  //               link: promo.link,
-  //             });
-  //           }
-  //           console.log('hello');
-  //           dispatch(setPromotions(images));
-  //           dispatch(setSidebar(false));
-  //           setLoader(false);
 
-  //           navigation.dispatch(
-  //             CommonActions.reset({
-  //               index: 1,
-  //               routes: [{name: 'HomeStack', params: {shouldRedirect: false}}],
-  //             }),
-  //           );
-  //         })
-  //         .catch(err => {
-  //           console.log('promi err : ' + err);
-  //           setLoader(false);
-  //         });
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //       setLoader(false);
-  //     });
-  // }
 
-  // async function useFaceId() {
-  //   const id = await AsyncStorage.getItem('@id');
-  //   rnBiometrics.biometricKeysExist().then(resultObject => {
-  //     const {keysExist} = resultObject;
-
-  //     if (keysExist) {
-  //       rnBiometrics
-  //         .createSignature({
-  //           promptMessage: 'Sign in',
-  //           payload: payload,
-  //         })
-  //         .then(resultObject => {
-  //           const {success, signature} = resultObject;
-
-  //           console.log(signature);
-  //           if (success) {
-  //             console.log(payload);
-  //             verifySignatureWithServer(signature, payload, id);
-  //           }
-  //         });
-  //     }
-  //   });
-  // }
-  // async function useFingerprint() {
-  //   const id = await AsyncStorage.getItem('@id');
-  //   rnBiometrics.biometricKeysExist().then(resultObject => {
-  //     const {keysExist} = resultObject;
-
-  //     if (keysExist) {
-  //       rnBiometrics
-  //         .createSignature({
-  //           promptMessage: 'Sign in',
-  //           payload: payload,
-  //         })
-  //         .then(resultObject => {
-  //           const {success, signature} = resultObject;
-
-  //           console.log(signature);
-  //           if (success) {
-  //             console.log(payload);
-  //             verifySignatureWithServer(signature, payload, id);
-  //           }
-  //         });
-  //     }
-  //   });
-  // }
-
-  function signIn() {
+  function signIn(emailAddress, facebookAuthToken) {
     setLoader(true);
-    console.log(REACT_APP_BASE_URL);
-
+    console.log(emailAddress);
+    console.log(password);
+    console.log(facebookAuthToken);
     axios({
       timeout: 20000,
       method: 'POST',
       url: `${REACT_APP_BASE_URL}/login`,
       data: {
-        email: email,
-        password: password,
+        email: emailAddress,
+        password: password ? password : '',
+        facebookAuthToken: facebookAuthToken
       },
     })
       .then(async res => {
         await AsyncStorage.setItem('@id', res.data._id);
         await AsyncStorage.setItem('@jwt', res.data.token);
         await AsyncStorage.setItem('@demo', `${!res.data.isVerified}`);
-        await AsyncStorage.setItem('@company', res.data.company);
+        if (res.data.company) {
+          await AsyncStorage.setItem('@company', res.data.company);
+        }
+
         console.log('verified = ' + res.data.isVerified);
+        console.log("sign in res " + JSON.stringify(res.data))
         images = [
           {
             image: `https://www.armymwr.com/application/files/7816/0130/4930/DG_banner_examples_WebPromo_Community.jpg`,
@@ -232,11 +109,12 @@ export default function SignIn({navigation}) {
         navigation.dispatch(
           CommonActions.reset({
             index: 1,
-            routes: [{name: 'HomeStack', params: {shouldRedirect: false}}],
+            routes: [{ name: 'HomeStack', params: { shouldRedirect: false } }],
           }),
         );
       })
       .catch(err => {
+        console.log("Error" + err)
         setLoader(false);
         if (err.response) {
           if (err.response.status == 403) {
@@ -250,17 +128,47 @@ export default function SignIn({navigation}) {
       });
   }
 
+
+
+  function initUser(token) {
+    fetch(
+      'https://graph.facebook.com/v2.5/me?fields=email,name,friends&access_token=' +
+      token,
+    )
+      .then(response => response.json())
+      .then(json => {
+        setEmail(json.email)
+        signIn(json.email, token)
+        // Some user object has been set up somewhere, build that user here
+        user.name = json.name;
+        user.id = json.id;
+        user.user_friends = json.friends;
+        user.email = json.email;
+        user.username = json.name;
+        user.loading = false;
+        user.loggedIn = true;
+        user.avatar = setAvatar(json.id);
+
+
+
+      })
+      .catch(() => {
+        console.log('ERROR GETTING DATA FROM FACEBOOK');
+      });
+  }
+
+
   return (
-    <View style={{height: '100%'}}>
+    <View style={{ height: '100%' }}>
       {!loader ? (
-        <View style={{height: '100%'}}>
+        <View style={{ height: '100%' }}>
           <ImageBackground
             source={require('../images/SignIn.jpg')}
-            style={{width: '100%', height: 250}}>
+            style={{ width: '100%', height: 250 }}>
             <View style={styles.topheader}>
               <View style={styles.textView}>
                 <Text style={styles.textStyle}>Sign In</Text>
-                <Text style={[styles.textStyle, {paddingBottom: 20}]}>
+                <Text style={[styles.textStyle, { paddingBottom: 20 }]}>
                   To Your Account
                 </Text>
                 {/* <Text style={styles.textStyle2}>
@@ -270,10 +178,10 @@ export default function SignIn({navigation}) {
             </View>
           </ImageBackground>
           <KeyboardAwareScrollView style={styles.bottomSection}>
-            <View style={{height: '100%', padding: 24}}>
-              <View style={{paddingBottom: 20}}>
+            <View style={{ height: '100%', padding: 24 }}>
+              <View style={{ paddingBottom: 20 }}>
                 <TextField
-                  style={{marginBottom: 5}}
+                  style={{ marginBottom: 5 }}
                   label="Email Address"
                   onChangeText={text => setEmail(text)}
                   value={email}
@@ -286,7 +194,7 @@ export default function SignIn({navigation}) {
                       name={() => (
                         <Image
                           resizeMode="contain"
-                          style={{width: 25}}
+                          style={{ width: 25 }}
                           source={require('../images/EnvelopeClosed.png')}
                         />
                       )}
@@ -294,14 +202,14 @@ export default function SignIn({navigation}) {
                   }
                 />
                 <TouchableOpacity
-                  style={{alignSelf: 'flex-end'}}
+                  style={{ alignSelf: 'flex-end' }}
                   onPress={() => navigation.navigate('ForgotEmail')}>
                   <Text style={styles.forgotButtonStyle}>Forgot Email ID?</Text>
                 </TouchableOpacity>
               </View>
-              <View style={{paddingBottom: 20}}>
+              <View style={{ paddingBottom: 20 }}>
                 <TextField
-                  style={{marginBottom: 5}}
+                  style={{ marginBottom: 5 }}
                   label="Password"
                   secureTextEntry={showPassword ? false : true}
                   innerRef={passwordRef}
@@ -313,7 +221,7 @@ export default function SignIn({navigation}) {
                       name={() => (
                         <Image
                           resizeMode="contain"
-                          style={{width: 25}}
+                          style={{ width: 25 }}
                           source={require('../images/password_icon.png')}
                         />
                       )}
@@ -328,13 +236,13 @@ export default function SignIn({navigation}) {
                         showPassword ? (
                           <Image
                             resizeMode="contain"
-                            style={{width: 25}}
+                            style={{ width: 25 }}
                             source={require('../images/eyeOpen.png')}
                           />
                         ) : (
                           <Image
                             resizeMode="contain"
-                            style={{width: 25}}
+                            style={{ width: 25 }}
                             source={require('../images/Hide.png')}
                           />
                         )
@@ -344,7 +252,7 @@ export default function SignIn({navigation}) {
                 />
                 <Text>{status}</Text>
                 <TouchableOpacity
-                  style={{alignSelf: 'flex-end'}}
+                  style={{ alignSelf: 'flex-end' }}
                   onPress={() => navigation.navigate('ForgotPassword')}>
                   <Text style={styles.forgotButtonStyle}>Forgot Password?</Text>
                 </TouchableOpacity>
@@ -353,15 +261,15 @@ export default function SignIn({navigation}) {
                 style={styles.signInButton}
                 onPress={() => {
                   if (email !== null && password !== null) {
-                    signIn();
+                    signIn(email, 'no token');
                   }
                 }}>
                 <Text
-                  style={{textAlign: 'center', fontSize: 20, color: '#FFF'}}>
+                  style={{ textAlign: 'center', fontSize: 20, color: '#FFF' }}>
                   Sign In
                 </Text>
               </TouchableOpacity>
-              <View style={{width: '100%', height: 50}}>
+              <View style={{ width: '100%', height: 50 }}>
                 <View
                   style={{
                     flex: 1,
@@ -369,7 +277,7 @@ export default function SignIn({navigation}) {
                     justifyContent: 'center',
                   }}>
                   <Text
-                    style={{fontSize: 14, fontWeight: '500', paddingRight: 5}}>
+                    style={{ fontSize: 14, fontWeight: '500', paddingRight: 5 }}>
                     Don’t have an account?
                   </Text>
                   <TouchableOpacity
@@ -395,32 +303,32 @@ export default function SignIn({navigation}) {
                 }}>
                 {(biometryTypeState === 'TouchID' ||
                   biometryTypeState === 'Biometrics') && (
-                  <TouchableOpacity
-                    onPress={() => {
-                      useFingerprint();
-                    }}
-                    style={{
-                      flex: 2,
-                      flexDirection: 'column',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                    }}>
-                    <View
+                    <TouchableOpacity
+                      onPress={() => {
+                        useFingerprint();
+                      }}
                       style={{
                         flex: 2,
                         flexDirection: 'column',
                         alignItems: 'center',
                         justifyContent: 'center',
                       }}>
-                      <Image
-                        source={require('../images/FingerprintScan.png')}
-                      />
-                      <Text style={{width: 100, textAlign: 'center'}}>
-                        Log in with Fingerprint
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
-                )}
+                      <View
+                        style={{
+                          flex: 2,
+                          flexDirection: 'column',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}>
+                        <Image
+                          source={require('../images/FingerprintScan.png')}
+                        />
+                        <Text style={{ width: 100, textAlign: 'center' }}>
+                          Log in with Fingerprint
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  )}
                 {/* <View style={{width: 5}}>
                   <Image source={require('../images/Rectangle.png')} />
                 </View> */}
@@ -441,7 +349,7 @@ export default function SignIn({navigation}) {
                         justifyContent: 'center',
                       }}>
                       <Image source={require('../images/FaceId.png')} />
-                      <Text style={{width: 100, textAlign: 'center'}}>
+                      <Text style={{ width: 100, textAlign: 'center' }}>
                         Log in with Face ID
                       </Text>
                     </View>
@@ -457,7 +365,6 @@ export default function SignIn({navigation}) {
                   backgroundColor: '#1577f2', // the same as the actual button
                   paddingHorizontal: 10, // optionally add some horizontal padding for better looking
                   borderRadius: 10,
-                  marginBottom: 15,
                 }}>
                 <LoginButton
                   permissions={['public_profile', 'email']}
@@ -471,12 +378,12 @@ export default function SignIn({navigation}) {
                   onLoginFound={function (data) {
                     console.log('Existing login found.');
                     console.log(data);
-                    _this.setState({user: data.credentials});
+                    _this.setState({ user: data.credentials });
                   }}
                   onLogin={function (data) {
                     console.log('Logged in!');
                     console.log(data);
-                    _this.setState({user: data.credentials});
+                    _this.setState({ user: data.credentials });
                   }}
                   onPermissionsMissing={function (data) {
                     console.log('Check permissions!');
@@ -495,7 +402,8 @@ export default function SignIn({navigation}) {
                       AccessToken.getCurrentAccessToken().then(data => {
                         console.log(data.accessToken.toString());
                         console.log('data' + JSON.stringify(data));
-                        const {accessToken} = data;
+                        const { accessToken } = data;
+                        setFacebookAuthToken(accessToken)
                         initUser(accessToken);
                       });
                     }
@@ -506,13 +414,13 @@ export default function SignIn({navigation}) {
 
               <View
                 style={{
-                  marginTop: 50,
+                  marginTop: 15,
                   alignSelf: 'center',
                   justifyContent: 'flex-end',
                 }}>
                 <Image
                   resizeMode="contain"
-                  style={{width: PAGE_WIDTH - 186}}
+                  style={{ width: PAGE_WIDTH - 186 }}
                   source={require('../images/Tagline.png')}
                 />
               </View>
@@ -533,8 +441,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'flex-end',
   },
-  textStyle: {fontSize: 35, fontWeight: 'bold', color: '#FFF'},
-  textStyle2: {fontSize: 16, fontWeight: '400', color: '#FFF'},
+  textStyle: { fontSize: 35, fontWeight: 'bold', color: '#FFF' },
+  textStyle2: { fontSize: 16, fontWeight: '400', color: '#FFF' },
   bottomSection: {
     flexGrow: 1,
     backgroundColor: '#f1f1f1',
