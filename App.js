@@ -268,7 +268,7 @@ const App = () => {
             // tabBarShowLabel: false,
           }}
           name="Profile"
-          component={Home}
+          component={MyAccount}
           disab
         />
       </Tab.Navigator>
@@ -300,6 +300,7 @@ const App = () => {
             <Stack.Screen name="ExpenseTracker" component={ExpenseTracker} />
             <Stack.Screen name="Analytics" component={Analytics} />
             <Stack.Screen name="Register" component={Register} />
+            <Stack.Screen name="MyAccount" component={MyAccount} />
             {/* <Stack.Screen name="AddCompany" component={AddCompany} />
             <Stack.Screen name="UpdatePhone" component={UpdatePhone} />
             

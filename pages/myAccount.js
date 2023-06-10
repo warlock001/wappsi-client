@@ -13,25 +13,25 @@ import {
   Platform,
   PermissionsAndroid,
 } from 'react-native';
-import {TextInput} from 'react-native-paper';
-import {launchImageLibrary} from 'react-native-image-picker';
+import { TextInput } from 'react-native-paper';
+import { launchImageLibrary } from 'react-native-image-picker';
 import TextField from '../components/inputField';
-import React, {useState, useRef, useEffect} from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import IntlPhoneInput from 'react-native-international-telephone-input';
-import {REACT_APP_BASE_URL} from '@env';
+import { REACT_APP_BASE_URL } from '@env';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useFocusEffect} from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import axios from 'axios';
-
+import CurrencyPicker from "react-native-currency-picker"
 import SidebarLayout from '../layouts/sidebarLayout';
 import ImagePicker from 'react-native-image-crop-picker';
 import LoadingModal from '../components/loadingScreen';
-export default function MyAccount({navigation}) {
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
+export default function MyAccount({ navigation }) {
+  const [fullName, setFullName] = useState(null);
   const [email, setEmail] = useState(null);
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [password, setPassword] = useState('');
+  const [dialCode, setDialCode] = useState('');
+  const [companyName, setCompanyName] = useState('');
   const [loader, setLoader] = useState(true);
   //const [photo, setPhoto] = React.useState(null);
   const [photo1, setPhoto1] = React.useState('');
@@ -41,7 +41,7 @@ export default function MyAccount({navigation}) {
   const [fileData, setFileData] = useState('');
   const [fileUri, setFileUri] = useState('');
   const [filePath, setFilePath] = useState('');
-
+  let currencyPickerRef = undefined;
   var id;
   useFocusEffect(
     React.useCallback(() => {
@@ -64,33 +64,32 @@ export default function MyAccount({navigation}) {
 
         axios({
           method: 'GET',
-          url: `${REACT_APP_BASE_URL}/alluser?id=${ids}`,
+          url: `${REACT_APP_BASE_URL}/user?id=${ids}`,
         })
           .then(res => {
-            // console.log(res.data);
-            setEmail(res.data.user.email);
-            setFirstName(res.data.user.firstName);
-            setLastName(res.data.user.lastName);
-            setPhoneNumber(res.data.user.mobile);
-            axios({
-              method: 'GET',
-              url: `${REACT_APP_BASE_URL}/files/${res.data.user.profilePicture}/true`,
-              headers: {
-                'x-auth-token': tokens,
-              },
-            })
-              .then(res => {
-                setUri(
-                  `data:${res.headers['content-type']};base64,${res.data}`,
-                );
-              })
-              .catch(function (error) {
-                if (error.response) {
-                  // The request was made and the server responded with a status code
-                  // that falls out of the range of 2xx
-                  console.log(error.response.data);
-                }
-              });
+            console.log(res.data);
+            setEmail(res.data.user[0].email);
+            setFullName(res.data.user[0].name);
+
+            // axios({
+            //   method: 'GET',
+            //   url: `${REACT_APP_BASE_URL}/files/${res.data.user.profilePicture}/true`,
+            //   headers: {
+            //     'x-auth-token': tokens,
+            //   },
+            // })
+            //   .then(res => {
+            //     setUri(
+            //       `data:${res.headers['content-type']};base64,${res.data}`,
+            //     );
+            //   })
+            //   .catch(function (error) {
+            //     if (error.response) {
+            //       // The request was made and the server responded with a status code
+            //       // that falls out of the range of 2xx
+            //       console.log(error.response.data);
+            //     }
+            //   });
             setLoader(false);
             console.log(res.data.user);
           })
@@ -104,12 +103,11 @@ export default function MyAccount({navigation}) {
 
               Alert.alert(
                 'Failed',
-                `${
-                  er.response.data.message
-                    ? er.response.data.message
-                    : 'Something went wrong'
+                `${er.response.data.message
+                  ? er.response.data.message
+                  : 'Something went wrong'
                 }`,
-                [{text: 'OK', onPress: () => console.log('OK Pressed')}],
+                [{ text: 'OK', onPress: () => console.log('OK Pressed') }],
               );
             }
           });
@@ -118,113 +116,11 @@ export default function MyAccount({navigation}) {
     }, []),
   );
 
-  const chooseImage = async () => {
-    let options = {
-      title: 'Select Image',
-      customButtons: [
-        {name: 'customOptionKey', title: 'Choose Photo from Custom Option'},
-      ],
-      storageOptions: {
-        skipBackup: true,
-        path: 'images',
-      },
-    };
 
-    if (Platform.OS === 'android') {
-      await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
-      );
-      await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      );
-    }
 
-    // launchImageLibrary(options, response => {
-    //   console.log('Response = ', response);
-
-    //   if (response.didCancel) {
-    //     console.log('User cancelled image picker');
-    //   } else if (response.error) {
-    //     console.log('ImagePicker Error: ', response.error);
-    //   } else if (response.customButton) {
-    //     console.log('User tapped custom button: ', response.customButton);
-    //     alert(response.customButton);
-    //   } else {
-    //     setUri(response.uri);
-    //     const source = response.uri;
-
-    //     // You can also display the image using data:
-    //     // const source = { uri: 'data:image/jpeg;base64,' + response.data };
-    //     // alert(JSON.stringify(response));s
-    //     console.log('response', JSON.stringify(response));
-
-    //     setFilePath(response);
-    //     setFileData(response.data);
-    //     setFileUri(response.assets[0].uri);
-    //   }
-    // });
-    ImagePicker.openPicker({
-      width: 110,
-      height: 110,
-      cropping: true,
-    }).then(async image => {
-      console.log(image);
-      id = await AsyncStorage.getItem('@id');
-      const form = new FormData();
-
-      form.append('profilePicture', {
-        name: image.path.split('/').pop(),
-        type: image.mime,
-        uri:
-          Platform.OS === 'android'
-            ? image.path
-            : image.path.replace('file://', ''),
-      });
-
-      form.append('id', id);
-      axios({
-        method: 'PUT',
-        url: `${REACT_APP_BASE_URL}/profilePicture`,
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-        data: form,
-      });
-      setFileUri(image.path);
-    });
-  };
-  function renderFileUri() {
-    // console.log(fileUri.length > 0);
-    return fileUri.length > 1 ? (
-      <View style={{marginBottom: 24}}>
-        <Image
-          style={{
-            width: 110,
-            height: 110,
-
-            borderRadius: 50,
-          }}
-          source={{uri: fileUri}}
-        />
-        <Image style={styles.camera} source={require('../images/camera.png')} />
-      </View>
-    ) : (
-      <View style={{marginBottom: 24}}>
-        <Image
-          style={{
-            width: 110,
-            height: 110,
-            borderRadius: 50,
-          }}
-          source={uri ? {uri: uri} : require('../images/placeholder.jpg')}
-        />
-        <Image style={styles.camera} source={require('../images/camera.png')} />
-      </View>
-    );
-  }
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: '#eededf'}}>
-      <View style={[styles.bottomSection, {padding: 24}]}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: '#eededf' }}>
+      <View style={[styles.bottomSection, { padding: 24 }]}>
         <SidebarLayout header={'My Account'} />
         {!loader ? (
           <ScrollView
@@ -235,72 +131,35 @@ export default function MyAccount({navigation}) {
               marginBottom: 70,
             }}>
             <View style={styles.profilePicture}>
-              <TouchableOpacity onPress={chooseImage}>
-                {renderFileUri()}
-              </TouchableOpacity>
+
 
               <Text style={styles.textStyle2}>My Account</Text>
             </View>
 
-            <SafeAreaView style={{marginBottom: 20}}>
-              <Text style={styles.label}>First Name</Text>
+            <SafeAreaView style={{ marginBottom: 20 }}>
+              <Text style={styles.label}>Full Name</Text>
               <TextField
                 editable={false}
-                value={firstName}
-                onChangeText={text => setFirstName(text)}
+                value={fullName}
+                onChangeText={text => setFullName(text)}
                 left={
                   <TextInput.Icon
                     name={() => (
                       <Image
                         resizeMode="contain"
-                        style={{width: 25}}
+                        style={{ width: 25 }}
                         source={require('../images/User1.png')}
                       />
                     )}
                   />
                 }
-                // right={
-                //   <TextInput.Icon
-                //     name={() => (
-                //       <TouchableOpacity>
-                //         <Image source={require('../images/Pencil.png')} />
-                //       </TouchableOpacity>
-                //     )}
-                //   />
-                // }
+
               />
             </SafeAreaView>
 
-            <SafeAreaView style={{marginBottom: 20}}>
-              <Text style={styles.label}>Last Name</Text>
-              <TextField
-                editable={false}
-                value={lastName}
-                onChangeText={text => setLastName(text)}
-                left={
-                  <TextInput.Icon
-                    name={() => (
-                      <Image
-                        resizeMode="contain"
-                        style={{width: 25}}
-                        source={require('../images/User1.png')}
-                      />
-                    )}
-                  />
-                }
-                // right={
-                //   <TextInput.Icon
-                //     name={() => (
-                //       <TouchableOpacity>
-                //         <Image source={require('../images/Pencil.png')} />
-                //       </TouchableOpacity>
-                //     )}
-                //   />
-                // }
-              />
-            </SafeAreaView>
 
-            <SafeAreaView style={{marginBottom: 20}}>
+
+            <SafeAreaView style={{ marginBottom: 20 }}>
               <Text style={styles.label}>Email Address</Text>
 
               <TextField
@@ -312,29 +171,29 @@ export default function MyAccount({navigation}) {
                     name={() => (
                       <Image
                         resizeMode="contain"
-                        style={{width: 25}}
+                        style={{ width: 25 }}
                         source={require('../images/EnvelopeClosed.png')}
                       />
                     )}
                   />
                 }
-                // right={
-                //   <TextInput.Icon
-                //     name={() => (
-                //       <TouchableOpacity
-                //         onPress={() => {
-                //           navigation.navigate('UpdateEmail');
-                //         }}>
-                //         <Image source={require('../images/Pencil.png')} />
-                //       </TouchableOpacity>
-                //     )}
-                //   />
-                // }
+              // right={
+              //   <TextInput.Icon
+              //     name={() => (
+              //       <TouchableOpacity
+              //         onPress={() => {
+              //           navigation.navigate('UpdateEmail');
+              //         }}>
+              //         <Image source={require('../images/Pencil.png')} />
+              //       </TouchableOpacity>
+              //     )}
+              //   />
+              // }
               />
             </SafeAreaView>
 
-            <SafeAreaView style={{marginBottom: 20}}>
-              <Text style={[styles.label, {marginBottom: 5}]}>
+            <SafeAreaView style={{ marginBottom: 20 }}>
+              <Text style={[styles.label, { marginBottom: 5 }]}>
                 Phone Number
               </Text>
 
@@ -343,56 +202,96 @@ export default function MyAccount({navigation}) {
                 value={(function () {
                   var match = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
                   return match
-                    ? `${match[1] ? match[1] : ''} ${
-                        match[2] ? match[2] : ''
-                      } ${match[3] ? match[3] : ''}`
+                    ? `${match[1] ? match[1] : ''} ${match[2] ? match[2] : ''
+                    } ${match[3] ? match[3] : ''}`
                     : '';
                 })()}
                 onChangeText={text => setPhoneNumber(text)}
-                // left={<TextInput.Icon name={() => <Text>+92</Text>} />}
-                // right={
-                //   <TextInput.Icon
-                //     name={() => (
-                //       <TouchableOpacity
-                //         onPress={() => {
-                //           navigation.navigate('UpdatePhone');
-                //         }}>
-                //         <Image source={require('../images/Pencil.png')} />
-                //       </TouchableOpacity>
-                //     )}
-                //   />
-                // }
+                left={<TextInput.Icon name={() => <Text>+92</Text>} />}
+
               />
             </SafeAreaView>
 
-            {/* <View style={{marginBottom: 20}}>
-            <Text style={styles.label}>Password</Text>
-            <TextField
-              value={'dummypass'}
-              secureTextEntry
-              editable={false}
-              onChangeText={text => setPassword(text)}
-              left={
-                <TextInput.Icon
-                  name={() => (
-                    <Image source={require('../images/Password.png')} />
-                  )}
+            <SafeAreaView style={{ marginBottom: 20 }}>
+              <Text style={[styles.label, { marginBottom: 5 }]}>
+                Company Name
+              </Text>
+
+              <TextField
+                editable={false}
+                value={(function () {
+                  var match = phoneNumber.match(/^(\d{3})(\d{3})(\d{4})$/);
+                  return match
+                    ? `${match[1] ? match[1] : ''} ${match[2] ? match[2] : ''
+                    } ${match[3] ? match[3] : ''}`
+                    : '';
+                })()}
+                onChangeText={text => setPhoneNumber(text)}
+                left={
+                  <TextInput.Icon
+                    name={() => (
+                      <Image
+                        resizeMode="contain"
+                        style={{ width: 25 }}
+                        source={require('../images/briefcase.png')}
+                      />
+                    )}
+                  />
+                }
+
+              />
+            </SafeAreaView>
+
+            <SafeAreaView style={{ marginBottom: 20 }}>
+              <Text style={[styles.label, { marginBottom: 5 }]}>
+                Currency
+              </Text>
+              <SafeAreaView style={{ backgroundColor: '#ffffff', marginHorizontal: 2, marginVertical: 5, paddingVertical: 15, paddingHorizontal: 10, borderRadius: 10 }}>
+
+                <CurrencyPicker
+
+                  currencyPickerRef={(ref) => { currencyPickerRef = ref }}
+                  enable={true}
+                  darkMode={false}
+                  currencyCode={"PKR"}
+                  showFlag={true}
+                  showCurrencyName={true}
+                  showCurrencyCode={true}
+                  onSelectCurrency={(data) => { console.log("DATA", data) }}
+                  onOpen={() => { console.log("Open") }}
+                  onClose={() => { console.log("Close") }}
+                  showNativeSymbol={true}
+                  showSymbol={false}
+                  containerStyle={{
+                    container: { alignItems: 'center', display: 'flex' },
+                    flagWidth: 25,
+                    currencyCodeStyle: {},
+                    currencyNameStyle: {},
+                    symbolStyle: {},
+                    symbolNativeStyle: {}
+                  }}
+                  modalStyle={{
+                    container: {},
+                    searchStyle: {},
+                    tileStyle: {},
+                    itemStyle: {
+                      itemContainer: {},
+                      flagWidth: 25,
+                      currencyCodeStyle: {},
+                      currencyNameStyle: {},
+                      symbolStyle: {},
+                      symbolNativeStyle: {}
+                    }
+                  }}
+                  title={"Currency"}
+                  searchPlaceholder={"Search"}
+                  showCloseButton={true}
+                  showModalTitle={true}
                 />
-              }
-              right={
-                <TextInput.Icon
-                  name={() => (
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate('UpdatePassword');
-                      }}>
-                      <Image source={require('../images/Pencil.png')} />
-                    </TouchableOpacity>
-                  )}
-                />
-              }
-            />
-          </View> */}
+              </SafeAreaView>
+            </SafeAreaView>
+
+
           </ScrollView>
         ) : (
           <LoadingModal />
@@ -421,8 +320,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-end',
   },
-  textStyle: {fontSize: 20, fontWeight: 'bold', color: '#000000'},
-  textStyle2: {fontSize: 16, fontWeight: '600', color: '#fad00e'},
+  textStyle: { fontSize: 20, fontWeight: 'bold', color: '#000000' },
+  textStyle2: { fontSize: 16, fontWeight: '600', color: '#fad00e' },
   label: {
     fontSize: 16,
     fontWeight: 'bold',
