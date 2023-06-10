@@ -70,26 +70,6 @@ export default function MyAccount({ navigation }) {
             console.log(res.data);
             setEmail(res.data.user[0].email);
             setFullName(res.data.user[0].name);
-
-            // axios({
-            //   method: 'GET',
-            //   url: `${REACT_APP_BASE_URL}/files/${res.data.user.profilePicture}/true`,
-            //   headers: {
-            //     'x-auth-token': tokens,
-            //   },
-            // })
-            //   .then(res => {
-            //     setUri(
-            //       `data:${res.headers['content-type']};base64,${res.data}`,
-            //     );
-            //   })
-            //   .catch(function (error) {
-            //     if (error.response) {
-            //       // The request was made and the server responded with a status code
-            //       // that falls out of the range of 2xx
-            //       console.log(error.response.data);
-            //     }
-            //   });
             setLoader(false);
             console.log(res.data.user);
           })
